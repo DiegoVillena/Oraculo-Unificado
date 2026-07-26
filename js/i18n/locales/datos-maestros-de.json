@@ -1,0 +1,3187 @@
+{
+  "tarot": {
+    "cartas": {
+      "El Loco": "Der Narr",
+      "El Mago": "Der Magier",
+      "La Suma Sacerdotisa": "Die Hohepriesterin",
+      "La Emperatriz": "Die Kaiserin",
+      "El Emperador": "Der Kaiser",
+      "El Hierofante": "Der Hierophant",
+      "Los Enamorados": "Die Liebenden",
+      "El Carro": "Der Wagen",
+      "La Fuerza": "Die Kraft",
+      "El Ermitaño": "Der Einsiedler",
+      "La Rueda de la Fortuna": "Rad des Glücks",
+      "La Justicia": "Die Gerechtigkeit",
+      "El Colgado": "Der Gehängte",
+      "La Muerte": "Der Tod",
+      "La Templanza": "Die Mäßigkeit",
+      "El Diablo": "Der Teufel",
+      "La Torre": "Der Turm",
+      "La Estrella": "Der Stern",
+      "La Luna": "Der Mond",
+      "El Sol": "Die Sonne",
+      "El Juicio": "Das Gericht",
+      "El Mundo": "Die Welt",
+      "As de Copas": "Ass der Kelche",
+      "2 de Copas": "2 der Kelche",
+      "3 de Copas": "3 der Kelche",
+      "4 de Copas": "4 der Kelche",
+      "5 de Copas": "5 der Kelche",
+      "6 de Copas": "6 der Kelche",
+      "7 de Copas": "7 der Kelche",
+      "8 de Copas": "8 der Kelche",
+      "9 de Copas": "9 der Kelche",
+      "10 de Copas": "10 der Kelche",
+      "Sota de Copas": "Page der Kelche",
+      "Caballero de Copas": "Ritter der Kelche",
+      "Reina de Copas": "Königin der Kelche",
+      "Rey de Copas": "König der Kelche",
+      "As de Oros": "Ass der Münzen",
+      "2 de Oros": "2 der Münzen",
+      "3 de Oros": "3 der Münzen",
+      "4 de Oros": "4 der Münzen",
+      "5 de Oros": "5 der Münzen",
+      "6 de Oros": "6 der Münzen",
+      "7 de Oros": "7 der Münzen",
+      "8 de Oros": "8 der Münzen",
+      "9 de Oros": "9 der Münzen",
+      "10 de Oros": "10 der Münzen",
+      "Sota de Oros": "Page der Münzen",
+      "Caballero de Oros": "Ritter der Münzen",
+      "Reina de Oros": "Königin der Münzen",
+      "Rey de Oros": "König der Münzen",
+      "As de Espadas": "Ass der Schwerter",
+      "2 de Espadas": "2 der Schwerter",
+      "3 de Espadas": "3 der Schwerter",
+      "4 de Espadas": "4 der Schwerter",
+      "5 de Espadas": "5 der Schwerter",
+      "6 de Espadas": "6 der Schwerter",
+      "7 de Espadas": "7 der Schwerter",
+      "8 de Espadas": "8 der Schwerter",
+      "9 de Espadas": "9 der Schwerter",
+      "10 de Espadas": "10 der Schwerter",
+      "Sota de Espadas": "Page der Schwerter",
+      "Caballero de Espadas": "Ritter der Schwerter",
+      "Reina de Espadas": "Königin der Schwerter",
+      "Rey de Espadas": "König der Schwerter",
+      "As de Bastos": "Ass der Stäbe",
+      "2 de Bastos": "2 der Stäbe",
+      "3 de Bastos": "3 der Stäbe",
+      "4 de Bastos": "4 der Stäbe",
+      "5 de Bastos": "5 der Stäbe",
+      "6 de Bastos": "6 der Stäbe",
+      "7 de Bastos": "7 der Stäbe",
+      "8 de Bastos": "8 der Stäbe",
+      "9 de Bastos": "9 der Stäbe",
+      "10 de Bastos": "10 der Stäbe",
+      "Sota de Bastos": "Page der Stäbe",
+      "Caballero de Bastos": "Ritter der Stäbe",
+      "Reina de Bastos": "Königin der Stäbe",
+      "Rey de Bastos": "König der Stäbe"
+    },
+    "kb": {
+      "El Loco": {
+        "arquetipo": "Der freie Sucher",
+        "palo": null,
+        "elemento": "Luft",
+        "kw": [
+          "Beginn",
+          "Spontaneität",
+          "Glaube",
+          "Unschuld",
+          "Abenteuer"
+        ],
+        "sig": "Ein neuer Anfang öffnet sich vor dir mit frischer Energie. Es ist der Moment, mit Vertrauen ins Ungewisse zu springen und das Alte hinter sich zu lassen. Unschuld und Spontaneität sind deine Verbündeten; der Weg offenbart sich im Gehen.",
+        "revesKw": [
+          "Leichtsinn",
+          "Risiko",
+          "Überstürzung",
+          "Naivität"
+        ],
+        "revesSig": "Es besteht die Gefahr, zu ungestüm zu handeln oder nicht genau hinzusehen, wohin man tritt. Prüfe, ob du unter dem Deckmantel der Freiheit eine wichtige Verantwortung meidest."
+      },
+      "El Mago": {
+        "arquetipo": "Der Manifestierer",
+        "palo": null,
+        "elemento": "Merkur",
+        "kw": [
+          "Manifestation",
+          "Fähigkeit",
+          "Persönliche Macht",
+          "Initiative"
+        ],
+        "sig": "Du hast alle nötigen Ressourcen zur Hand, um deine Absicht zu manifestieren. Die Werkzeuge (Kelche, Münzen, Schwerter, Stäbe) liegen auf dem Tisch. Der Schlüssel ist, Wille, Gedanken, Emotion und Handlung in Einklang zu bringen.",
+        "revesKw": [
+          "Manipulation",
+          "verschwendetes Talent",
+          "Täuschung",
+          "mangelnder Fokus"
+        ],
+        "revesSig": "Das Talent ist vorhanden, geht aber durch mangelnden Fokus oder manipulativen Gebrauch verloren. Hüte dich vor jemandem, der mehr verspricht, als er halten kann – auch vor dir selbst."
+      },
+      "La Suma Sacerdotisa": {
+        "arquetipo": "Die weise Intuition",
+        "palo": null,
+        "elemento": "Mond",
+        "kw": [
+          "Intuition",
+          "Geheimnis",
+          "innere Weisheit",
+          "Stille"
+        ],
+        "sig": "Die Antwort kommt nicht von außen, sondern aus deiner inneren Stimme. Es ist ein Moment der Stille, des Zuhörens und der Empfänglichkeit. Etwas Verborgenes wird sich zur rechten Zeit offenbaren.",
+        "revesKw": [
+          "Geheimnisse",
+          "blockierte Intuition",
+          "Unterdrückung",
+          "übermäßige Passivität"
+        ],
+        "revesSig": "Du ignorierst deine Intuition oder unterdrückst etwas, ans Licht gebracht werden muss. Geheimnisse – eigene oder fremde – lasten auf dir."
+      },
+      "La Emperatriz": {
+        "arquetipo": "Die schöpferische Mutter",
+        "palo": null,
+        "elemento": "Venus",
+        "kw": [
+          "Fülle",
+          "Fruchtbarkeit",
+          "Schöpfung",
+          "Fürsorge",
+          "Natur"
+        ],
+        "sig": "Blüte, Kreativität und emotionale wie materielle Fülle. Es ist Zeit zu pflegen, zu nähren und wachsen zu lassen. Was gesät wurde, beginnt Früchte zu tragen.",
+        "revesKw": [
+          "übermäßige Beschützung",
+          "Abhängigkeit",
+          "blockierte Kreativität",
+          "Stillstand"
+        ],
+        "revesSig": "Es kann Überbeschützung, emotionale Abhängigkeit oder durch äußere Anforderungen erstickte Kreativität geben. Gewinne deinen Raum eigener Nährung zurück."
+      },
+      "El Emperador": {
+        "arquetipo": "Der ordnende Vater",
+        "palo": null,
+        "elemento": "Widder",
+        "kw": [
+          "Struktur",
+          "Autorität",
+          "Stabilität",
+          "Disziplin",
+          "Führung"
+        ],
+        "sig": "Es ist Zeit, Ordnung zu schaffen, Grenzen zu setzen und Verantwortung mit Disziplin zu übernehmen. Struktur schafft Freiheit; ohne sie zerfällt alles.",
+        "revesKw": [
+          "Starrheit",
+          "Autoritarismus",
+          "Dominanz",
+          "Kontrollverlust"
+        ],
+        "revesSig": "Entweder herrscht ein Übermaß an Kontrolle und Starrheit (gegen sich selbst oder andere) oder es fehlt an Struktur, sodass alles dahintreibt. Finde die Mitte."
+      },
+      "El Hierofante": {
+        "arquetipo": "Der traditionelle Lehrer",
+        "palo": null,
+        "elemento": "Stier",
+        "kw": [
+          "Tradition",
+          "Lehre",
+          "Werte",
+          "Zugehörigkeit",
+          "spirituelle Führung"
+        ],
+        "sig": "Die Weisheit der Tradition, ein Mentor oder ein gefestigtes Glaubenssystem bietet Orientierung. Es empfiehlt sich, einen anerkannten Weg zu gehen, bevor man den eigenen erfindet.",
+        "revesKw": [
+          "Rebellion",
+          "Regeln brechen",
+          "starre Doktrin",
+          "Meinungsverschiedenheit mit Autorität"
+        ],
+        "revesSig": "Du hinterfragst ein ererbtes Glaubenssystem, das dich nicht mehr repräsentiert. Rebellion ist legitim, wenn sie mit einer klaren eigenen Orientierung einhergeht."
+      },
+      "Los Enamorados": {
+        "arquetipo": "Die Wahl des Herzens",
+        "palo": null,
+        "elemento": "Zwillinge",
+        "kw": [
+          "Wahl",
+          "Vereinigung",
+          "Liebe",
+          "Werte im Einklang",
+          "wichtige Entscheidung"
+        ],
+        "sig": "Eine bedeutsame Wahl, besonders in Bezug auf Partnerschaft oder Werte. Was du entscheidest, sollte Verstand und Herz in Einklang bringen. Wahre Vereinigung entsteht aus freier Wahl, nicht aus Anhaftung.",
+        "revesKw": [
+          "Begierde",
+          "Unentschlossenheit",
+          "Wertedissonanz",
+          "Bruch"
+        ],
+        "revesSig": "Es herrscht Unentschlossenheit oder eine aus Begierde eher als aus Werten getroffene Wahl. Eine Beziehung oder Allianz weist Disharmonie auf, die angegangen werden muss."
+      },
+      "El Carro": {
+        "arquetipo": "Der siegreiche Bewegte",
+        "palo": null,
+        "elemento": "Krebs",
+        "kw": [
+          "Sieg",
+          "Entschlossenheit",
+          "Kontrolle",
+          "Fortschritt",
+          "Triumph nach Anstrengung"
+        ],
+        "sig": "Nach einer Phase der Anstrengung und des Gleichgewichts zwischen entgegengesetzten Kräften kommt der Fortschritt und der Sieg. Halte den Kurs und lass die Zügel noch nicht locker.",
+        "revesKw": [
+          "Richtungslosigkeit",
+          "Niederlage",
+          "ungezügelter Impuls",
+          "Aggressivität"
+        ],
+        "revesSig": "Die inneren Kräfte sind im Ungleichgewicht und der Wagen gerät vom Kurs. Entweder treibst du ziellos dahin oder du stürmst mit schlecht kanalisierter Aggressivität voran."
+      },
+      "La Fuerza": {
+        "arquetipo": "Die liebende Zähmerin",
+        "palo": null,
+        "elemento": "Löwe",
+        "kw": [
+          "innere Stärke",
+          "Mut",
+          "Geduld",
+          "sanfte Beherrschung",
+          "kanalisierte Leidenschaft"
+        ],
+        "sig": "Wahre Stärke ist nicht Auferlegung, sondern Geduld und Liebe. Was unzähmbar schien, ergibt sich der ruhigen Beständigkeit und dem freundlichen Mut.",
+        "revesKw": [
+          "Unsicherheit",
+          "Zweifel",
+          "unterdrückter Zorn",
+          "mangelnde Selbstbeherrschung"
+        ],
+        "revesSig": "Zweifel und mangelndes Vertrauen schwächen deine Position. Es gibt Zorn oder zurückgehaltene Leidenschaft, die sich gesund ausdrücken muss."
+      },
+      "El Ermitaño": {
+        "arquetipo": "Der innere Sucher",
+        "palo": null,
+        "elemento": "Jungfrau",
+        "kw": [
+          "Introspektion",
+          "Einsamkeit",
+          "Weisheit",
+          "innere Suche",
+          "Rückzug"
+        ],
+        "sig": "Es ist Zeit, sich vom äußeren Lärm zurückzuziehen, um die innere Stimme zu hören. Das Licht, das du suchst, trägst du in dir; die Einsamkeit ist jetzt heilsam.",
+        "revesKw": [
+          "Isolation",
+          "aufgezwungene Einsamkeit",
+          "Besessenheit",
+          "Zurückweisung von Rat"
+        ],
+        "revesSig": "Die Isolation ist übermäßig geworden oder von außen aufgezwungen. Hüte dich davor, dich in deinem Kopf einzuschließen und die Hilfe derer abzuweisen, die deinen Weg erhellen."
+      },
+      "La Rueda de la Fortuna": {
+        "arquetipo": "Der unausweichliche Zyklus",
+        "palo": null,
+        "elemento": "Jupiter",
+        "kw": [
+          "Wandel",
+          "Zyklus",
+          "Glück",
+          "Schicksal",
+          "Gelegenheit"
+        ],
+        "sig": "Ein Zykluswechsel naht, meist günstig. Was steigt, fällt und was fällt, steigt; nutze den Schwung, während er anhält, und sei dankbar für das, was kommt.",
+        "revesKw": [
+          "Pech",
+          "Widerstand gegen Wandel",
+          "Rückschlag",
+          "Stillstand"
+        ],
+        "revesSig": "Widerstand gegen den Wandel verlängert den Stillstand. Wenn das Rad absteigt, lass los; je eher du den Zyklus annimmst, desto eher wendet er sich."
+      },
+      "La Justicia": {
+        "arquetipo": "Das unparteiliche Gleichgewicht",
+        "palo": null,
+        "elemento": "Waage",
+        "kw": [
+          "Gerechtigkeit",
+          "Billigkeit",
+          "Wahrheit",
+          "Verantwortung",
+          "Konsequenzen"
+        ],
+        "sig": "Die Dinge kommen gemäß dem Gesäten ins Gleichgewicht. Gerechte und transparente Entscheidungen sind jetzt der richtige Weg. Was getan wurde, hat seine Konsequenz.",
+        "revesKw": [
+          "Ungerechtigkeit",
+          "Ungleichgewicht",
+          "Verantwortungsumgehung",
+          "Befangenheit"
+        ],
+        "revesSig": "Es gibt ein Unrecht, eigenes oder fremdes, das korrigiert werden muss. Oder du entziehst dich der Übernahme des dir zustehenden Teils der Verantwortung."
+      },
+      "El Colgado": {
+        "arquetipo": "Der freiwillig Aufgehängte",
+        "palo": null,
+        "elemento": "Neptun",
+        "kw": [
+          "Schwebe",
+          "Opfer",
+          "neue Perspektive",
+          "Hingabe",
+          "Geduld"
+        ],
+        "sig": "Der Fortschritt hat angehalten, aber es ist kein Stillstand, sondern eine heilige Pause. Kontrolle loszulassen und die Dinge aus einem anderen Winkel zu sehen, wird die Offenbarung bringen.",
+        "revesKw": [
+          "Stillstand",
+          "Widerstand",
+          "Märtyrer",
+          "Zeitverlust"
+        ],
+        "revesSig": "Du hängst, aber ohne die Lernhaltung; es gibt Widerstand gegen das Loslassen oder eine Märtyrerhaltung, die niemandem hilft."
+      },
+      "La Muerte": {
+        "arquetipo": "Der Verwandler",
+        "palo": null,
+        "elemento": "Skorpion",
+        "kw": [
+          "Transformation",
+          "Ende",
+          "Wiedergeburt",
+          "Abschluss",
+          "tiefer Wandel"
+        ],
+        "sig": "Ein Zyklus schließt sich, damit ein anderer entsteht. Der symbolische Tod des Alten ist notwendig; Widerstand verlängert nur den Schmerz. Vertraue: Was kommt, ist authentischer.",
+        "revesKw": [
+          "Angst vor Wandel",
+          "Stillstand",
+          "Festhalten",
+          "langsamer Übergang"
+        ],
+        "revesSig": "Du klammerst dich an etwas, das seinen Zyklus erfüllt hat. Der Wandel geschieht ohnehin, aber der Widerstand macht ihn schmerzhafter."
+      },
+      "La Templanza": {
+        "arquetipo": "Der geduldige Alchemist",
+        "palo": null,
+        "elemento": "Schütze",
+        "kw": [
+          "Gleichgewicht",
+          "Mäßigung",
+          "Mischung",
+          "Geduld",
+          "Heilung"
+        ],
+        "sig": "Es ist Zeit, mit Geduld zu mischen, ohne Extreme. Mäßigung ist die Kunst, Gegensätze zu verbinden und die heilende Mitte zu finden.",
+        "revesKw": [
+          "Ungleichgewicht",
+          "Exzess",
+          "mangelnde Harmonie",
+          "Ungeduld"
+        ],
+        "revesSig": "Es gibt Exzess oder Ungleichgewicht in einem Bereich. Extreme Rhythmen erschöpfen; es empfiehlt sich, zur Mitte zurückzukehren."
+      },
+      "El Diablo": {
+        "arquetipo": "Der Kettenleger",
+        "palo": null,
+        "elemento": "Steinbock",
+        "kw": [
+          "binden",
+          "Sucht",
+          "Begierde",
+          "Materialismus",
+          "Schatten",
+          "irdische Macht"
+        ],
+        "sig": "Es gibt eine Anhaftung, eine Sucht oder eine auf Angst oder Begierde beruhende Bindung, die gefesselt hält. Die Kette zu erkennen ist der erste Schritt zum Brechen; der Schlüssel liegt in deiner Hand.",
+        "revesKw": [
+          "Befreiung",
+          "Lösung",
+          "Schatten erkennen",
+          "Fesseln abwerfen"
+        ],
+        "revesSig": "Du beginnst, die Ketten zu sehen und dich von ihnen zu befreien. Das Erkennen deines eigenen Schattens gibt dir die Macht zurück, die du abgegeben hattest."
+      },
+      "La Torre": {
+        "arquetipo": "Der notwendige Einsturz",
+        "palo": null,
+        "elemento": "Mars",
+        "kw": [
+          "Bruch",
+          "plötzlicher Wandel",
+          "Offenbarung",
+          "Einsturz falscher Strukturen"
+        ],
+        "sig": "Etwas auf falschen Fundamenten Errichtetes stürzt ein. Auch wenn der Einschlag schmerzt, fällt das, was dich daran hinderte, auf festem Grund zu bauen. Die Wahrheit befreit, auch wenn sie erschreckt.",
+        "revesKw": [
+          "Kollaps vermeiden",
+          "aufgeschobener Wandel",
+          "Angst vor dem Einsturz",
+          "eingedämmter Schaden"
+        ],
+        "revesSig": "Du vermeidest einen unausweichlichen Einsturz oder hältst eine Wahrheit zurück, die ans Licht muss. Je länger du brauchst loszulassen, desto größer wird die Wirkung."
+      },
+      "La Estrella": {
+        "arquetipo": "Die erneuerte Hoffnung",
+        "palo": null,
+        "elemento": "Wassermann",
+        "kw": [
+          "Hoffnung",
+          "Inspiration",
+          "Heilung",
+          "Glaube",
+          "Führung",
+          "Klarheit"
+        ],
+        "sig": "Nach dem Sturm des Turms kehrt das Licht zurück. Es ist Zeit zu heilen, die Hoffnung wiederzuverbinden und dem Fluss des Lebens zu vertrauen. Du wirst geführt.",
+        "revesKw": [
+          "Hoffnungslosigkeit",
+          "Glaubensverlust",
+          "Trennung",
+          "Pessimismus"
+        ],
+        "revesSig": "Die Hoffnung ist vorübergehend erloschen. Dich wieder mit dem zu verbinden, was dich inspiriert – auch wenn es nur ein kleines Licht ist –, wird deinen Glauben reaktivieren."
+      },
+      "La Luna": {
+        "arquetipo": "Der Pfad des Geheimnisses",
+        "palo": null,
+        "elemento": "Fische",
+        "kw": [
+          "Illusion",
+          "Unbewusstes",
+          "Angst",
+          "Intuition",
+          "Träume",
+          "Zweideutigkeit"
+        ],
+        "sig": "Es gibt Nebel und Zweideutigkeit; nicht alles ist, wie es scheint. Die Ängste des Unbewussten treten zutage. Vertraue der Intuition mehr als dem Schein.",
+        "revesKw": [
+          "Klarheit, die kommt",
+          "überwundene Ängste",
+          "offenbarte Wahrheit",
+          "nachlassende Verwirrung"
+        ],
+        "revesSig": "Der Nebel beginnt sich zu lichten und die Ängste verlieren Macht. Eine verborgene Wahrheit wird sichtbar."
+      },
+      "El Sol": {
+        "arquetipo": "Das strahlende Licht",
+        "palo": null,
+        "elemento": "Sonne",
+        "kw": [
+          "Freude",
+          "Erfolg",
+          "Vitalität",
+          "Klarheit",
+          "Wahrheit",
+          "inneres Kind"
+        ],
+        "sig": "Licht, Erfolg und Freude kommen. Alles wird klar und positiv. Es ist Zeit zu feiern, zu strahlen und das innere Kind wiederzuverbinden, das grundlos freut.",
+        "revesKw": [
+          "falsche Freude",
+          "geschwollenes Ego",
+          "aufgeschobener Erfolg",
+          "vorüberziehende Wolke"
+        ],
+        "revesSig": "Die Freude ist vorübergehend verdunkelt oder auf Schein gegründet. Der Erfolg verschiebt sich, wird aber nicht annulliert; prüfe, ob das Ego das Licht aus dem Gleichgewicht bringt."
+      },
+      "El Juicio": {
+        "arquetipo": "Das Erwachen",
+        "palo": null,
+        "elemento": "Pluto",
+        "kw": [
+          "Wiedergeburt",
+          "Ruf",
+          "Erwachen",
+          "Vergebung",
+          "Auswertung",
+          "Berufung"
+        ],
+        "sig": "Ein innerer oder äußerer Ruf ruft dich zu einer Wiedergeburt. Es ist Zeit zu hören, die Vergangenheit zu vergeben und einer höheren Berufung zu antworten.",
+        "revesKw": [
+          "harte Selbstkritik",
+          "Ablehnung des Rufs",
+          "Schuld",
+          "Aufschiebung"
+        ],
+        "revesSig": "Übermäßige Selbstkritik oder Schuld hindern dich, den Ruf zu hören. Vergebung – beginnend bei dir selbst – öffnet erneut die Tür."
+      },
+      "El Mundo": {
+        "arquetipo": "Die totale Integration",
+        "palo": null,
+        "elemento": "Saturn",
+        "kw": [
+          "Erfüllung",
+          "Integration",
+          "Zyklusabschluss",
+          "totaler Erfolg",
+          "Ganzheit"
+        ],
+        "sig": "Ein Zyklus vollendet sich erfolgreich. Du hast die Lektionen integriert und bist nun ganz. Es ist Zeit zu feiern und sich auf einen neuen Anfang auf anderer Ebene vorzubereiten.",
+        "revesKw": [
+          "unvollständig",
+          "aufgeschobener Abschluss",
+          "Gefühl des Fehlens",
+          "am Ende feststeckend"
+        ],
+        "revesSig": "Es fehlt ein letzter Abschnitt, um den Zyklus zu schließen. Etwas bleibt offen oder unintegriert; identifiziere, was fehlt, bevor du für beendet erklärst."
+      },
+      "As de Copas": {
+        "arquetipo": "Emotion, die entsteht",
+        "palo": "Kelche",
+        "elemento": "Wasser",
+        "kw": [
+          "neue Liebe",
+          "Emotion",
+          "Mitgefühl",
+          "Inspiration",
+          "neue Bindung"
+        ],
+        "sig": "Eine neue Emotion oder Bindung blüht in deinem Herzen. Erlaube dir, ohne Vorbehalt zu fühlen.",
+        "revesKw": [
+          "blockierte Emotion",
+          "verpasste emotionale Gelegenheit",
+          "Unterdrückung"
+        ],
+        "revesSig": "Eine Emotion hat sich nicht getraut hervorzutreten, oder eine Gelegenheit zur Bindung wurde ausgelassen."
+      },
+      "2 de Copas": {
+        "arquetipo": "Die Begegnung",
+        "palo": "Kelche",
+        "elemento": "Wasser",
+        "kw": [
+          "Vereinigung",
+          "Partnerschaft",
+          "gegenseitige Anziehung",
+          "Übereinkunft",
+          "Bindung"
+        ],
+        "sig": "Zwei Seelen begegnen sich auf Augenhöhe. Vereinigung, Partnerschaft oder gegenseitige Anziehung in Harmonie.",
+        "revesKw": [
+          "Entzweiung",
+          "Bruch",
+          "Ungleichgewicht in der Beziehung"
+        ],
+        "revesSig": "Das Gleichgewicht in einer Beziehung ist gestört; prüfe, was trennt, was einst verband."
+      },
+      "3 de Copas": {
+        "arquetipo": "Die freundschaftliche Feier",
+        "palo": "Kelche",
+        "elemento": "Wasser",
+        "kw": [
+          "Feier",
+          "Freundschaft",
+          "Gemeinschaft",
+          "geteilte Freude"
+        ],
+        "sig": "Zeit, mit Freunden oder Gemeinschaft zu feiern. Geteilte Freude vervielfacht sich.",
+        "revesKw": [
+          "Exzess",
+          "Klatsch",
+          "störende Dritte",
+          "soziale Überlastung"
+        ],
+        "revesSig": "Sozialer Exzess oder die Anwesenheit Dritter stört die Harmonie. Hüte dich vor Geschwätz."
+      },
+      "4 de Copas": {
+        "arquetipo": "Die Enttäuschung",
+        "palo": "Kelche",
+        "elemento": "Wasser",
+        "kw": [
+          "Langeweile",
+          "Unzufriedenheit",
+          "ignorierte Gelegenheit",
+          "Apathie"
+        ],
+        "sig": "Unzufriedenheit lässt dich eine angebotene Gelegenheit übersehen. Schau nach oben, nicht alles ist verloren.",
+        "revesKw": [
+          "neue Motivation",
+          "Erwachen",
+          "die Gelegenheit annehmen"
+        ],
+        "revesSig": "Du verlässt die Apathie und beginnst zu sehen, was dir angeboten wurde. Die Motivation kehrt zurück."
+      },
+      "5 de Copas": {
+        "arquetipo": "Der Verlust",
+        "palo": "Kelche",
+        "elemento": "Wasser",
+        "kw": [
+          "Verlust",
+          "Trauer",
+          "Reue",
+          "Enttäuschung"
+        ],
+        "sig": "Es gibt einen Verlust zu betrauern, doch Kelche bleiben stehen. Schaue nicht nur auf das Verschüttete.",
+        "revesKw": [
+          "Akzeptanz",
+          "Erholung",
+          "die Trauer hinter sich lassen"
+        ],
+        "revesSig": "Du beginnst, den Verlust zu akzeptieren und zurückzugewinnen, was noch steht."
+      },
+      "6 de Copas": {
+        "arquetipo": "Die Nostalgie",
+        "palo": "Kelche",
+        "elemento": "Wasser",
+        "kw": [
+          "Nostalgie",
+          "Kindheit",
+          "Erinnerungen",
+          "Wiedersehen",
+          "Unschuld"
+        ],
+        "sig": "Eine Rückkehr in die Vergangenheit, in die Kindheit oder ein Wiedersehen. Nostalgie kann Balsam oder Falle sein.",
+        "revesKw": [
+          "Verhaftung an die Vergangenheit",
+          "Stillstand",
+          "Loslassen",
+          "Zukunft voran"
+        ],
+        "revesSig": "Du bist zu sehr in der Vergangenheit verhaftet. Es ist Zeit loszulassen und in die Zukunft zu blicken."
+      },
+      "7 de Copas": {
+        "arquetipo": "Die Illusionen",
+        "palo": "Kelche",
+        "elemento": "Wasser",
+        "kw": [
+          "Illusion",
+          "Optionen",
+          "Traum",
+          "vielfältige Wünsche",
+          "Verwirrung"
+        ],
+        "sig": "Viele Optionen bieten sich, doch einige sind Trugbilder. Du brauchst Klarheit, um mit beiden Beinen auf dem Boden zu wählen.",
+        "revesKw": [
+          "Klarheit",
+          "getroffene Entscheidung",
+          "die Dinge sehen, wie sie sind"
+        ],
+        "revesSig": "Der Nebel lichtet sich und du triffst eine klare Entscheidung. Die Optionen reduzieren sich auf das Reale."
+      },
+      "8 de Copas": {
+        "arquetipo": "Das Verlassen",
+        "palo": "Kelche",
+        "elemento": "Wasser",
+        "kw": [
+          "Verlassen",
+          "Suche",
+          "das Bekannte hinter sich lassen",
+          "spiritueller Weg"
+        ],
+        "sig": "Du lässt etwas zurück, das dich nicht mehr erfüllt, um tiefere Bedeutung zu suchen. Die innere Reise beginnt.",
+        "revesKw": [
+          "Angst zu gehen",
+          "umkehren",
+          "Stillstand durch Anhaftung"
+        ],
+        "revesSig": "Du möchtest etwas verlassen, aber die Angst hält dich zurück. Prüfe, ob es Anhaftung oder Vorsicht ist."
+      },
+      "9 de Copas": {
+        "arquetipo": "Der erfüllte Wunsch",
+        "palo": "Kelche",
+        "elemento": "Wasser",
+        "kw": [
+          "Zufriedenheit",
+          "erfüllter Wunsch",
+          "Wohlsein",
+          "Freude",
+          "emotionale Fülle"
+        ],
+        "sig": "Was du dir wünschtest, erfüllt sich. Genieße es, ohne in Selbstgefälligkeit zu verfallen.",
+        "revesKw": [
+          "Unzufriedenheit",
+          "Exzess",
+          "oberflächliche Zufriedenheit"
+        ],
+        "revesSig": "Der erfüllte Wunsch erfüllt dich nicht wie erhofft, oder der Exzess lässt dich leer."
+      },
+      "10 de Copas": {
+        "arquetipo": "Das familiäre Glück",
+        "palo": "Kelche",
+        "elemento": "Wasser",
+        "kw": [
+          "familiäres Glück",
+          "Harmonie",
+          "Zuhause",
+          "emotionale Ausrichtung"
+        ],
+        "sig": "Emotionale und familiäre Harmonie erreicht ihren Höhepunkt. Der Regenbogen erscheint nach dem Regen.",
+        "revesKw": [
+          "familiäre Spannungen",
+          "Disharmonie",
+          "konfliktierende Werte"
+        ],
+        "revesSig": "Es gibt Spannungen im familiären oder emotionalen Bereich, die Aufmerksamkeit erfordern."
+      },
+      "Sota de Copas": {
+        "arquetipo": "Der Bote des Herzens",
+        "palo": "Kelche",
+        "elemento": "Wasser",
+        "kw": [
+          "emotionale Botschaft",
+          "junge Intuition",
+          "neue Sensibilität",
+          "Traum"
+        ],
+        "sig": "Eine Botschaft des Herzens oder eine neue Sensibilität erwacht. Achte auf deine Träume und Ahnungen.",
+        "revesKw": [
+          "unreife Emotionalität",
+          "Laune",
+          "emotionale Flucht"
+        ],
+        "revesSig": "Unreife oder launenhafte Emotionen dominieren. Es empfiehlt sich abzuwarten, bevor du aus der Emotion heraus handelst."
+      },
+      "Caballero de Copas": {
+        "arquetipo": "Der Romantiker",
+        "palo": "Kelche",
+        "elemento": "Wasser",
+        "kw": [
+          "Romantik",
+          "Idealismus",
+          "Kreativität",
+          "liebevolles Angebot",
+          "fahrender Ritter"
+        ],
+        "sig": "Eine Romantik, ein liebevolles Angebot oder ein kreativer Impuls kommt mit Ritterlichkeit.",
+        "revesKw": [
+          "Eifersucht",
+          "emotionale Täuschung",
+          "leere Versprechen",
+          "unrealer Idealismus"
+        ],
+        "revesSig": "Hüte dich vor leeren Versprechen oder Eifersucht, die die Sicht trübt. Das Idealisierte kollidiert mit der Realität."
+      },
+      "Reina de Copas": {
+        "arquetipo": "Die tiefe Empathie",
+        "palo": "Kelche",
+        "elemento": "Wasser",
+        "kw": [
+          "Empathie",
+          "Mitgefühl",
+          "Intuition",
+          "mütterliche Bindung",
+          "emotionale Stütze"
+        ],
+        "sig": "Tiefe Empathie und Fähigkeit, emotional zu tragen. Deine Intuition ist jetzt dein bester Führer.",
+        "revesKw": [
+          "Überempfindlichkeit",
+          "Co-Abhängigkeit",
+          "in fremden Emotionen ertrinken"
+        ],
+        "revesSig": "Du vertiefst dich zu sehr in fremde Emotionen und überschwemmst dich. Achte auf deine eigenen Grenzen."
+      },
+      "Rey de Copas": {
+        "arquetipo": "Der emotionale Meister",
+        "palo": "Kelche",
+        "elemento": "Wasser",
+        "kw": [
+          "emotionale Reife",
+          "Ruhe",
+          "Weisheit",
+          "Diplomatie",
+          "Gleichgewicht"
+        ],
+        "sig": "Emotionale Reife, Ruhe im Sturm und Diplomatie, um Konflikte zu lösen. Du bist Herr deiner Emotionen, nicht ihr Sklave.",
+        "revesKw": [
+          "emotionale Manipulation",
+          "Unterdrückung",
+          "Volatilität",
+          "innere Finsternis"
+        ],
+        "revesSig": "Es gibt emotionale Manipulation, eigene oder fremde, oder ein schlecht bewältigter innerer Sturm."
+      },
+      "As de Oros": {
+        "arquetipo": "Die materielle Gelegenheit",
+        "palo": "Münzen",
+        "elemento": "Erde",
+        "kw": [
+          "Gelegenheit",
+          "Wohlstand",
+          "neue Arbeit",
+          "Ressource",
+          "Saat"
+        ],
+        "sig": "Eine materielle oder berufliche Gelegenheit bietet sich. Es ist ein Samenkorn, das, gepflegt, stabile Frucht bringt.",
+        "revesKw": [
+          "verpasste Gelegenheit",
+          "materielle Angst",
+          "Gier"
+        ],
+        "revesSig": "Eine materielle Gelegenheit scheitert durch mangelnde Aufmerksamkeit oder Angst. Überprüfe deine Prioritäten."
+      },
+      "2 de Oros": {
+        "arquetipo": "Der Gaukler",
+        "palo": "Münzen",
+        "elemento": "Erde",
+        "kw": [
+          "Gleichgewicht",
+          "Anpassung",
+          "Jonglage",
+          "Flexibilität",
+          "Wechsel"
+        ],
+        "sig": "Du balancierst mehrere Prioritäten mit Flexibilität. Ständige Bewegung gehört jetzt zum Spiel.",
+        "revesKw": [
+          "Überlastung",
+          "Ungleichgewicht",
+          "zu viele Verpflichtungen"
+        ],
+        "revesSig": "Zu viele offene Fronten und wenig Gleichgewicht. Es empfiehlt sich, etwas loszulassen, bevor alles fällt."
+      },
+      "3 de Oros": {
+        "arquetipo": "Die Teamarbeit",
+        "palo": "Münzen",
+        "elemento": "Erde",
+        "kw": [
+          "Zusammenarbeit",
+          "anerkanntes Talent",
+          "Lernen",
+          "gut gemachtes Werk"
+        ],
+        "sig": "Deine Arbeit und dein Talent werden in Zusammenarbeit mit anderen anerkannt. Die Summe der Kompetenzen macht das Werk.",
+        "revesKw": [
+          "missglückte Zusammenarbeit",
+          "wenig Zusammenarbeit",
+          "verschwendetes Talent"
+        ],
+        "revesSig": "Es gibt Missverständnisse bei der Arbeit oder schlecht genutztes Talent. Überprüfe die Kommunikation mit deinem Team."
+      },
+      "4 de Oros": {
+        "arquetipo": "Der Geizige",
+        "palo": "Münzen",
+        "elemento": "Erde",
+        "kw": [
+          "Kontrolle",
+          "Sparen",
+          "Stabilität",
+          "Bewahrung",
+          "Anhaftung"
+        ],
+        "sig": "Du musst das Gewonnene bewahren, doch Vorsicht: Übermäßige Kontrolle kann in Geiz umschlagen.",
+        "revesKw": [
+          "Loslassen",
+          "Großzügigkeit",
+          "Kontrolle abgeben",
+          "notwendige Ausgabe"
+        ],
+        "revesSig": "Du beginnst, Kontrolle oder materielle Anhaftung loszulassen. Großzügigkeit bringt den Fluss zurück."
+      },
+      "5 de Oros": {
+        "arquetipo": "Die Armut",
+        "palo": "Münzen",
+        "elemento": "Erde",
+        "kw": [
+          "Mangel",
+          "Schwierigkeit",
+          "Isolation",
+          "materielle oder spirituelle Not"
+        ],
+        "sig": "Gefühl von materiellem oder spirituellem Mangel. Hilfe ist nahe; isoliere dich nicht aus Stolz.",
+        "revesKw": [
+          "Erholung",
+          "Ende des Mangels",
+          "angenommene Hilfe"
+        ],
+        "revesSig": "Der Mangel weicht und die Erholung beginnt. Du nimmst die angebotene Hilfe an."
+      },
+      "6 de Oros": {
+        "arquetipo": "Der Großzügige",
+        "palo": "Münzen",
+        "elemento": "Erde",
+        "kw": [
+          "Großzügigkeit",
+          "Gleichgewicht",
+          "Geben und Empfangen",
+          "Hilfe",
+          "materielle Gerechtigkeit"
+        ],
+        "sig": "Du findest das Gleichgewicht zwischen Geben und Empfangen. Bewusste Großzügigkeit schafft gesunde Bindungen.",
+        "revesKw": [
+          "Schulden",
+          "Ungleichgewicht",
+          "Bedingungen an Hilfe",
+          "Stolz"
+        ],
+        "revesSig": "Es gibt ein Ungleichgewicht zwischen dem, was du gibst und empfängst, oder Hilfe mit Hintergedanken. Prüfe die Bedingungen."
+      },
+      "7 de Oros": {
+        "arquetipo": "Die evaluierende Pause",
+        "palo": "Münzen",
+        "elemento": "Erde",
+        "kw": [
+          "Auswertung",
+          "Geduld",
+          "pausierte Ernte",
+          "produktives Warten"
+        ],
+        "sig": "Pause, um das Gesäte zu bewerten. Keine Eile zu ernten; beobachte, was reift und was nicht.",
+        "revesKw": [
+          "Ungeduld",
+          "schlechte Investition",
+          "spärliche Ernte",
+          "mangelnde Vision"
+        ],
+        "revesSig": "Das Warten wird zu Ungeduld oder die Investition trägt nicht wie erhofft. Überprüfe die Strategie."
+      },
+      "8 de Oros": {
+        "arquetipo": "Der Handwerker",
+        "palo": "Münzen",
+        "elemento": "Erde",
+        "kw": [
+          "Fleiß",
+          "Meisterschaft",
+          "fokussierte Arbeit",
+          "Lernen",
+          "Veredelung"
+        ],
+        "sig": "Konzentrierte Arbeit und Hingabe zum Detail. Meisterschaft entsteht durch Geduld und Wiederholung.",
+        "revesKw": [
+          "Entmutigung",
+          "schlecht gemachte Arbeit",
+          "mangelnder Ehrgeiz",
+          "Perfektionismus"
+        ],
+        "revesSig": "Entmutigung oder übermäßiger Perfektionismus bremsen den Fortschritt. Finde den praktischen Sinn zurück."
+      },
+      "9 de Oros": {
+        "arquetipo": "Der Unabhängige",
+        "palo": "Münzen",
+        "elemento": "Erde",
+        "kw": [
+          "Unabhängigkeit",
+          "materieller Erfolg",
+          "belohnte Disziplin",
+          "erreichtes Wohlsein"
+        ],
+        "sig": "Anstrengung und Disziplin tragen Früchte. Du genießt Wohlsein und verdiente Unabhängigkeit.",
+        "revesKw": [
+          "materielle Unsicherheit",
+          "übermäßiger Materialismus",
+          "Einsamkeit durch Reichtum"
+        ],
+        "revesSig": "Materielle Unsicherheit oder übermäßige Anhaftung ans Haben verdunkeln das wirklich Wertvolle."
+      },
+      "10 de Oros": {
+        "arquetipo": "Das Erbe",
+        "palo": "Münzen",
+        "elemento": "Erde",
+        "kw": [
+          "Erbe",
+          "Vermächtnis",
+          "stabile Familie",
+          "dauerhafter Wohlstand",
+          "Wurzeln"
+        ],
+        "sig": "Dauerhafte Stabilität, Vermächtnis oder Erbe kommen. Das Erbaute überdauert die Familie.",
+        "revesKw": [
+          "Erbkonflikte",
+          "Verlust von Stabilität",
+          "schlechte Familienfinanzen"
+        ],
+        "revesSig": "Es gibt Spannungen im familiären Vermächtnis oder Verlust angesammelter materieller Stabilität."
+      },
+      "Sota de Oros": {
+        "arquetipo": "Der Lehrling",
+        "palo": "Münzen",
+        "elemento": "Erde",
+        "kw": [
+          "Lernen",
+          "neue Gelegenheit",
+          "Studium",
+          "studierende Jugend"
+        ],
+        "sig": "Eine neue Lerngelegenheit oder eine Botschaft über Studium und Arbeit. Gute Disposition.",
+        "revesKw": [
+          "Trägheit",
+          "mangelnder Fokus",
+          "vergeudete Gelegenheit"
+        ],
+        "revesSig": "Mangelnder Fokus oder Trägheit angesichts dessen, was Beständigkeit erfordert. Belebe das Interesse."
+      },
+      "Caballero de Oros": {
+        "arquetipo": "Der Beständige",
+        "palo": "Münzen",
+        "elemento": "Erde",
+        "kw": [
+          "Beständigkeit",
+          "Verlässlichkeit",
+          "langsamer aber sicherer Fortschritt",
+          "verantwortungsvolle Arbeit"
+        ],
+        "sig": "Langsamer aber unaufhaltsamer Fortschritt. Verantwortung und Geduld sind jetzt deine besten Verbündeten.",
+        "revesKw": [
+          "Stillstand",
+          "Trägheit",
+          "erschöpfende Routine",
+          "mangelnde Vision"
+        ],
+        "revesSig": "Beständigkeit wird zu Stillstand oder seelenloser Routine. Du brauchst ein neues Ziel."
+      },
+      "Reina de Oros": {
+        "arquetipo": "Die irdisch Nährende",
+        "palo": "Münzen",
+        "elemento": "Erde",
+        "kw": [
+          "Fülle",
+          "Praktikalität",
+          "Fürsorge",
+          "Stabilität",
+          "geteilter Wohlstand"
+        ],
+        "sig": "Praktikalität und Fürsorge. Du weißt den Unterhalt zu bewahren und deinen Lieben Stabilität zu bieten.",
+        "revesKw": [
+          "übermäßiger Materialismus",
+          "Vernachlässigung seiner selbst",
+          "Sicherheitsbesessenheit"
+        ],
+        "revesSig": "Die Angst vor Mangel oder übermäßige Anhaftung an Sicherheit trennen dich von der einfachen Freude."
+      },
+      "Rey de Oros": {
+        "arquetipo": "Der Verwirklicher",
+        "palo": "Münzen",
+        "elemento": "Erde",
+        "kw": [
+          "Wohlstand",
+          "materielle Führung",
+          "strategische Vision",
+          "Stabilität",
+          "greifbarer Erfolg"
+        ],
+        "sig": "Materielle Führung und strategische Vision. Du weißt Ideen in greifbare, stabile Realitäten umzuwandeln.",
+        "revesKw": [
+          "Geiz",
+          "Starrsinn",
+          "schlecht kalkuliertes Risiko",
+          "materieller Autoritarismus"
+        ],
+        "revesSig": "Anhaftung an materielle Macht oder Starrsinn lässt dich die Perspektive verlieren. Kalibriere deine Prioritäten neu."
+      },
+      "As de Espadas": {
+        "arquetipo": "Die Klarheit, die schneidet",
+        "palo": "Schwerter",
+        "elemento": "Luft",
+        "kw": [
+          "Klarheit",
+          "Wahrheit",
+          "Entscheidung",
+          "Bruch",
+          "neue Idee",
+          "mentale Gerechtigkeit"
+        ],
+        "sig": "Ein Blitz der Klarheit lässt dich die Wahrheit sehen und das Unnütze durchtrennen. Es ist Zeit, mit kühlem Verstand zu entscheiden.",
+        "revesKw": [
+          "Verwirrung",
+          "Ungerechtigkeit",
+          "schlecht fokussierte Idee",
+          "mentale Brutalität"
+        ],
+        "revesSig": "Die Klarheit trübt sich oder das Schwert schneidet ohne Ziel. Hüte dich vor verletzendem Wort."
+      },
+      "2 de Espadas": {
+        "arquetipo": "Das Dilemma",
+        "palo": "Schwerter",
+        "elemento": "Luft",
+        "kw": [
+          "Unentschlossenheit",
+          "Patt",
+          "Blockade",
+          "Entscheidung vermeiden",
+          "zerbrechliches Gleichgewicht"
+        ],
+        "sig": "Du steckst in einem Dilemma, das du nicht sehen willst. Die Augen zu verbinden löst nichts; du brauchst Information.",
+        "revesKw": [
+          "getroffene Entscheidung",
+          "erhaltene Information",
+          "die Binden lösen"
+        ],
+        "revesSig": "Die Binden fallen und die Entscheidung klärt sich. Was du vermiedest anzusehen, wird sichtbar."
+      },
+      "3 de Espadas": {
+        "arquetipo": "Das gebrochene Herz",
+        "palo": "Schwerter",
+        "elemento": "Luft",
+        "kw": [
+          "Schmerz",
+          "Bruch",
+          "Verrat",
+          "emotionale Trauer",
+          "Wahrheit, die schmerzt"
+        ],
+        "sig": "Ein akuter emotionaler Schmerz, ein Bruch oder eine verletzende Wahrheit. Der Schmerz ist real, aber vorübergehend; der Regen reinigt das Herz.",
+        "revesKw": [
+          "Heilung",
+          "Vergebung",
+          "Schmerzerholung",
+          "Befreiung"
+        ],
+        "revesSig": "Der Schmerz beginnt zu heilen. Vergebung – beginnend bei dir – beschleunigt die Erholung."
+      },
+      "4 de Espadas": {
+        "arquetipo": "Die Ruhe",
+        "palo": "Schwerter",
+        "elemento": "Luft",
+        "kw": [
+          "Ruhe",
+          "Erholung",
+          "Rückzug",
+          "Meditation",
+          "nötige Pause"
+        ],
+        "sig": "Nötige Pause, um Körper und Geist zu erholen. Die Ruhe ist jetzt produktiv, keine Flucht.",
+        "revesKw": [
+          "zur Aktivität zurückkehren",
+          "Unruhe",
+          "unterbrochene Ruhe"
+        ],
+        "revesSig": "Du kehrst nach der Ruhe zur Aktivität zurück, oder die Ruhe wird vorzeitig unterbrochen."
+      },
+      "5 de Espadas": {
+        "arquetipo": "Die bittere Niederlage",
+        "palo": "Schwerter",
+        "elemento": "Luft",
+        "kw": [
+          "Konflikt",
+          "Niederlage",
+          "Pyrrhussieg",
+          "Spannung",
+          "hoher Preis"
+        ],
+        "sig": "Es gibt Konflikt und jemand verliert. Ein auf Kosten anderer errungener Sieg ist kein echter Sieg.",
+        "revesKw": [
+          "Versöhnung",
+          "Vergebung",
+          "Ende des Konflikts",
+          "verhandelte Lösung"
+        ],
+        "revesSig": "Der Konflikt beruhigt sich und die Tür zur Versöhnung öffnet sich. Was verloren schien, wird verhandelt."
+      },
+      "6 de Espadas": {
+        "arquetipo": "Die Überfahrt",
+        "palo": "Schwerter",
+        "elemento": "Luft",
+        "kw": [
+          "Übergang",
+          "Reise",
+          "zum Besseren bewegen",
+          "hinter sich lassen",
+          "allmähliche Erholung"
+        ],
+        "sig": "Du bewegst dich aus einer schwierigen Situation in ruhigere Gewässer. Die Überfahrt ist nicht leicht, aber die Richtung stimmt.",
+        "revesKw": [
+          "Widerstand gegen Wandel",
+          "Rückkehr zum Bekannten",
+          "Verzug im Übergang"
+        ],
+        "revesSig": "Der Wandel verzögert sich durch Widerstand. Zurück zum Bekannten mag sicher scheinen, führt aber nicht zum Besseren."
+      },
+      "7 de Espadas": {
+        "arquetipo": "Der Listige",
+        "palo": "Schwerter",
+        "elemento": "Luft",
+        "kw": [
+          "List",
+          "Täuschung",
+          "Heimlichkeit",
+          "Strategie",
+          "Diebstahl"
+        ],
+        "sig": "Jemand handelt listig, vielleicht täuschend. Wenn du es bist, prüfe, ob dich der Abkürzungsweg teuer zu stehen kommt; wenn ein anderer, schütze dich.",
+        "revesKw": [
+          "Geständnis",
+          "entdeckt werden",
+          "zur Ehrlichkeit zurückkehren",
+          "Masken abnehmen"
+        ],
+        "revesSig": "Die Wahrheit kommt ans Licht; die Masken fallen. Es empfiehlt sich zu gestehen, bevor man entdeckt wird."
+      },
+      "8 de Espadas": {
+        "arquetipo": "Der Gefangene",
+        "palo": "Schwerter",
+        "elemento": "Luft",
+        "kw": [
+          "gefangen",
+          "Einschränkung",
+          "Opfer",
+          "Selbstbegrenzung",
+          "mentale Lähmung"
+        ],
+        "sig": "Du fühlst dich gefangen, doch die Fesseln sind großteils mental. Die Binden lockern sich, wenn du dich bewegst.",
+        "revesKw": [
+          "Befreiung",
+          "Optionen sehen",
+          "Selbstbegrenzungen lösen"
+        ],
+        "revesSig": "Dir wird klar, dass das Gefängnis weitgehend selbstauferlegt war. Du beginnst, Ausgänge zu sehen."
+      },
+      "9 de Espadas": {
+        "arquetipo": "Der Albtraum",
+        "palo": "Schwerter",
+        "elemento": "Luft",
+        "kw": [
+          "Angst",
+          "Schlaflosigkeit",
+          "Sorge",
+          "nächtliche Furcht",
+          "mentale Qual"
+        ],
+        "sig": "Die mentalen Ängste vergrößern sich nachts. Was um 3 Uhr katastrophal erscheint, ist tagsüber meist besser zu bewältigen.",
+        "revesKw": [
+          "Erleichterung",
+          "Erholung",
+          "Hoffnung",
+          "überwundene Angst"
+        ],
+        "revesSig": "Die Qual weicht und du gewinnst Hoffnung zurück. Das Problem war kleiner, als es schien."
+      },
+      "10 de Espadas": {
+        "arquetipo": "Das schmerzhafte Ende",
+        "palo": "Schwerter",
+        "elemento": "Luft",
+        "kw": [
+          "Ende",
+          "maximaler Schmerz",
+          "abrupter Abschluss",
+          "die Nacht fällt, aber es dämmert"
+        ],
+        "sig": "Ein schmerzhaftes Ende, der tiefste Punkt des Zyklus. Doch zehn ist Abschluss: es folgt nur der Anbruch.",
+        "revesKw": [
+          "Erholung",
+          "Überleben",
+          "das Schlimmste ist vorbei"
+        ],
+        "revesSig": "Du hast den Boden berührt und überlebt. Das Schlimmste liegt hinter dir; nun geht es nur noch aufwärts."
+      },
+      "Sota de Espadas": {
+        "arquetipo": "Der Wächter",
+        "palo": "Schwerter",
+        "elemento": "Luft",
+        "kw": [
+          "Wachsamkeit",
+          "scharfe Neugier",
+          "neue Idee",
+          "aufmerksamkeitsbedürftige Botschaft"
+        ],
+        "sig": "Eine Botschaft oder neue Idee verlangt Aufmerksamkeit. Bleib wachsam; dein Geist ist jetzt schnell.",
+        "revesKw": [
+          "Klatsch",
+          "Missverständnisse",
+          "schneidende Kommunikation"
+        ],
+        "revesSig": "Es gibt Klatsch oder Missverständnisse. Achte auf dein Wort, das ungewollt verletzen kann."
+      },
+      "Caballero de Espadas": {
+        "arquetipo": "Der Impulsive",
+        "palo": "Schwerter",
+        "elemento": "Luft",
+        "kw": [
+          "Impuls",
+          "schnelle Handlung",
+          "Entscheidung",
+          "Mut",
+          "Angriff"
+        ],
+        "sig": "Entschlossene, schnelle, fast tollkühne Handlung. gehe voran, aber messe das Gelände vor dem Angriff.",
+        "revesKw": [
+          "Impulsivität",
+          "Leichtsinn",
+          "Aggressivität",
+          "schlecht kanalisierte Energie"
+        ],
+        "revesSig": "Impulsivität bringt dir Schwierigkeiten. Halte einen Moment inne, bevor du handelst."
+      },
+      "Reina de Espadas": {
+        "arquetipo": "Die Klare",
+        "palo": "Schwerter",
+        "elemento": "Luft",
+        "kw": [
+          "Klarheit",
+          "Unabhängigkeit",
+          "Grenzen",
+          "Aufrichtigkeit",
+          "scharfes Urteil"
+        ],
+        "sig": "Mentale Klarheit und Unabhängigkeit. Du weißt Grenzen zu setzen und die Wahrheit mit Respekt und Festigkeit zu sagen.",
+        "revesKw": [
+          "Kälte",
+          "Grausamkeit",
+          "Bitterkeit",
+          "Isolation durch Stolz"
+        ],
+        "revesSig": "Klarheit wird zu Kälte oder Unabhängigkeit in bitterer Isolation. Milde die Schneide."
+      },
+      "Rey de Espadas": {
+        "arquetipo": "Der Richter",
+        "palo": "Schwerter",
+        "elemento": "Luft",
+        "kw": [
+          "mentale Autorität",
+          "Gerechtigkeit",
+          "Klarheit",
+          "Urteil",
+          "Ethik",
+          "Wahrheit"
+        ],
+        "sig": "Auf Unterscheidungskraft und Ethik gegründete Autorität. Gerechte Entscheidung, klares Wort, unparteiliches Urteil.",
+        "revesKw": [
+          "mentale Tyrannei",
+          "Manipulation",
+          "Grausamkeit",
+          "Machtmissbrauch"
+        ],
+        "revesSig": "Die intellektuelle Macht wird zur Beherrschung oder Manipulation eingesetzt. Hüte dich vor dem, der 'seine' Wahrheit aufzwingt."
+      },
+      "As de Bastos": {
+        "arquetipo": "Der Funke",
+        "palo": "Stäbe",
+        "elemento": "Feuer",
+        "kw": [
+          "Inspiration",
+          "neues Projekt",
+          "Leidenschaft",
+          "schöpferische Energie",
+          "Funke"
+        ],
+        "sig": "Ein Funke Inspiration oder ein neues Projekt entzündet deine Leidenschaft. Nimm ihn, bevor er verlischt.",
+        "revesKw": [
+          "Verzug",
+          "mangelnde Inspiration",
+          "verpasste Gelegenheit"
+        ],
+        "revesSig": "Der Funke erlischt, bevor er brennt, oder das Projekt verzögert sich durch mangelnde innere Verbrennung."
+      },
+      "2 de Bastos": {
+        "arquetipo": "Der Visionär",
+        "palo": "Stäbe",
+        "elemento": "Feuer",
+        "kw": [
+          "Vision",
+          "Planung",
+          "Entscheidung",
+          "Wegwahl"
+        ],
+        "sig": "Du stehst auf dem Balkon und planst den Weg. Du hast die Karte; nun fehlt die Entscheidung der Richtung.",
+        "revesKw": [
+          "Angst aufzubrechen",
+          "Unentschlossenheit",
+          "Pläne ohne Handlung"
+        ],
+        "revesSig": "Die Pläne werden aus Angst, die Sicherheit des Bekannten zu verlassen, nicht konkret."
+      },
+      "3 de Bastos": {
+        "arquetipo": "Die Expansion",
+        "palo": "Stäbe",
+        "elemento": "Feuer",
+        "kw": [
+          "Expansion",
+          "ferne Gelegenheiten",
+          "Handel",
+          "laufendes Projekt"
+        ],
+        "sig": "Deine Schiffe legen ab; die Gelegenheiten kommen von weit her. Das Projekt beginnt Maßstab anzunehmen.",
+        "revesKw": [
+          "Verzug",
+          "Hindernisse",
+          "mangelnde Langzeitvision"
+        ],
+        "revesSig": "Die Schiffe verspäten sich oder das Projekt trifft auf Hindernisse. Kalibriere die Vision."
+      },
+      "4 de Bastos": {
+        "arquetipo": "Die Feier",
+        "palo": "Stäbe",
+        "elemento": "Feuer",
+        "kw": [
+          "Feier",
+          "Zuhause",
+          "Stabilität",
+          "Meilenstein",
+          "Gemeinschaft"
+        ],
+        "sig": "Ein Meilenstein wird gefeiert. Du erreichst einen Punkt der Stabilität, der Anerkennung verdient.",
+        "revesKw": [
+          "Instabilität",
+          "vorübergehendes Zuhause",
+          "ausgebliebene Feier"
+        ],
+        "revesSig": "Die Stabilität wackelt oder der Anlass zur Feier verschiebt sich."
+      },
+      "5 de Bastos": {
+        "arquetipo": "Der Wettstreit",
+        "palo": "Stäbe",
+        "elemento": "Feuer",
+        "kw": [
+          "Wettbewerb",
+          "Konflikt",
+          "schöpferische Spannung",
+          "Vielfalt",
+          "Rivalität"
+        ],
+        "sig": "Es gibt Wettbewerb oder Spannung, nicht notwendigerweise zerstörerisch. Aus Reibung kann Neues entstehen.",
+        "revesKw": [
+          "Lösung",
+          "Ende des Konflikts",
+          "Kooperation",
+          "Waffenstillstand"
+        ],
+        "revesSig": "Die Spannung löst sich in Kooperation oder Waffenstillstand. Gemeinsamkeiten werden gefunden."
+      },
+      "6 de Bastos": {
+        "arquetipo": "Der Sieger",
+        "palo": "Stäbe",
+        "elemento": "Feuer",
+        "kw": [
+          "Triumph",
+          "Anerkennung",
+          "Führung",
+          "öffentlicher Sieg"
+        ],
+        "sig": "Triumph und öffentliche Anerkennung. Du wirst für deine Leistungen gekrönt; genieße, ohne den Kopf zu verlieren.",
+        "revesKw": [
+          "Niederlage",
+          "mangelnde Anerkennung",
+          "verletztes Ego",
+          "Aufschiebung"
+        ],
+        "revesSig": "Der Triumph verzögert sich oder die Anerkennung bleibt aus. Das verletzte Ego kann schlecht reagieren."
+      },
+      "7 de Bastos": {
+        "arquetipo": "Die Verteidigung",
+        "palo": "Stäbe",
+        "elemento": "Feuer",
+        "kw": [
+          "Verteidigung",
+          "Vorteil",
+          "erhöhte Position",
+          "Widerstand",
+          "Mut"
+        ],
+        "sig": "Du verteidigst deine Position aus einem Vorteil. Bleib fest, auch in der Minderheit.",
+        "revesKw": [
+          "überwältigt",
+          "Boden aufgeben",
+          "erschöpfender Kampf"
+        ],
+        "revesSig": "Du fühlst dich überwältigt und gibst Boden. Kalibriere: Was sind die Positionen wert, die du verteidigst?"
+      },
+      "8 de Bastos": {
+        "arquetipo": "Die Geschwindigkeit",
+        "palo": "Stäbe",
+        "elemento": "Feuer",
+        "kw": [
+          "Geschwindigkeit",
+          "Bewegung",
+          "Botschaften",
+          "schneller Fortschritt",
+          "Pfeile im Flug"
+        ],
+        "sig": "Die Dinge beschleunigen sich. Botschaften, Reisen oder Änderungen geschehen rasch. Bleib beweglich.",
+        "revesKw": [
+          "Verzug",
+          "Reibung",
+          "Blockaden",
+          "verlangsamte Kommunikation"
+        ],
+        "revesSig": "Die Projekte verlangsamen sich durch Reibung oder Blockaden in der Kommunikation."
+      },
+      "9 de Bastos": {
+        "arquetipo": "Der Widerstandsfähige",
+        "palo": "Stäbe",
+        "elemento": "Feuer",
+        "kw": [
+          "Widerstandsfähigkeit",
+          "Beharrlichkeit",
+          "verwundet aber aufrecht",
+          "letzter Schützengraben"
+        ],
+        "sig": "Du hast viel widerstanden und stehst noch. Du bist verwundet, aber nicht besiegt; eine letzte Anstrengung und du kommst an.",
+        "revesKw": [
+          "Ermüdung",
+          "defensive Paranoia",
+          "Verteidigung lösen"
+        ],
+        "revesSig": "Ermüdung oder übermäßige Verteidigung erschöpfen dich. Es empfiehlt sich, die Waffen niederzulegen und zu ruhen."
+      },
+      "10 de Bastos": {
+        "arquetipo": "Die Last",
+        "palo": "Stäbe",
+        "elemento": "Feuer",
+        "kw": [
+          "Last",
+          "übermäßige Verantwortung",
+          "erschöpfende Anstrengung",
+          "schweres Ende"
+        ],
+        "sig": "Du trägst zu viel Last. Das Ende des Abschnitts naht, doch prüfe, welche Lasten wirklich deine sind.",
+        "revesKw": [
+          "Last abwerfen",
+          "delegieren",
+          "Erleichterung",
+          "Ruhe"
+        ],
+        "revesSig": "Du legst Lasten ab, die dir nicht gehören, oder delegierst. Die Erleichterung kommt."
+      },
+      "Sota de Bastos": {
+        "arquetipo": "Der Enthusiast",
+        "palo": "Stäbe",
+        "elemento": "Feuer",
+        "kw": [
+          "Enthusiasmus",
+          "neue Leidenschaft",
+          "Entdeckung",
+          "motivierende Botschaft"
+        ],
+        "sig": "Ein neuer Enthusiasmus oder eine motivierende Botschaft weckt deine Energie. Die Neugier treibt dich voran.",
+        "revesKw": [
+          "Ungeduld",
+          "Langeweile",
+          "mangelnde Beständigkeit"
+        ],
+        "revesSig": "Der Enthusiasmus verlischt bald oder die Ungeduld verdirbt das Projekt. Finde die Beständigkeit zurück."
+      },
+      "Caballero de Bastos": {
+        "arquetipo": "Der Abenteurer",
+        "palo": "Stäbe",
+        "elemento": "Feuer",
+        "kw": [
+          "Abenteuer",
+          "Impuls",
+          "Charisma",
+          "Risiko",
+          "Reise"
+        ],
+        "sig": "Abenteuer, Charisma und Waghalsigkeit. Du gehst mit überwältigender Energie auf das Neue zu.",
+        "revesKw": [
+          "Ungeduld",
+          "Frustration",
+          "Richtungslosigkeit",
+          "leere Versprechen"
+        ],
+        "revesSig": "Die Waghalsigkeit wird zu Leichtsinn oder die Versprechen werden nicht gehalten. Mäßige den Schwung."
+      },
+      "Reina de Bastos": {
+        "arquetipo": "Die Magnetische",
+        "palo": "Stäbe",
+        "elemento": "Feuer",
+        "kw": [
+          "Charisma",
+          "Selbstvertrauen",
+          "Magnetismus",
+          "Unabhängigkeit",
+          "Vitalität"
+        ],
+        "sig": "Charisma und magnetisches Selbstvertrauen. Du ziehst mit deiner bloßen Anwesenheit an; nutze es bewusst.",
+        "revesKw": [
+          "Unsicherheit",
+          "Eifersucht",
+          "Aufmerksamkeitsbedürfnis",
+          "Egozentrismus"
+        ],
+        "revesSig": "Unsicherheit oder Eifersucht trüben deinen Glanz. Verbinde dich wieder mit deiner inneren Vertrauensquelle."
+      },
+      "Rey de Bastos": {
+        "arquetipo": "Der visionäre Anführer",
+        "palo": "Stäbe",
+        "elemento": "Feuer",
+        "kw": [
+          "Führung",
+          "Vision",
+          "Charisma",
+          "unternehmerische Energie",
+          "warme Autorität"
+        ],
+        "sig": "Visionäre und charismatische Führung. Du inspirierst andere mit deiner Energie und deiner Klarheit der Absichten.",
+        "revesKw": [
+          "Ungeduld",
+          "subtile Tyrannei",
+          "mangelndes Durchziehen",
+          "überlaufendes Ego"
+        ],
+        "revesSig": "Die Führung wird autoritär oder das Ego läuft über. Erinnere dich: Der wahre König dient."
+      }
+    },
+    "posiciones": {
+      "tuCarta": "Deine Karte",
+      "pasado": "1. Vergangenheit",
+      "presente": "2. Gegenwart",
+      "futuro": "3. Zukunft",
+      "pos1": "1. Gegenwart",
+      "pos2": "2. Herausforderung",
+      "pos3": "3. Basis",
+      "pos4": "4. Jüngste Vergangenheit",
+      "pos5": "5. Krone",
+      "pos6": "6. Nahe Zukunft",
+      "pos7": "7. Einstellung",
+      "pos8": "8. Umgebung",
+      "pos9": "9. Hoffnungen und Ängste",
+      "pos10": "10. Endgültiges Ergebnis"
+    }
+  },
+  "iching": {
+    "hexagramas": {
+      "1": {
+        "nombre": "Der Himmel (Das Schöpferische)",
+        "trigSup": "Himmel",
+        "trigInf": "Himmel",
+        "elemento": "Feuer",
+        "kw": [
+          "Schöpfung",
+          "Kraft",
+          "Initiative",
+          "ursprüngliche Energie",
+          "Beständigkeit"
+        ],
+        "sig": "Ursprüngliche schöpferische Energie in reinem Zustand. Es ist der Moment, mit Festigkeit und Klarheit zu handeln und sich mit der natürlichen Ordnung in Einklang zu bringen. Beständige Ausdauer schafft dauerhafte Werke.",
+        "consejo": "Sei aktiv, kreativ und beharrlich. Erzwinge nicht; lass die Energie fließen, wie der Himmel seine Weite entfaltet."
+      },
+      "2": {
+        "nombre": "Die Erde (Das Empfangende)",
+        "trigSup": "Erde",
+        "trigInf": "Erde",
+        "elemento": "Erde",
+        "kw": [
+          "Empfangen",
+          "Hingabe",
+          "Geduld",
+          "Nährung",
+          "fruchtbare Passivität"
+        ],
+        "sig": "Empfangendes Prinzip, das aufnimmt und nährt. Es ist keine träge Passivität, sondern aktive Verfügbarkeit, um das Werdende zu tragen. Geduld trägt Frucht.",
+        "consejo": "Dränge nicht, nimm auf. Folge statt zu führen. Was jetzt gesät wird, wird keimen."
+      },
+      "3": {
+        "nombre": "Die anfängliche Schwierigkeit (Chun)",
+        "trigSup": "Wasser",
+        "trigInf": "Donner",
+        "elemento": "Wasser",
+        "kw": [
+          "schwieriger Anfang",
+          "Hindernisse",
+          "Reifung",
+          "anfängliches Chaos"
+        ],
+        "sig": "Jeder Anfang ist schwer. Die Energien befinden sich im embryonalen Zustand und müssen sich ihren Weg durch Hindernisse bahnen. Verwirrung gehört zum Werden.",
+        "consejo": "Gib dem anfänglichen Chaos nicht nach. Suche Hilfe, organisiere nach und nach und akzeptiere, dass Dinge Zeit brauchen, zu reifen."
+      },
+      "4": {
+        "nombre": "Die jugendliche Unerfahrenheit (Meng)",
+        "trigSup": "Berg",
+        "trigInf": "Wasser",
+        "elemento": "Erde",
+        "kw": [
+          "Unerfahrenheit",
+          "Lernen",
+          "Demut",
+          "Suche nach Führung"
+        ],
+        "sig": "Wie ein Jugendlicher, der lernen will, muss man die eigene Unerfahrenheit zugeben und Führung suchen. Gut gelenkte Unschuld wird zu Weisheit.",
+        "consejo": "Erkenne an, was du nicht weißt. Suche einen Meister oder Rat. Handle nicht aus Hochmut."
+      },
+      "5": {
+        "nombre": "Das Warten (Xu)",
+        "trigSup": "Wasser",
+        "trigInf": "Himmel",
+        "elemento": "Wasser",
+        "kw": [
+          "Warten",
+          "Vertrauen",
+          "aktive Geduld",
+          "Vorbereitung"
+        ],
+        "sig": "Es ist nicht der Moment zu handeln, sondern mit Vertrauen zu warten. Das bewusste Warten bereitet den rechten Moment für das Handeln vor.",
+        "consejo": "Warte ohne Verzagung. Vertraue, dass die Gelegenheit kommt. Bereite dich indessen vor."
+      },
+      "6": {
+        "nombre": "Der Konflikt (Song)",
+        "trigSup": "Himmel",
+        "trigInf": "Wasser",
+        "elemento": "Feuer",
+        "kw": [
+          "Konflikt",
+          "Streit",
+          "Konfrontation",
+          "Vorsicht"
+        ],
+        "sig": "Es gibt eine Entzweiung zwischen Kräften. Der Konflikt kann eskalieren, wenn man insistiert. Es empfiehlt sich, Vermittlung zu suchen und nicht bis zum Äußersten zu drängen.",
+        "consejo": "Führe den Konflikt nicht zum Äußersten. Suche einen unparteiischen Dritten. Weiche im Sekundären nach, um im Wesentlichen zu gewinnen."
+      },
+      "7": {
+        "nombre": "Das Heer (Shi)",
+        "trigSup": "Erde",
+        "trigInf": "Wasser",
+        "elemento": "Erde",
+        "kw": [
+          "Disziplin",
+          "Organisation",
+          "kollektive Führung",
+          "Struktur"
+        ],
+        "sig": "Wie ein gut geführtes Heer erfordert die Situation Disziplin, Ordnung und eine feste, aber mitfühlende Führung. Organisierte kollektive Kraft übertrifft den Individualismus.",
+        "consejo": "Organisiere, setze klare Hierarchien und Disziplin. Der Führer dient der Gruppe, nicht sich selbst aus ihr."
+      },
+      "8": {
+        "nombre": "Die Solidarität (Bi)",
+        "trigSup": "Wasser",
+        "trigInf": "Erde",
+        "elemento": "Wasser",
+        "kw": [
+          "Vereinigung",
+          "Allianz",
+          "Zusammenarbeit",
+          "Zugehörigkeit"
+        ],
+        "sig": "Die Gewässer fließen zusammen. Es ist Zeit, sich zu vereinen, Allianzen zu suchen und Bindungen zu stärken. Einsamkeit ist jetzt nicht der Weg.",
+        "consejo": "Nahe dich denen, die deine Werte teilen. Bilde ein Team. Die Vereinigung vervielfacht Kräfte."
+      },
+      "9": {
+        "nombre": "Die kleine Zähmungskraft (Xiao Xu)",
+        "trigSup": "Wind",
+        "trigInf": "Himmel",
+        "elemento": "Luft",
+        "kw": [
+          "Mäßigung",
+          "kleine Schritte",
+          "Geduld",
+          "Zurückhaltung"
+        ],
+        "sig": "Sanfte Kraft, die zähmt ohne zu unterdrücken. Kleine, aufrechterhaltene Bemühungen erreichen mehr als große flüchtige Impulse.",
+        "consejo": "Erwarte keine großen Sprünge. Häufe kleine Erfolge an. Beständige Bescheidenheit ist dein Verbündeter."
+      },
+      "10": {
+        "nombre": "Das Auftreten (Lu)",
+        "trigSup": "Himmel",
+        "trigInf": "See",
+        "elemento": "Feuer",
+        "kw": [
+          "Verhalten",
+          "Etikette",
+          "Vorsicht",
+          "Ritual"
+        ],
+        "sig": "Wie man sich vor Macht oder Differenz verhält. Angemessenes, vorsichtiges und respektvolles Verhalten erlaubt Fortschritt selbst auf heiklem Terrain.",
+        "consejo": "Messe deine Schritte, sei respektvoll, handle mit Eleganz. Die Form zählt ebenso wie der Inhalt."
+      },
+      "11": {
+        "nombre": "Der Friede (Tai)",
+        "trigSup": "Erde",
+        "trigInf": "Himmel",
+        "elemento": "Erde",
+        "kw": [
+          "Friede",
+          "Harmonie",
+          "Wohlstand",
+          "Fließen"
+        ],
+        "sig": "Himmel und Erde begegnen sich und kommunizieren. Es ist ein Moment des Wohlstands, der Harmonie und des Fließens. Alles fügt sich natürlich.",
+        "consejo": "Genieße die Harmonie, aber schlafe nicht ein. Nutze die Zeit, das, was jetzt leicht fließt, zu festigen."
+      },
+      "12": {
+        "nombre": "Der Stillstand (Pi)",
+        "trigSup": "Himmel",
+        "trigInf": "Erde",
+        "elemento": "Feuer",
+        "kw": [
+          "Stillstand",
+          "Blockade",
+          "verrissene Kommunikation",
+          "Trägheit"
+        ],
+        "sig": "Der Himmel entfernt sich von der Erde. Die Kräfte kommunizieren nicht und alles stagniert. Es gibt einen energetischen Block.",
+        "consejo": "Erzwinge nicht. Akzeptiere den Stillstand und bereite dich darauf vor, wenn der Zyklus sich wendet. Kultiviere indessen dein Inneres."
+      },
+      "13": {
+        "nombre": "Die Gemeinschaft mit den Menschen (Tong Ren)",
+        "trigSup": "Himmel",
+        "trigInf": "Feuer",
+        "elemento": "Feuer",
+        "kw": [
+          "Gemeinschaft",
+          "Brüderlichkeit",
+          "gemeinsamer Zweck",
+          "Offenheit"
+        ],
+        "sig": "Vereinigung mit anderen um eine weite und großzügige Sache. Es ist keine Verbindung aus Interesse, sondern aus Wertaffinität.",
+        "consejo": "Suche Verbündete um ein Ideal. Sei offen und transparent. Die Gemeinschaft erweitert Horizonte."
+      },
+      "14": {
+        "nombre": "Der Besitz des Großen (Da You)",
+        "trigSup": "Feuer",
+        "trigInf": "Himmel",
+        "elemento": "Feuer",
+        "kw": [
+          "Fülle",
+          "Besitz",
+          "Erfolg",
+          "Großmut"
+        ],
+        "sig": "Großer Besitz, sichtbarer Erfolg. Fülle verlangt Großzügigkeit und Großmut, um nicht zu korrumpieren.",
+        "consejo": "Genieße das Erreichte mit Großzügigkeit. Teile. Gut verwalteter Reichtum vervielfacht sich."
+      },
+      "15": {
+        "nombre": "Die Bescheidenheit (Qian)",
+        "trigSup": "Erde",
+        "trigInf": "Berg",
+        "elemento": "Erde",
+        "kw": [
+          "Bescheidenheit",
+          "Demut",
+          "Gleichgewicht",
+          "Diskretion"
+        ],
+        "sig": "Der Berg verbirgt sich unter der Erde. Wahre Größe muss sich nicht zur Schau stellen. Bescheidenheit ist die Tugend, die alles ausbalanciert.",
+        "consejo": "Gib dich bescheiden, erkenne die anderen an, brüste dich nicht. Bescheidenheit öffnet Türen, die der Stolz schließt."
+      },
+      "16": {
+        "nombre": "Der Enthusiasmus (Yu)",
+        "trigSup": "Donner",
+        "trigInf": "Erde",
+        "elemento": "Feuer",
+        "kw": [
+          "Enthusiasmus",
+          "kollektive Motivation",
+          "ansteckende Energie",
+          "Musik"
+        ],
+        "sig": "Begeisterte Energie, die Massen bewegt. Gut gelenkter Enthusiasmus kann große Unternehmungen inspirieren.",
+        "consejo": "Kanalisiere den Enthusiasmus. Inspiriere andere mit deiner Motivation. Aber hüte dich vor blinder Verzückung."
+      },
+      "17": {
+        "nombre": "Das Folgen (Sui)",
+        "trigSup": "See",
+        "trigInf": "Donner",
+        "elemento": "Luft",
+        "kw": [
+          "Anpassung",
+          "dem Moment folgen",
+          "Flexibilität",
+          "sich ausrichten"
+        ],
+        "sig": "Wissen, dem Moment zu folgen und sich an wechselnde Umstände anzupassen. Es ist keine Unterwerfung, sondern adaptive Intelligenz.",
+        "consejo": "Passe dich dem Fluss der Ereignisse an. Folge, was wirkt, lass los, was sich sträubt."
+      },
+      "18": {
+        "nombre": "Die Arbeit am Verderbten (Gu)",
+        "trigSup": "Berg",
+        "trigInf": "Wind",
+        "elemento": "Erde",
+        "kw": [
+          "Reparatur",
+          "Reinigung",
+          "harte Arbeit",
+          "das Beschädigte heilen"
+        ],
+        "sig": "Etwas hat sich durch Vernachlässigung verdorben und muss repariert werden. Es erfordert Mut, das Verfallene zu schauen und an seiner Heilung zu arbeiten.",
+        "consejo": "Stelle dich dem Beschädigten ohne Angst. Reinige, repariere, heile. Es ist harte Arbeit, aber nötig."
+      },
+      "19": {
+        "nombre": "Die Annäherung (Lin)",
+        "trigSup": "Erde",
+        "trigInf": "See",
+        "elemento": "Erde",
+        "kw": [
+          "Fortschritt",
+          "nahe Gelegenheit",
+          "Wachstum",
+          "Annäherung"
+        ],
+        "sig": "Eine Gelegenheit naht. Es ist ein Moment des Fortschritts mit Vertrauen, aber ohne Übereilung. Die Energie ist günstig.",
+        "consejo": "Gehe entschlossen voran, aber ohne Eile. Nutze die günstige Gelegenheit, solange sie währt."
+      },
+      "20": {
+        "nombre": "Die Betrachtung (Guan)",
+        "trigSup": "Wind",
+        "trigInf": "Erde",
+        "elemento": "Luft",
+        "kw": [
+          "Beobachtung",
+          "Betrachtung",
+          "Perspektive",
+          "Zeuge"
+        ],
+        "sig": "Beobachten, bevor man handelt. Wie von einem Wartturm aus, das volle Panorama zu betrachten erlaubt, zu verstehen, was sonst unbemerkt bliebe.",
+        "consejo": "Halte an und beobachte. Handle noch nicht. Tiefes Verstehen geht der treffsicheren Handlung voraus."
+      },
+      "21": {
+        "nombre": "Das Durchbeißen (Shi He)",
+        "trigSup": "Feuer",
+        "trigInf": "Donner",
+        "elemento": "Feuer",
+        "kw": [
+          "Entscheidung",
+          "durchschneiden",
+          "Entschlossenheit",
+          "schnelle Gerechtigkeit"
+        ],
+        "sig": "Es gibt ein Hindernis, das entschieden durchtrennt werden muss. Wie zähes Fleisch zu beißen, erfordert es Kraft und Entschlossenheit, das Blockierende zu überwinden.",
+        "consejo": "Handle mit Entschiedenheit und Klarheit. Durchschneide das Störende an der Wurzel. Halblösungen verlängern das Problem."
+      },
+      "22": {
+        "nombre": "Die Anmut (Bi)",
+        "trigSup": "Berg",
+        "trigInf": "Feuer",
+        "elemento": "Erde",
+        "kw": [
+          "Schönheit",
+          "Form",
+          "Ästhetik",
+          "Schmuck"
+        ],
+        "sig": "Die Schönheit der Form. Das Oberflächliche hat seinen Platz, darf aber nicht mit der Substanz verwechselt werden. Anmut schmückt, ohne zu verbergen.",
+        "consejo": "Pflege Form und Präsentation. Schönes harmonisiert. Aber verwechsle nicht Hülle mit Inhalt."
+      },
+      "23": {
+        "nombre": "Die Zersetzung (Bo)",
+        "trigSup": "Berg",
+        "trigInf": "Erde",
+        "elemento": "Erde",
+        "kw": [
+          "Einsturz",
+          "Verlust",
+          "Zyklusabschluss",
+          "Entblößung"
+        ],
+        "sig": "Alles zerfällt von der Basis. Das Alte zersetzt sich, damit das Neue entstehen kann. Nicht widerstehen, stürzen lassen.",
+        "consejo": "Klübere dich nicht an Fallendem. Akzeptiere die Entblößung. Was überlebt, wird das Authentische sein."
+      },
+      "24": {
+        "nombre": "Die Rückkehr (Fu)",
+        "trigSup": "Erde",
+        "trigInf": "Donner",
+        "elemento": "Erde",
+        "kw": [
+          "Rückkehr",
+          "Wiedergeburt",
+          "Umkehr",
+          "Frühling"
+        ],
+        "sig": "Nach dem Winter kommt die Rückkehr des Lichts. Was verloren schien, wird wiedergeboren. Es ist der Moment der Sonnenwende, der günstigen Wende.",
+        "consejo": "Vertraue dem Wiedergeborenwerden. Was verging, kehrt verwandelt zurück. Erlaube dir neu zu beginnen."
+      },
+      "25": {
+        "nombre": "Die Unschuld (Wu Wang)",
+        "trigSup": "Himmel",
+        "trigInf": "Donner",
+        "elemento": "Feuer",
+        "kw": [
+          "Unschuld",
+          "Spontaneität",
+          "Natürlichkeit",
+          "Aufrichtigkeit"
+        ],
+        "sig": "Aus natürlicher Spontaneität handeln, ohne Hintergedanken. Unschuld verbindet mit der wesentlichen Ordnung der Dinge.",
+        "consejo": "Sei natürlich, kalkuliere nicht. Handle aus reiner Absicht. Das Spontane ist jetzt das Richtige."
+      },
+      "26": {
+        "nombre": "Die große Zähmungskraft (Da Chu)",
+        "trigSup": "Berg",
+        "trigInf": "Himmel",
+        "elemento": "Erde",
+        "kw": [
+          "Anhäufung",
+          "enthaltene Energie",
+          "mächtiges Zähmen",
+          "Übermacht"
+        ],
+        "sig": "Große enthaltene und gezähmte Energie. Wie ein gezähmtes Wildpferd wird rohe Kraft auf konstruktive Zwecke gelenkt.",
+        "consejo": "Häufe Energie an, ohne sie zu zerstreuen. Zähme deine Impulse. Gut kanalisierte Kraft ist unaufhaltsam."
+      },
+      "27": {
+        "nombre": "Die Mundwinkel (Yi)",
+        "trigSup": "Berg",
+        "trigInf": "Donner",
+        "elemento": "Erde",
+        "kw": [
+          "Nährung",
+          "Nahrung",
+          "Fürsorge",
+          "was aufgenommen wird"
+        ],
+        "sig": "Was nährt, was aufgenommen wird. Physische wie mentale und spirituelle Nahrung. Achten, was eingeht und was unterhält.",
+        "consejo": "Achte auf das, was du in dir nährst: Nahrung, Ideen, Beziehungen. Was du aufnimmst, baut dich auf oder zerstört dich."
+      },
+      "28": {
+        "nombre": "Das Übergewicht des Großen (Da Guo)",
+        "trigSup": "See",
+        "trigInf": "Wind",
+        "elemento": "Luft",
+        "kw": [
+          "Exzess",
+          "schwere Last",
+          "extreme Spannung",
+          "kritische Situation"
+        ],
+        "sig": "Eine Last, größer als die verfügbaren Kräfte. Die Situation ist kritisch und erfordert außerordentliche Maßnahmen. Sie lässt sich nicht lange halten.",
+        "consejo": "Erkenne die Überlastung. Ergreife außerordentliche Maßnahmen. Reduziere, was wiegt, bevor es nachgibt."
+      },
+      "29": {
+        "nombre": "Das Abgründige (Das Wasser, Kan)",
+        "trigSup": "Wasser",
+        "trigInf": "Wasser",
+        "elemento": "Wasser",
+        "kw": [
+          "Gefahr",
+          "Abgrund",
+          "Angst",
+          "in der Schwierigkeit fließen"
+        ],
+        "sig": "Doppeltes Wasser, wiederholte Gefahr. Wie Wasser, das unaufhaltsam fließt, muss man die Gefahr durchqueren und die Integrität bewahren.",
+        "consejo": "Lähme dich nicht vor der Gefahr. Fließe wie Wasser, bewahre dein Wesen. Der Abgrund wird durchquert, nicht gemieden."
+      },
+      "30": {
+        "nombre": "Das Anhaftende (Das Feuer, Li)",
+        "trigSup": "Feuer",
+        "trigInf": "Feuer",
+        "elemento": "Feuer",
+        "kw": [
+          "Klarheit",
+          "Licht",
+          "Verstehen",
+          "Erleuchtung"
+        ],
+        "sig": "Doppeltes Feuer, Klarheit, die erhellt. Feuer braucht Brennstoff; Klarheit bedarf etwas, woran sie sich anlehnt. Strahle mit Zweck.",
+        "consejo": "Suche die Klarheit. Erhelle deine Umgebung. Verstehen ist deine Fackel jetzt."
+      },
+      "31": {
+        "nombre": "Der Einfluss (Xian)",
+        "trigSup": "See",
+        "trigInf": "Berg",
+        "elemento": "Luft",
+        "kw": [
+          "Anziehung",
+          "gegenseitiger Einfluss",
+          "Begegnung",
+          "Magnetismus"
+        ],
+        "sig": "Gegenseitige Anziehung zwischen Gegensätzen. Berg und See beeinflussen einander. Es ist das Hexagramm des Verliebtseins und des feinen Einflusses.",
+        "consejo": "Erlaube dir beeinflusst zu werden und zu beeinflussen. Gegenseitige Anziehung öffnet Türen. Die Chemie ist echt."
+      },
+      "32": {
+        "nombre": "Die Dauer (Heng)",
+        "trigSup": "Donner",
+        "trigInf": "Wind",
+        "elemento": "Feuer",
+        "kw": [
+          "Dauer",
+          "Beständigkeit",
+          "Beständigkeit",
+          "stabile Zyklen"
+        ],
+        "sig": "Was dauert, weil es seiner Natur folgt. Dauer ist keine Starrheit, sondern Beständigkeit im Wandel. Wie die Sonne, die jeden Tag aufgeht.",
+        "consejo": "Halte Beständigkeit im Wesentlichen. Dauer entsteht aus Kohärenz, nicht aus Stillstand."
+      },
+      "33": {
+        "nombre": "Der Rückzug (Dun)",
+        "trigSup": "Himmel",
+        "trigInf": "Berg",
+        "elemento": "Feuer",
+        "kw": [
+          "Rückzug",
+          "sich entfernen",
+          "Vorsicht",
+          "nicht konfrontieren"
+        ],
+        "sig": "Strategischer Rückzug vor überlegenen Kräften. Es ist keine Feigheit, sondern Weisheit: sich rechtzeitig entfernen, um das Wesentliche zu bewahren.",
+        "consejo": "Zieh dich elegant zurück. Konfrontiere nicht, was dich übersteigt. Heute ist Vorsicht Mut."
+      },
+      "34": {
+        "nombre": "Die Macht des Großen (Da Zhuang)",
+        "trigSup": "Donner",
+        "trigInf": "Himmel",
+        "elemento": "Feuer",
+        "kw": [
+          "Macht",
+          "Kraft",
+          "Vitalität",
+          "sich durchsetzen"
+        ],
+        "sig": "Große Macht, eindrucksvolle Stärke. Aber wahre Macht setzt sich nicht mit Gewalt durch, sondern erweist sich mit Aufrichtigkeit.",
+        "consejo": "Nutze deine Macht mit Aufrichtigkeit. Kraft ohne Ethik wendet sich gegen dich. Sich Durchsetzen ist leicht; Überzeugen ist weise."
+      },
+      "35": {
+        "nombre": "Der Fortschritt (Jin)",
+        "trigSup": "Feuer",
+        "trigInf": "Erde",
+        "elemento": "Feuer",
+        "kw": [
+          "Fortschritt",
+          "sichtbarer Aufstieg",
+          "Anerkennung",
+          "Aufstieg"
+        ],
+        "sig": "Wie die Sonne, die am Himmel aufsteigt, ist der Fortschritt sichtbar und leuchtend. Moment des Fortschritts mit Anerkennung.",
+        "consejo": "Gehe mit Vertrauen voran. Dein Fortschritt wird anerkannt. Strahle, ohne zu blenden."
+      },
+      "36": {
+        "nombre": "Die Verdunkelung des Lichts (Ming Yi)",
+        "trigSup": "Erde",
+        "trigInf": "Feuer",
+        "elemento": "Erde",
+        "kw": [
+          "Widrigkeit",
+          "Verbergung",
+          "Vorsicht",
+          "das Licht bewahren"
+        ],
+        "sig": "Das Licht verbirgt sich unter der Erde. Schwierige Zeiten, in denen es sich empfiehlt, das eigene Licht zu bewahren und nicht zur Schau zu stellen. das Wesentliche schützen.",
+        "consejo": "Verbirg dein Licht einstweilen. Setze dich nicht aus. Schütze dein Wesen, bis das Licht zurückkehrt."
+      },
+      "37": {
+        "nombre": "Die Familie (Jia Ren)",
+        "trigSup": "Wind",
+        "trigInf": "Feuer",
+        "elemento": "Luft",
+        "kw": [
+          "Familie",
+          "Zuhause",
+          "Rollen",
+          "innere Struktur"
+        ],
+        "sig": "Die Ordnung innerhalb der Familie. Jedes Mitglied in seiner Rolle. Häusliche Harmonie ist die Basis jedes äußeren Unternehmens.",
+        "consejo": "Kümmere dich um dein Haus und deine Nächsten. Jeder an seinem Platz. Innere Harmonie stützt das Äußere."
+      },
+      "38": {
+        "nombre": "Die Gegensätzlichkeit (Kui)",
+        "trigSup": "Feuer",
+        "trigInf": "See",
+        "elemento": "Feuer",
+        "kw": [
+          "Gegensatz",
+          "Kontrast",
+          "Missverständnis",
+          "Differenz"
+        ],
+        "sig": "Entgegengesetzte Kräfte, die sich nicht leicht aussöhnen. Gegensatz kann schöpferisch sein, wenn man die Differenz respektiert, ohne sie annullieren zu wollen.",
+        "consejo": "Akzeptiere die Differenz. Versuche nicht zu uniformieren. Manchmal ergänzen sich Gegensätze aus der Distanz."
+      },
+      "39": {
+        "nombre": "Das Hindernis (Jian)",
+        "trigSup": "Wasser",
+        "trigInf": "Berg",
+        "elemento": "Wasser",
+        "kw": [
+          "Hindernis",
+          "Schwierigkeit",
+          "Blockade",
+          "erzwungene Pause"
+        ],
+        "sig": "Der Weg ist blockiert. Direktes Vorankommen ist unmöglich. Es empfiehlt sich, Hilfe oder eine alternative Route zu suchen.",
+        "consejo": "Erzwinge das Hindernis nicht. Suche einen Umweg oder einen Verbündeten. Manchmal lohnt es sich, zurückzugehen, um einen anderen Weg zu finden."
+      },
+      "40": {
+        "nombre": "Die Befreiung (Xie)",
+        "trigSup": "Donner",
+        "trigInf": "Wasser",
+        "elemento": "Feuer",
+        "kw": [
+          "Befreiung",
+          "Erleichterung",
+          "Lösung",
+          "Entblockung"
+        ],
+        "sig": "Nach dem Hindernis kommt die Befreiung. Die Spannungen lockern und der Weg wird frei. Moment, zu atmen und loszulassen.",
+        "consejo": "Nutze die Erleichterung. Lass los, was angespannt war. Bleibe nicht in dem hängen, was bereits nachgab."
+      },
+      "41": {
+        "nombre": "Die Minderung (Sun)",
+        "trigSup": "Berg",
+        "trigInf": "See",
+        "elemento": "Erde",
+        "kw": [
+          "Minderung",
+          "Reduktion",
+          "Vereinfachung",
+          "Lösung"
+        ],
+        "sig": "das Überflüssige reduzieren, um das Wesentliche zu stärken. Bewusste Minderung ist eine Form von Reichtum: weniger Dinge, mehr Substanz.",
+        "consejo": "Vereinfache. Reduziere das Unnötige. Das Wesentliche stärkt sich, wenn man das Beiläufige wegnimmt."
+      },
+      "42": {
+        "nombre": "Die Mehrung (Yi)",
+        "trigSup": "Wind",
+        "trigInf": "Donner",
+        "elemento": "Luft",
+        "kw": [
+          "Mehrung",
+          "Wachstum",
+          "Expansion",
+          "Gewinn"
+        ],
+        "sig": "Was gegeben wurde, kehrt vervielfacht zurück. Es ist ein Moment des Wachstums und der Expansion, besonders, wenn geteilt wird.",
+        "consejo": "Nutze das Wachstum. Teile das Gewonnene. Was mit Großzügigkeit gemehrt wird, dauert."
+      },
+      "43": {
+        "nombre": "Der Durchbruch (Guai)",
+        "trigSup": "See",
+        "trigInf": "Himmel",
+        "elemento": "Luft",
+        "kw": [
+          "Entschluss",
+          "Ausbruch",
+          "feste Entscheidung",
+          "brechen"
+        ],
+        "sig": "Es muss mit dem Schluss gemacht werden, was schon zu lange mitschleppt. Die feste und entschiedene Lösung, aber ohne unnötige Gewalt.",
+        "consejo": "Triff die Entscheidung, die du aufgeschoben hast. Sei fest und klar. Aber verliere nicht die Haltung."
+      },
+      "44": {
+        "nombre": "Das Entgegenkommen (Gou)",
+        "trigSup": "Himmel",
+        "trigInf": "Wind",
+        "elemento": "Feuer",
+        "kw": [
+          "Begegnung",
+          "gefährliche Anziehung",
+          "Versuchung",
+          "Verführung"
+        ],
+        "sig": "Eine unerwartete Begegnung, manchmal mit etwas oder jemandem Verlockendem. Es gilt zu erkennen, ob es gelegen ist oder eine Falle.",
+        "consejo": "Schau genau, wem oder was du begegnest. Lass dich nicht vom Schein verführen. Erkenne, bevor du dich einlässt."
+      },
+      "45": {
+        "nombre": "Die Versammlung (Cui)",
+        "trigSup": "See",
+        "trigInf": "Erde",
+        "elemento": "Luft",
+        "kw": [
+          "Versammlung",
+          "Kongregation",
+          "kollektive Zusammenkunft",
+          "Synthese"
+        ],
+        "sig": "Die Kräfte versammeln sich um ein Zentrum. Es ist Zeit, das Verstreute zu vereinen, zu gruppieren, zu synthetisieren.",
+        "consejo": "Berufe ein, versammle, organisiere. Das Verstreute findet sein Zentrum. Aber achte, wer die Versammlung führt."
+      },
+      "46": {
+        "nombre": "Das Emporsteigen (Sheng)",
+        "trigSup": "Erde",
+        "trigInf": "Wind",
+        "elemento": "Erde",
+        "kw": [
+          "Aufstieg",
+          "Steigung",
+          "vertikales Wachstum",
+          "Erhebung"
+        ],
+        "sig": "Wie ein Baum, der nach oben wächst, ist es Zeit aufzusteigen, das Niveau zu wechseln. Das Wachstum ist organisch und stetig.",
+        "consejo": "Steige mit Geduld auf, wie der Baum. Jeder Schritt hebt dich. Überspringe keine Etappen; wachse von der Wurzel her."
+      },
+      "47": {
+        "nombre": "Die Bedrängnis (Kun)",
+        "trigSup": "See",
+        "trigInf": "Wasser",
+        "elemento": "Luft",
+        "kw": [
+          "Erschöpfung",
+          "Bedrängnis",
+          "Verzagtheit",
+          "Enge"
+        ],
+        "sig": "Gefühl von Erschöpfung und Enge. Worte überzeugen nicht und Energie fehlt. Es gilt, innere Ressourcen zu suchen.",
+        "consejo": "Lass dich nicht entmutigen. Die Bedrängnis ist vorübergehend. Suche in deinem Inneren die Ressourcen, die das Äußere dir verweigert."
+      },
+      "48": {
+        "nombre": "Der Brunnen (Jing)",
+        "trigSup": "Wasser",
+        "trigInf": "Wind",
+        "elemento": "Wasser",
+        "kw": [
+          "Brunnen",
+          "Quelle",
+          "tiefe Nährung",
+          "das Wesentliche"
+        ],
+        "sig": "Der gemeinschaftliche Brunnen, der alle nährt. Die Strukturen ändern sich, doch der Brunnen bleibt. sich mit der wesentlichen Quelle verbinden.",
+        "consejo": "Kehre zur Quelle zurück. Trinke vom Wesentlichen. Reinige den Brunnen deines Lebens, damit das Wasser wieder trinkbar wird."
+      },
+      "49": {
+        "nombre": "Die Revolution (Ge)",
+        "trigSup": "See",
+        "trigInf": "Feuer",
+        "elemento": "Luft",
+        "kw": [
+          "Revolution",
+          "radikaler Wandel",
+          "Transformation",
+          "Häutung"
+        ],
+        "sig": "Radikaler und tiefgreifender Wandel. Wie die Häutung einer Schlange muss das Alte aufgegeben werden, damit das Neue entsteht. Der Wandel ist nötig.",
+        "consejo": "Wage den tiefen Wandel. Keine Flicken, echte Transformation. Das Alte taugt nicht mehr; lass es mit Mut los."
+      },
+      "50": {
+        "nombre": "Der Tiegel (Ding)",
+        "trigSup": "Feuer",
+        "trigInf": "Wind",
+        "elemento": "Feuer",
+        "kw": [
+          "Tiegel",
+          "alchemistische Transformation",
+          "Kochen",
+          "höhere Nährung"
+        ],
+        "sig": "Der Tiegel, in dem die heiligen Speisen bereitet werden. Alchemistische Transformation vom Rohen zum Gekochten, vom Groben zum Kultivierten.",
+        "consejo": "Koche bei kleiner Flamme, was du verwandeln willst. Die Alchemie erfordert Geduld. Das Rohe wird im Tiegel weise."
+      },
+      "51": {
+        "nombre": "Das Erregende (Der Donner, Zhen)",
+        "trigSup": "Donner",
+        "trigInf": "Donner",
+        "elemento": "Feuer",
+        "kw": [
+          "Donner",
+          "Schreck",
+          "Erwachen",
+          "Erschütterung"
+        ],
+        "sig": "Doppelten Donner, Schreck, der erweckt. Erschütterungen rütteln am Etablierten und offenbaren das wirklich Wichtige.",
+        "consejo": "Lass den Schreck dich erwecken. Was erschüttert wird, zeigt dir das Wesentliche. Fürchte dich nicht; sei dankbar."
+      },
+      "52": {
+        "nombre": "Das Beruhigende (Der Berg, Gen)",
+        "trigSup": "Berg",
+        "trigInf": "Berg",
+        "elemento": "Erde",
+        "kw": [
+          "Stille",
+          "Meditation",
+          "Innehalten",
+          "Präsenz"
+        ],
+        "sig": "Doppelten Berg, tiefe Stille. Im rechten Moment innehalten. Meditation und volle Präsenz sind jetzt der Weg.",
+        "consejo": "Halte an. Meditiere. Beruhige deinen Geist. Die Stille ist keine Untätigkeit, sondern volle Präsenz."
+      },
+      "53": {
+        "nombre": "Die Entwicklung (Jian)",
+        "trigSup": "Wind",
+        "trigInf": "Berg",
+        "elemento": "Luft",
+        "kw": [
+          "allmähliche Entwicklung",
+          "langsamer Fortschritt",
+          "Evolution",
+          "Schritt für Schritt"
+        ],
+        "sig": "Wie ein Baum, der an einem Hang wächst, ist die Entwicklung langsam, aber stetig. Gut gemachtes Allmähliches führt zur Solidität.",
+        "consejo": "Gehe Schritt für Schritt voran, ohne Eile. Das Allmähliche dauert. Jede kleine Verbesserung zählt."
+      },
+      "54": {
+        "nombre": "Das heiratende Mädchen (Gui Mei)",
+        "trigSup": "Donner",
+        "trigInf": "See",
+        "elemento": "Feuer",
+        "kw": [
+          "ungleiche Vereinigung",
+          "Heirat",
+          "asymmetrische Beziehung",
+          "Verpflichtung"
+        ],
+        "sig": "Eine Vereinigung, in der die Rollen ungleich sind. Man muss die Asymmetrien mit Demut annehmen, wissend, dass jede Beziehung ihre eigene Logik hat.",
+        "consejo": "Akzeptiere die Rollenunterschiede. Nicht alle Vereinigungen sind symmetrisch. Passe deine Erwartungen der Realität an."
+      },
+      "55": {
+        "nombre": "Die Fülle (Feng)",
+        "trigSup": "Donner",
+        "trigInf": "Feuer",
+        "elemento": "Feuer",
+        "kw": [
+          "Fülle",
+          "Vollkommenheit",
+          "Gipfel",
+          "Höhepunkt"
+        ],
+        "sig": "Moment der Fülle und des Überflusses. Wie die Sonne am Mittag, alles strahlt. Es gilt zu nutzen, denn jeder Gipfel geht dem Abstieg voraus.",
+        "consejo": "Genieße die Fülle, ohne dich an sie zu klübern. Nutze den Überfluss, solange er währt. Teile, damit er länger währt."
+      },
+      "56": {
+        "nombre": "Der Wanderer (Lu)",
+        "trigSup": "Feuer",
+        "trigInf": "Berg",
+        "elemento": "Feuer",
+        "kw": [
+          "Reise",
+          "Übergang",
+          "Exil",
+          "Wanderer"
+        ],
+        "sig": "Wie ein Reisender in fremdem Land gilt es, leicht und vorsichtig zu bleiben. Es ist nicht die Zeit, Wurzeln zu schlagen, sondern zu durchqueren.",
+        "consejo": "Bleib leicht. Klübere dich nicht. Du bist auf der Durchreise. Sei vorsichtig wie einer, der durch fremdes Land reist."
+      },
+      "57": {
+        "nombre": "Das Sanfte (Der Wind, Xun)",
+        "trigSup": "Wind",
+        "trigInf": "Wind",
+        "elemento": "Luft",
+        "kw": [
+          "Durchdringung",
+          "feiner Einfluss",
+          "Flexibilität",
+          "Überzeugung"
+        ],
+        "sig": "Doppelten Wind, feiner und durchdringender Einfluss. Das Sanfte dringt dorthin, wo das Starke nicht kann. Die stille Überzeugung ist mächtig.",
+        "consejo": "Beeinflusse ohne aufzuzwingen. Das Sanfte durchdringt. Wie der Wind, der durch alle Ritzen dringt."
+      },
+      "58": {
+        "nombre": "Das Heitere (Der See, Dui)",
+        "trigSup": "See",
+        "trigInf": "See",
+        "elemento": "Luft",
+        "kw": [
+          "Heiterkeit",
+          "Freude",
+          "Kommunikation",
+          "geteilte Freude"
+        ],
+        "sig": "Doppelten See, Heiterkeit und Freude. Geteilte Freude stärkt die Bindungen. Die Kommunikation fließt natürlich.",
+        "consejo": "Kultiviere die geteilte Freude. Kommuniziere mit Heiterkeit. Die Freude ist ansteckend und heilsam."
+      },
+      "59": {
+        "nombre": "Die Auflösung (Huan)",
+        "trigSup": "Wind",
+        "trigInf": "Wasser",
+        "elemento": "Luft",
+        "kw": [
+          "Auflösung",
+          "Entblockung",
+          "Fließfähigkeit",
+          "Auftauen"
+        ],
+        "sig": "Das Starre löst sich und fließt wieder. Wie Eis, das zu Wasser schmilzt. Die Spannungen lockern und die Energie gewinnt ihren Fluss zurück.",
+        "consejo": "Lass die Starrheiten sich auflösen. Klübere dich nicht an Strukturen, die nicht mehr fließen. Die Fließfähigkeit kehrt zurück."
+      },
+      "60": {
+        "nombre": "Die Beschränkung (Jie)",
+        "trigSup": "Wasser",
+        "trigInf": "See",
+        "elemento": "Wasser",
+        "kw": [
+          "Grenzen",
+          "Regeln",
+          "Mäßigung",
+          "Zurückhaltung"
+        ],
+        "sig": "Klare Grenzen und Mäßigung setzen. Ohne Beschränkung läuft alles über, doch mit zu vielen Grenzen ersticken alle.",
+        "consejo": "Setze gesunde Grenzen. Weder überlaufen noch Starrheit. Mäßigung ist die wohlverstandene Freiheit."
+      },
+      "61": {
+        "nombre": "Die innere Wahrheit (Zhong Fu)",
+        "trigSup": "Wind",
+        "trigInf": "See",
+        "elemento": "Luft",
+        "kw": [
+          "innere Wahrheit",
+          "Aufrichtigkeit",
+          "Integrität",
+          "Glaube"
+        ],
+        "sig": "Die Wahrheit, die im Inneren wohnt. Wenn es tiefe Aufrichtigkeit gibt, werden die äußeren Handlungen ohne Mühe wirkungsvoll.",
+        "consejo": "Verbinde dich mit deiner inneren Wahrheit. Sei integer. Aufrichtigkeit bewegt Berge, ohne dass man schieben muss."
+      },
+      "62": {
+        "nombre": "Das Übergewicht des Kleinen (Xiao Guo)",
+        "trigSup": "Donner",
+        "trigInf": "Berg",
+        "elemento": "Feuer",
+        "kw": [
+          "Details",
+          "Kleinigkeiten",
+          "Vorsicht",
+          "Demut"
+        ],
+        "sig": "Es gilt, den kleinen Details Beachtung zu schenken. Es ist nicht die Zeit für große Gesten, sondern für Sorgfalt im Bescheidenen.",
+        "consejo": "Achte auf die Details. Sei bescheiden. Kleine, gut gemachte Handlungen gelten mehr als große, schlecht gemachte."
+      },
+      "63": {
+        "nombre": "Nach der Vollendung (Ji Ji)",
+        "trigSup": "Wasser",
+        "trigInf": "Feuer",
+        "elemento": "Wasser",
+        "kw": [
+          "Vollendung",
+          "erreichte Ordnung",
+          "Gleichgewicht",
+          "Gefahr des Loslassens"
+        ],
+        "sig": "Alles ist an seinem Platz, die Ordnung ist erreicht. Doch die Gefahr ist jetzt, sich zu entspannen und das Erreichte als selbstverständlich zu nehmen. Es gilt, wachsam zu bleiben.",
+        "consejo": "Genieße das Erreichte, aber entspanne dich nicht. Bleib wachsam. Das Erreichte kann verloren gehen, wenn du dich verlässt."
+      },
+      "64": {
+        "nombre": "Vor der Vollendung (Wei Ji)",
+        "trigSup": "Feuer",
+        "trigInf": "Wasser",
+        "elemento": "Feuer",
+        "kw": [
+          "Übergang",
+          "Schwelle",
+          "fast fertig",
+          "vor dem Erreichen"
+        ],
+        "sig": "Du stehst an der Schwelle, fast, aber noch nicht. Es ist ein Moment maximaler Potenz. Es gilt, die Anstrengung bis zum Ende zu halten.",
+        "consejo": "Gib im letzten Abschnitt nicht auf. Du bist fast am Ziel, aber noch nicht da. Halte Anstrengung und Aufmerksamkeit aufrecht."
+      }
+    }
+  },
+  "astrologia": {
+    "signos": {
+      "0": {
+        "nombre": "Widder",
+        "elemento": "Feuer",
+        "modalidad": "Kardinal",
+        "regente": "Mars"
+      },
+      "1": {
+        "nombre": "Stier",
+        "elemento": "Erde",
+        "modalidad": "Fix",
+        "regente": "Venus"
+      },
+      "2": {
+        "nombre": "Zwillinge",
+        "elemento": "Luft",
+        "modalidad": "Veränderlich",
+        "regente": "Merkur"
+      },
+      "3": {
+        "nombre": "Krebs",
+        "elemento": "Wasser",
+        "modalidad": "Kardinal",
+        "regente": "Mond"
+      },
+      "4": {
+        "nombre": "Löwe",
+        "elemento": "Feuer",
+        "modalidad": "Fix",
+        "regente": "Sonne"
+      },
+      "5": {
+        "nombre": "Jungfrau",
+        "elemento": "Erde",
+        "modalidad": "Veränderlich",
+        "regente": "Merkur"
+      },
+      "6": {
+        "nombre": "Waage",
+        "elemento": "Luft",
+        "modalidad": "Kardinal",
+        "regente": "Venus"
+      },
+      "7": {
+        "nombre": "Skorpion",
+        "elemento": "Wasser",
+        "modalidad": "Fix",
+        "regente": "Mars/Pluto"
+      },
+      "8": {
+        "nombre": "Schütze",
+        "elemento": "Feuer",
+        "modalidad": "Veränderlich",
+        "regente": "Jupiter"
+      },
+      "9": {
+        "nombre": "Steinbock",
+        "elemento": "Erde",
+        "modalidad": "Kardinal",
+        "regente": "Saturn"
+      },
+      "10": {
+        "nombre": "Wassermann",
+        "elemento": "Luft",
+        "modalidad": "Fix",
+        "regente": "Saturn/Uranus"
+      },
+      "11": {
+        "nombre": "Fische",
+        "elemento": "Wasser",
+        "modalidad": "Veränderlich",
+        "regente": "Jupiter/Neptun"
+      }
+    },
+    "aspectos": {
+      "Conjunction": "Konjunktion",
+      "Sextile": "Sextil",
+      "Square": "Quadrat",
+      "Trine": "Trigon",
+      "Opposition": "Opposition"
+    }
+  },
+  "analisisAstral": {
+    "titulo": "✦ Orakulare Astralanalyse ✦",
+    "subtitulo": "Eine psychologische Reise durch dein Geburtsrad",
+    "secciones": {
+      "s1_titulo": "1. Die Achse deines Seins (Dein großes Trigon)",
+      "s2_titulo": "2. Deine energetische Signatur",
+      "s3_titulo": "3. Die Szenarien deines Lebens",
+      "s4_titulo": "4. Der Motor deines Wachstums",
+      "s5_titulo": "5. Dein karmischer Kompass",
+      "s6_titulo": "6. Der Rat des Orakels"
+    },
+    "SQ": {
+      "Aries": "Initiative, Mut und ein pionierhafter Drang, der Wege öffnet, wo andere Mauern sehen",
+      "Tauro": "Stabilität, Geduld und eine Sinnlichkeit, die im Greifbaren und Bleibenden verwurzelt ist",
+      "Géminis": "Neugier, mentale Vielseitigkeit und ein unstillbarer Durst, Ideen und Menschen zu verbinden",
+      "Cáncer": "beschützende Sensibilität, emotionales Gedächtnis und eine tiefe Bindung an Wurzeln und Fürsorge",
+      "Leo": "kreative Stolz, Wärme und ein unwiderrufliches Bedürfnis zu strahlen und anerkannt zu werden",
+      "Virgo": "Analyse, Dienst und ein perfektionistischer Drang, der nach Meisterschaft im Praktischen strebt",
+      "Libra": "Gleichgewicht, Diplomatie und eine ständige Suche nach Harmonie und Schönheit in Bindungen",
+      "Escorpio": "Intensität, Durchdringung und eine Fähigkeit, in das Verborgene einzutauchen und verwandelt wiederaufzuerstehen",
+      "Sagitario": "Expansion, Glaube und eine begeisterte Suche nach Sinn, Wahrheit und weiten Horizonten",
+      "Capricornio": "Ambition, Disziplin und ein Wille, Schritt für Schritt zum Bleibenden zu bauen",
+      "Acuario": "Originalität, Idealismus und eine Zukunftsvision, die das Bestehende aus Überzeugung herausfordert",
+      "Piscis": "Empathie, Vorstellungskraft und eine Hingabe ans Unsichtbare und Universale, die Grenzen verwischt"
+    },
+    "SE": {
+      "Aries": "Feuer",
+      "Leo": "Feuer",
+      "Sagitario": "Feuer",
+      "Tauro": "Erde",
+      "Virgo": "Erde",
+      "Capricornio": "Erde",
+      "Géminis": "Luft",
+      "Libra": "Luft",
+      "Acuario": "Luft",
+      "Cáncer": "Wasser",
+      "Escorpio": "Wasser",
+      "Piscis": "Wasser"
+    },
+    "ET": {
+      "Feuer": "Leidenschaft, Inspiration und ein Tatendrang, der Brennstoff braucht",
+      "Erde": "Pragmatismus, Stabilität und eine Verankerung im Konkreten und Bleibenden",
+      "Luft": "Mentalität, Geselligkeit und ein Hunger nach Kommunikation und Ideen",
+      "Wasser": "Emotionalität, Intuition und eine Fähigkeit, tief zu fühlen und zu verbinden"
+    },
+    "EI": {
+      "Feuer": "die Flamme, die tanzt",
+      "Erde": "der Berg, der Bestand hat",
+      "Luft": "der Wind, der Samen streut",
+      "Wasser": "der Ozean, der alles umfängt"
+    },
+    "MT": {
+      "Cardinal": "Initiative zum Unterfangen, Führung und ein Drang, der die Zyklen einleitet",
+      "Fix": "Beharrlichkeit, Stabilität und ein Widerstand, der hält, wenn andere nachgeben",
+      "Mutable": "Anpassungsfähigkeit, Fluidität und ein Talent, zwischen Welten und Etappen zu wechseln"
+    },
+    "PA": {
+      "Sun": "dein wesentliches Ich, der Lebensfunke und der Zweck, der dich authentisch fühlen lässt",
+      "Moon": "deine emotionale Welt, deine intimen Bedürfnisse und die Art, wie du nährst und ruhst",
+      "Mercury": "dein Verstand, dein Wort und die Art, wie du Gedanken webst und Ideen verbindest",
+      "Venus": "deine Fähigkeit zu lieben, deine Werte und deine Sensibilität für Schönheit und Genuss",
+      "Mars": "dein Mut, dein Verlangen und die Energie, die du aufwendest, um dem nachzujagen, was du willst",
+      "Jupiter": "dein Glaube, deine Expansion und die Suche nach Sinn und Wahrheit",
+      "Saturn": "deine Disziplin, deine Grenzen und die Lektionen, die deine Reife strukturieren",
+      "Uranus": "deine Originalität, dein Aufbegehren und der Intuitionsschein, der das Bestehende bricht",
+      "Neptune": "deine Vorstellungskraft, deine Spiritualität und der Schleier zwischen Traum und Hingabe",
+      "Pluto": "deine Transformationskraft, dein Schatten und die Fähigkeit zu sterben und wiederaufzuerstehen",
+      "N Node": "dein karmischer Wachstumspfad, die Richtung, die dich erschreckt, dich aber erweitert",
+      "Chiron": "die Wunde, die zur Heilung und Weisheit wird",
+      "Lilith": "dein wildes und verborgenes Ich, das Instinktive, das ohne Scham anerkannt werden will"
+    },
+    "CT": {
+      "1": "dein Körper und die Art, wie die Welt dich bei der ersten Begegnung wahrnimmt",
+      "2": "deine Finanzen, deine persönlichen Ressourcen und das Gefühl für das, was dir gehört",
+      "3": "dein alltäglicher Verstand, deine Kommunikation und der ständige Austausch mit deiner Umgebung",
+      "4": "dein Zuhause, deine Wurzeln und der intime Rückzugsort, wo du deine Rüstung ablegst",
+      "5": "deine Kreativität, deine Art zu spielen und dich zu verlieben und der Ort, wo du dich tröst, zu schaffen",
+      "6": "deine tägliche Arbeit, deine Gesundheit und die Gewohnheiten, die dein Leben Tag für Tag tragen",
+      "7": "deine intimen Bindungen, deine Partnerschaften und die Verträge, die du mit dem anderen besiegelst",
+      "8": "die Transformation, die tiefe Intimität und alles, was du teilst und loslässt",
+      "9": "deine Sinnsuche, die Studien, die dich erweitern, und die Horizonte, die dich rufen",
+      "10": "deine Berufung, deine Karriere und die öffentliche Anerkennung, die du Schritt für Schritt aufbaust",
+      "11": "deine Freunde, deine Ideale und die Gemeinschaften, in denen deine Vision auf die anderer trifft",
+      "12": "deine Intuition, dein Unbewusstes und die Abschlusszyklen, die deine nächste Wiedergeburt vorbereiten"
+    },
+    "aperturas": [
+      "Dein ${area} sucht die ${cualidadCorta} von ${signo}: ${cualidad}",
+      "Wenn es um ${area} geht, prägt ${signo} seinen Stempel —${cualidad}—",
+      "Der Raum von ${area} atmet in ${signo} und bringt ${cualidad} ein",
+      "Dein Rad legt ${area} unter die Signatur von ${signo}: ${cualidad}",
+      "Im Bereich von ${area} hinterlässt ${signo} seinen Abdruck —${cualidad}—"
+    ],
+    "conectores": [
+      "obwohl die Präsenz von ${planeta} in ${signo} es mit ${cualidad} nuanciert",
+      "während ${planeta} in ${signo} ${cualidad} beiträgt",
+      "und ergänzt wird durch ${planeta} in ${signo}, das ${cualidad} bringt",
+      "aber ${planeta} in ${signo} fügt eine Schicht von ${cualidad} hinzu",
+      "wo ${planeta} in ${signo} ${cualidad} einführt"
+    ],
+    "retroFrases": [
+      ", eine Kraft, die zuerst in dir bei kleiner Hitze reift, bevor sie sich nach außen manifestiert",
+      " und, da rückläufig, als ein beständiger innerer Dialog gelebt wird, bevor sie sichtbare Handlung wird",
+      ", rückläufig, was bedeutet, dass diese Qualität in der Intimität verfeinert wird, bevor sie nach außen tritt"
+    ],
+    "grupos": [
+      "Identität und Materie (Häuser 1, 2 und 3)",
+      "Rückzug und Dienst (Häuser 4, 5 und 6)",
+      "Der Spiegel und die Expansion (Häuser 7, 8 und 9)",
+      "Der Gipfel und das Unbewusste (Häuser 10, 11 und 12)"
+    ],
+    "narrativa": {
+      "s1_asc": "Der erste Eindruck, den du der Welt gibst, ist durch deinen <strong>Aszendenten in ${ascS}</strong> geprägt: ${sqAsc}. ",
+      "s1_mascara": "Es ist die Maske, die du mühelos trägst, deine sichtbare Hülle und zugleich der Kristall, durch den du alles filterst, was das Leben dir bringt. ",
+      "s1_sol": "Hinter dieser Maske brennt deine <strong>Sonne in ${solS}</strong>, der unwiderrufliche Kern dessen, wer du bist: ${sqSol}. ",
+      "s1_solLuz": "Es ist das Licht, das du zu verkörpern suchst, die wesentliche Identität, die dich authentisch fühlen lässt, wenn du sie vollkommen lebst. ",
+      "s1_lunaConj": "Und was wirklich bemerkenswert ist: Dein <strong>Mond steht ebenfalls in ${solS}</strong> und verschmilzt mit deiner Sonne in einer Konjunktion, die wie eine natale Neumondphase erlebt wird. ",
+      "s1_lunaConj2": "Deine bewusste Identität und deine emotionalen Bedürfnisse schlagen im Einklang in ${solSLower} und schaffen eine innere Kohärenz von seltener Intensität: du weißt, was du fühlst, und fühlst, was du bist. ",
+      "s1_lunaConj3": "Die gesamte Kraft von ${sqSol} konzentriert sich massiv in dir, was dir ein solides Selbstverständnis gibt, aber auch die evolutionäre Spannung in einem einzigen Zeichen bündelt. ",
+      "s1_contrasteAscSol": "Jedoch ist der Kontrast zu deinem Aszendenten offensichtlich: obwohl du nach außen ${eiAsc} projizierst, ist dein Inneres ${eiSol}. ",
+      "s1_contrasteAscSol2": "Diese Distanz zwischen Erscheinung und Kern ist genau das Terrain, auf dem sich deine Evolution abspielt, der Raum, in dem du dich selbst entdeckst und lernst, in Einklang zu bringen, was du zeigst, mit dem, was du bist.",
+      "s1_coherencia": "Die Kohärenz zwischen deiner Erscheinung und deinem Kern verleiht dir eine solide und magnetische Präsenz, auch wenn es dir manchmal schwerfallen kann, dich selbst zu überraschen oder aus dir herauszutreten.",
+      "s1_luna": "Ganz tief innen lenkt dein <strong>Mond in ${lunaS}</strong>, was du nicht immer zeigst: ${sqLuna}. ",
+      "s1_lunaRefugio": "Es ist der emotionale Rückzugsort, wo du dich nährst und ausruhst, der Teil, der deine instinktiven Reaktionen und deine intimsten Bedürfnisse regiert. ",
+      "s1_contrasteSolLuna": "Der Kontrast zwischen deinem Zentrum und deiner Emotionalität ist lebendig: deine Sonne brennt in ${etSol}, während dein Mond mit ${etLuna} fließt. ",
+      "s1_polaridad1": "Diese innere Polarität ist zugleich dein Reichtum und deine Spannung, denn ein Teil von dir sucht ${buscaSol}, während ein anderer ${necesitaLuna} braucht. ",
+      "s1_triangulacion": "Nichtsdestotrotz vollendet sich die Triangulation mit deinem Aszendenten: obwohl du der Welt ${eiAsc} zeigst, lebst du innen zwischen ${eiSol} und ${eiLuna}. ",
+      "s1_triangulacion2": "Dieser Kontrast verleiht dir Tiefe und Geheimnis: du bist nicht, was du auf den ersten Blick zu sein scheinst, und die Reise, dich selbst zu entdecken, ist ein wesentlicher Teil deines Weges.",
+      "s1_eje": "Diese drei Energien zeichnen die Achse, auf der alles andere in deinem Rad ruht: die Maske, das Zentrum und der Rückzugsort, jeder mit eigener Farbe, doch eine einzigartige Identität bildend.",
+      "s2_predominio": "Dein Charakter ist von der Vorherrschaft des Elements <strong>${domEl}</strong> (${domElC} Platzierungen) durchdrungen, was sich in ${etDom} übersetzt. ",
+      "s2_concentrado": "Es ist eine so intensive Konzentration, dass ${eiDom} praktisch dein natürliches Element ist, der Raum, in dem du dich zuhause fühlst und in dem deine Energie mühelos fließt. ",
+      "s2_tendencia": "Es ist eine klare Tendenz, die deine Art, in der Welt zu sein, nuanciert. ",
+      "s2_ausencia": "Das völlige Fehlen von <strong>${weakEl}</strong> ist aufschlussreich: ${etWeak} kommt nicht von selbst, du wirst es bewusst dein Leben lang kultivieren müssen. ",
+      "s2_debil": "Das Element <strong>${weakEl}</strong> erscheint nur ${weakElC}-mal, ein sensibler Punkt, der Pflege und Aufmerksamkeit verdient. ",
+      "s2_debil2": "Das Element <strong>${weakEl}</strong> ist vorhanden, wenn auch in geringerem Maße (${weakElC}), und bietet einen Kontrapunkt zu deiner vorherrschenden Tendenz. ",
+      "s2_modalidad": "Deine Art, dich durchs Leben zu bewegen, trägt einen <strong>${domMod}</strong>-Stempel (${domModC}): ${mtDom}. ",
+      "s2_yang": "Yang-Energie überwiegt (${masculine}/${feminine}), also kommen dir Handlung und Außenwirkung natürlich, doch du wirst dich erinnern müssen, dass wahre Stärke auch anzuhalten und zuzuhören weiß. ",
+      "s2_yin": "Yin-Energie überwiegt (${feminine}/${masculine}), also sind Empfänglichkeit und Introspektion dein Rückzugsort, doch du wirst dich erinnern müssen, in die Welt hinauszutreten und das zu manifestieren, was in der Stille gesät wird. ",
+      "s2_equilibrio": "Das Gleichgewicht zwischen Yang und Yin (${masculine}/${feminine}) gibt dir eine stabile Basis, von der aus du bewusst wählen kannst. ",
+      "s2_stellium": "Kurioserweise konzentriert sich ein Großteil deiner Lebensenergie im Bereich von ${areaStellium}, wo sich ${numPlanetas} Planeten versammeln: ${planetasLista}. ",
+      "s2_stellium2": "Diese Konzentration macht diesen Bereich zum Hauptmotor deines Lebens: dort spürst du den größten Druck, aber dort ruht auch dein größtes Potenzial. ",
+      "s2_stellium3": "Es ist kein Zufall, dass so viele innere Stimmen an denselben Ort weisen —das Rad zeigt dir, wo deine tiefste Transformation verläuft.",
+      "s2_noStellium": "Es gibt keine extremen Konzentrationen in deinem Rad: deine Energie ist über mehrere Bereiche verteilt, was dir Vielseitigkeit verleiht und verhindert, dass ein einziger Bereich deine Existenz monopolisiert.",
+      "s4_sinAspectos": "In deinem Rad werden keine engen spannungsreichen Aspekte gefunden, was darauf hindeutet, dass deine Energie in vorwiegender Harmonie fließt. Das gibt dir eine ruhige Basis, lädt dich aber ein, bewusst den Antrieb zu kultivieren, den die Spannung meistens schenkt.",
+      "s4_conj1": "<strong>${p1} und ${p2} in Konjunktion</strong> (Orbis ${orbStr}). ",
+      "s4_conj2": "${desc1Cap} und ${desc2} verschmelzen in dir und schaffen eine untrennbare Allianz. ",
+      "s4_conj3": "Diese Verschmelzung verleiht dir eine ungewöhnliche Kraft in diesem Bereich deines Lebens, aber die wahre Herausforderung besteht darin, beide Stimmen zu integrieren, ohne dass eine die andere zum Schweigen bringt.",
+      "s4_opp1": "<strong>${p1} in Opposition zu ${p2}</strong> (Orbis ${orbStr}). ",
+      "s4_opp2": "Du spürst einen ständigen Widerstreit zwischen ${desc1} und ${desc2}. ",
+      "s4_opp3": "Die Herausforderung besteht nicht darin, eine Seite zu wählen und die andere zu unterdrücken, sondern die Spannung zu halten, bis beide Kräfte sich gegenseitig nähren und du lernst, im Paradox zu leben.",
+      "s4_sq1": "<strong>${p1} im Quadrat mit ${p2}</strong> (Orbis ${orbStr}). ",
+      "s4_sq2": "Die Reibung zwischen ${desc1} und ${desc2} fühlt sich wie ein ständiges Scheuern in dir an. ",
+      "s4_sq3": "Doch dieses Unbehagen ist der Motor deines Wachstums: was dir schwerfällt zu integrieren, ist genau das, was dich reifen lässt und dir Tiefe gibt.",
+      "s4_tri1": "<strong>${p1} im Trigon mit ${p2}</strong> (Orbis ${orbStr}). ",
+      "s4_tri2": "${desc1Cap} und ${desc2} fließen in natürlicher Harmonie. ",
+      "s4_tri3": "Diese Allianz ist ein Geschenk: beide Kräfte potenzieren sich mühelos, und deine Herausforderung ist, sie nicht als selbstverständlich hinzunehmen, sondern bewusst zu nutzen.",
+      "s4_sex1": "<strong>${p1} im Sextil mit ${p2}</strong> (Orbis ${orbStr}). ",
+      "s4_sex2": "Es gibt einen offenen Kanal zwischen ${desc1} und ${desc2}, eine Gelegenheit, die aktiviert werden will. ",
+      "s4_sex3": "Die Leichtigkeit ist da, aber du wirst die Initiative ergreifen müssen, um sie zu nutzen.",
+      "s5_nodoN": "Deine Evolution ruft dich zum <strong>Nordknoten in ${signo}</strong>: ${sqSigno}. ",
+      "s5_nodoN2": "Es ist die Richtung, die dich erschreckt, weil sie neu ist, aber auch die, die dich erweitert und dich zurückführt zu dem, der du werden sollst. ",
+      "s5_nodoS": "Du nimmst Abschied vom <strong>Südknoten in ${signo}</strong>, der Komfortzone, die du bereits beherrschst und von der du dich lösen musst, um nicht zu erstarren. ",
+      "s5_lilith": "Deine instinktive und wilde Kraft ruht in <strong>Lilith in ${signo}</strong>: ${sqSigno}, der Teil von dir, der ohne Scham und ohne Zähmung anerkannt werden will. ",
+      "s5_fortuna": "Und dein Glücksfluss erstrahlt im <strong>Glückspunkt in ${signo}</strong>, dem Bereich, in dem die natürliche Freude auf dich wartet, wenn du deine Identität, deine Emotion und deine Art, dich der Welt zu zeigen, in Einklang bringst. ",
+      "s6_yang": "Dein Rad brennt in Yang: erinnere dich, dass wahre Stärke auch anzuhalten und zuzuhören weiß. ",
+      "s6_yin": "Dein Rad fließt in Yin: erinnere dich, dass das in der Stille Gesäte auch in der Welt manifestiert werden will. ",
+      "s6_equil": "Dein Rad balanciert Impuls und Zurückhaltung: wähle bewusst von dieser soliden Basis aus. ",
+      "s6_stellium": "Die Konzentration im Bereich von ${areaStellium} ist dein Kompass und deine Last: dort liegt dein größtes Potenzial. ",
+      "s6_cierre": "Das Rad ist eine Karte, kein Urteil —was als Spannung erscheint, ist Rohstoff für dein Wachstum, und die einzig wahre Magie ist, mit vollem Bewusstsein zu wählen, wer du sein willst.",
+      "avisoFinal": "Diese Analyse ist eine symbolische Deutung deines Geburtsrads. Verstehe sie als Spiegel zur Reflexion und Selbsterkenntnis, nicht als deterministische Vorhersage."
+    }
+  },
+  "analisisTarot": {
+    "titulo": "✦ Ganzheitliche Analyse ✦",
+    "subtitulo": "Integrale Lesung von Tarot und I Ching · elementare Würden · Numerologie · Erzählung · Kreuzresonanzen",
+    "headers": {
+      "visionGeneral": "🌌 Allgemeine Übersicht",
+      "tematica": "🌟 Dominantes Thema im Tarot",
+      "alineacion": "🎯 Frage ↔ Legung Ausrichtung",
+      "lecturaIching": "☯️ I-Ching-Lesung",
+      "dinamicas": "⚙️ Tarot-Dynamiken und Muster",
+      "dignidades": "⚡ Elementare Beziehungen zwischen Karten",
+      "posicional": "📍 Detaillierte Positionslesung",
+      "narrativa": "🌀 Tarot-Ezählungssynthese",
+      "holistico": "🔮 Ganzheitliche Analyse Tarot ↔ I Ching",
+      "recomendacion": "✨ Integrierte Empfehlung"
+    },
+    "exportHeaders": {
+      "visionGeneral": "ALLGEMEINE ÜBERSICHT",
+      "tematica": "TAROT-THEMA",
+      "alineacion": "AUSRICHTUNG FRAGE ↔ LEGUNG",
+      "lecturaIching": "I-CHING-LESUNG",
+      "dinamicas": "TAROT-DYNAMIKEN UND MUSTER",
+      "dignidades": "ELEMENTARE WÜRDEN ZWISCHEN KARTEN",
+      "posicional": "DETAILLIERTE POSITIONSLESUNG",
+      "narrativa": "TAROT-ERZÄHLUNGSSYNTHESE",
+      "holistico": "GANZHEITLICHE ANALYSE TAROT ↔ I CHING",
+      "recomendacion": "INTEGRIERTE EMPFEHLUNG"
+    },
+    "lexicon": {
+      "love": [
+        "liebe",
+        "partner",
+        "paar",
+        "beziehung",
+        "freund",
+        "freundin",
+        "freundin",
+        "mann",
+        "ehemann",
+        "frau",
+        "ehefrau",
+        "ehe",
+        "ex",
+        "geliebter",
+        "verliebt",
+        "sich verlieben",
+        "herz",
+        "gefühl",
+        "affection",
+        "zuneigung",
+        "freundschaft",
+        "freund",
+        "romantisch"
+      ],
+      "money": [
+        "geld",
+        "arbeit",
+        "beschäftigung",
+        "gehalt",
+        "wirtschaft",
+        "finanzen",
+        "reich",
+        "reichtum",
+        "armut",
+        "arm",
+        "erbschaft",
+        "investition",
+        "geschäft",
+        "unternehmen",
+        "handel",
+        "verkauf",
+        "kaufen",
+        "verkaufen",
+        "schuld",
+        "kredit",
+        "bank",
+        "ersparnisse",
+        "kosten",
+        "preis"
+      ],
+      "conflict": [
+        "konflikt",
+        "streit",
+        "disput",
+        "streitigkeit",
+        "prozess",
+        "klage",
+        "verklagen",
+        "beschwerde",
+        "auseinandersetzung",
+        "rivale",
+        "feind",
+        "hass",
+        "groll",
+        "rache",
+        "verzeihen",
+        "vergebung",
+        "entschuldigung",
+        "trennung",
+        "scheidung"
+      ],
+      "work": [
+        "arbeit",
+        "beschäftigung",
+        "karriere",
+        "beruf",
+        "beförderung",
+        "chef",
+        "kollege",
+        "büro",
+        "projekt",
+        "geschäft",
+        "berufung",
+        "studium",
+        "prüfung",
+        "universität",
+        "schule",
+        "lernen",
+        "aufgabe",
+        "tätigkeit",
+        "funktion",
+        "stelle",
+        "position"
+      ],
+      "decision": [
+        "entscheiden",
+        "entscheidung",
+        "wählen",
+        "wahl",
+        "zweifel",
+        "option",
+        "alternative",
+        "weg",
+        "route",
+        "kreuzung",
+        "auswählen",
+        "abwägen",
+        "dilemma",
+        "kreuz",
+        "gabelung"
+      ],
+      "health": [
+        "gesundheit",
+        "krankheit",
+        "krank",
+        "körper",
+        "körperlich",
+        "schmerz",
+        "heilung",
+        "heilen",
+        "arzt",
+        "behandlung",
+        "krankenhaus",
+        "klinik",
+        "wohlbefinden",
+        "energie",
+        "vitalität",
+        "ermüdung",
+        "erschöpfung"
+      ],
+      "change": [
+        "wandel",
+        "verändern",
+        "verwandlung",
+        "umzug",
+        "umziehen",
+        "reise",
+        "bewegen",
+        "neu",
+        "neuanfang",
+        "beginnen",
+        "initiieren",
+        "lassen",
+        "loslassen",
+        "aufgeben",
+        "ende",
+        "beenden",
+        "abschluss",
+        "etappe",
+        "zyklus",
+        "schritt",
+        "phase",
+        "übergang"
+      ],
+      "fear": [
+        "angst",
+        "furcht",
+        "erschrocken",
+        "sorge",
+        "besorgnis",
+        "beklemmung",
+        "angst",
+        "unsicherheit",
+        "zweifel",
+        "ungewissheit",
+        "unruhe",
+        "panik",
+        "phobie",
+        "bedrohung",
+        "gefahr",
+        "risiko"
+      ],
+      "fire": [
+        "leidenschaft",
+        "feuer",
+        "begeisterung",
+        "energie",
+        "antrieb",
+        "aktion",
+        "initiative",
+        "kreativität",
+        "motivation",
+        "inbrunst",
+        "furia",
+        "wut",
+        "zorn",
+        "mut",
+        "tapferkeit",
+        "begeistern"
+      ],
+      "water": [
+        "emotion",
+        "gefühl",
+        "fühlen",
+        "träne",
+        "weinen",
+        "trauer",
+        "freude",
+        "glück",
+        "liebe",
+        "herz",
+        "intuition",
+        "traum",
+        "sensibel",
+        "sensibilität",
+        "zärtlichkeit",
+        "mitgefühl"
+      ],
+      "air": [
+        "denken",
+        "gedanke",
+        "idee",
+        "vernunft",
+        "logik",
+        "kommunikation",
+        "sprechen",
+        "sagen",
+        "wort",
+        "botschaft",
+        "klarheit",
+        "verwirrung",
+        "lügen",
+        "wahrheit",
+        "erklären",
+        "analysieren",
+        "studieren",
+        "lernen",
+        "unterscheiden"
+      ],
+      "earth": [
+        "körper",
+        "haus",
+        "zuhause",
+        "familie",
+        "erde",
+        "natur",
+        "stabilität",
+        "sicherheit",
+        "wurzel",
+        "basis",
+        "fundament",
+        "erbe",
+        "güter",
+        "besitz",
+        "feld",
+        "kultivieren",
+        "bauen",
+        "errichten",
+        "niederlassen",
+        "etablieren"
+      ]
+    },
+    "descripciones": {
+      "love": "affektive oder romantische Beziehungen",
+      "money": "materielle, wirtschaftliche oder finanzielle Themen",
+      "conflict": "Konflikte, Streitigkeiten oder Spannungen",
+      "work": "Arbeit, Beruf oder Studium",
+      "decision": "Entscheidungen und Kreuzungen",
+      "health": "körperliche Gesundheit oder Wohlbefinden",
+      "change": "Veränderungen, Übergänge oder Transformationen",
+      "fear": "Ängste, Sorgen oder Unsicherheiten"
+    },
+    "tematicas": {
+      "copas": "Die Farbe Kelche (Wasser) dominiert die Legung, was den Fokus auf das emotionale Terrain, die affektiven Bindungen und die Intuition richtet.",
+      "oros": "Die Farbe Münzen (Erde) dominiert und signalisiert, dass der Schwerpunkt im Materiellen, Beruflichen oder Physischen liegt.",
+      "espadas": "Die Farbe Schwerter (Luft) dominiert und betont den Verstand, die Kommunikation und die Konflikte.",
+      "bastos": "Die Farbe Stäbe (Feuer) dominiert und deutet auf einen Moment des Handelns, der Leidenschaft und der Initiative."
+    },
+    "esperado": {
+      "love": "copas",
+      "fear": "copas",
+      "money": "oros",
+      "work": "oros",
+      "health": "oros",
+      "conflict": "espadas",
+      "decision": "espadas",
+      "change": "bastos"
+    },
+    "plantilla": [
+      null,
+      "Die Gegenwart zeigt die zentrale Energie.",
+      "Die Herausforderung repräsentiert die gekreuzte Kraft.",
+      "Die Basis ist die unbewusste Wurzel.",
+      "Die nahe Vergangenheit liefert den Vorlauf.",
+      "Die Krone ist das Bewusste.",
+      "Die nahe Zukunft signalisiert den Trend.",
+      "Deine Haltung, was du einbringst.",
+      "Das Umfeld, Personen und Umstände.",
+      "Hoffnungen und Befürchtungen.",
+      "Das Endergebnis, wohin die Energie strebt."
+    ],
+    "visionGeneral": {
+      "preguntaLabel": "Frage/Absicht:",
+      "sinPregunta": "(Keine Frage angegeben — allgemeine Lesung des Moments)",
+      "contextoDestacado": "Deine Frage/Absicht bezieht sich auf",
+      "contextoDestacadoFallback": "deine Situation",
+      "contextoSinCategoria": "Deine Frage/Absicht konzentriert sich auf ein allgemeines Thema ohne klar dominante thematische Kategorie.",
+      "contextoNoPregunta": "Es wurde keine ausdrückliche Frage gestellt, daher wird die Lesung als allgemeine Bestandsaufnahme des aktuellen Lebensmoments angeboten.",
+      "cartaSingular": "Karte",
+      "cartasPlural": "Karten",
+      "arcanoSingular": "Arkana",
+      "arcanosPlural": "Arkana",
+      "mayorSingular": "große",
+      "mayoresPlural": "große",
+      "menorSingular": "kleine",
+      "menoresPlural": "kleine",
+      "invertidaSingular": "umgekehrte",
+      "invertidasPlural": "umgekehrte",
+      "tiradaNarrativa": "Diese Legung von ${total} ${cartaWord} zeigt ${mayores} ${arcanoWord} ${mayorWord} (${pctMayores}%) und ${menores} ${menorWord}.",
+      "pctMayoresAlto": "Die Mehrheit großer Arkana weist auf einen Moment tiefer Lebensbedeutung hin: tiefgreifende archetypische Kräfte sind im Spiel und die Ereignisse tragen ein Gewicht, das das Alltägliche übersteigt.",
+      "pctMayoresMedio": "Das Gleichgewicht zwischen großen und kleinen Arkana deutet auf eine Mischung aus Alltäglichem und Bedeutsamem.",
+      "pctMayoresBajo": "Die Vorherrschaft kleiner Arkana signalisiert, dass sich die Situation hauptsächlich auf der praktischen, alltäglichen Ebene abspielt.",
+      "invertidasNarrativa": "Es gibt ${invertidas} ${invertidaWord} (${pctInvertidas}%).",
+      "pctInvertidasAlto": "Die hohe Anzahl umgekehrter Karten weist auf blockierte Energien oder innere Aspekte hin, die noch nicht integriert sind.",
+      "pctInvertidasBajo": "Die umgekehrten Karten deuten auf Bereiche, in denen sich die Energie schwer ausdrückt.",
+      "pctInvertidasCero": "Alle Karten aufrecht zeigen, dass die Energien mit relativer Leichtigkeit fließen.",
+      "tematicaConcentracion": "Die Konzentration in dieser Farbe ist bemerkenswert.",
+      "tematicaEquilibrada": "Die Farben sind ausgeglichen, was anzeigt, dass die Situation mehrere Ebenen zugleich berührt."
+    },
+    "cruce": {
+      "resuena": "Die dominante Farbe (${paloDom}) resont direkt mit dem Thema deiner Frage (${catDom}).",
+      "noResuena": "Die dominante Farbe (${paloDom}) ist nicht die für ${catDom} erwartete. Die Antwort kommt aus einem anderen Blickwinkel."
+    },
+    "iching": {
+      "principal": "Das Haupt-Hexagramm ist ${nombreHex} (Nr. ${numP}), gebildet aus ${trigInf} und ${trigSup}. ${sig} Der Rat lautet: ${consejo}",
+      "mutantes": "Die mutierenden Linien (${lineas}) deuten auf eine Entwicklung hin zu ${nombreHexF} (Nr. ${numFuturo}). ${sigFuturo}",
+      "sinMutantes": "Keine mutierenden Linien; die Situation präsentiert sich stabil.",
+      "errorHex": "Das Hexagramm konnte nicht geladen werden."
+    },
+    "dinamicas": {
+      "ases": "Vorhandensein von ${ases} Assen: mehrere Keime für neue Anfänge.",
+      "corte": "Es gibt ${figTotal} Hofkarten: andere Personen spielen eine relevante Rolle.",
+      "reyes": "Mehrere Könige: männliche Autoritäten üben Einfluss aus.",
+      "reinas": "Mehrere Königinnen: weibliche Figuren stehen im Mittelpunkt.",
+      "numero": "Die Zahl ${n} erscheint ${c}-mal: ihre numerologische Qualität wird verstärkt.",
+      "invertidas": "Hoher Anteil an umgekehrten Karten (${pctInvertidas}%): innere Blockaden."
+    },
+    "dignidades": {
+      "amigable": "${c1Ref} und ${c2Ref} stehen in freundlicher Würde (${el1} + ${el2}).",
+      "tension": "${c1Ref} und ${c2Ref} stehen in Spannung (${el1} vs ${el2}).",
+      "neutro": "Keine signifikanten elementaren Dynamiken zwischen benachbarten Karten beobachtet."
+    },
+    "posicional": {
+      "una": "${nombre} ${orientacion}: ${sig} Schlüsselwörter: ${kw}.",
+      "tresPasado": "Die Vergangenheit hat diese Energie als Erbe hinterlassen.",
+      "tresPresente": "In der Gegenwart beschreibt diese Karte die aktuelle Energie.",
+      "tresFuturo": "In der nahen Zukunft zeichnet sich diese Energie als Tendenz ab.",
+      "tresCard": "${nombre} ${orientacion}. ${contexto} ${sig}",
+      "cruzCard": "${nombre} ${orientacion}. ${plantilla} ${sig}"
+    },
+    "narrativa": {
+      "cruz": "Von der Vergangenheit (${c4}) ist die Gegenwart durch ${c1} markiert, mit der Herausforderung ${c2}. Die Zukunft weist auf ${c6}, und das Ergebnis auf ${c10}.",
+      "tres": "Der zeitliche Bogen spannt sich von ${c0} (Vergangenheit) zu ${c1} (Gegenwart), hin zu ${c2} (Zukunft).",
+      "una": "Die einzelne Karte verdichtet Vergangenheit, Gegenwart und Zukunft in einer einzigen Energie."
+    },
+    "holistico": {
+      "resonanciaTitulo": "1. Elementare Resonanz:",
+      "resonanciaArmonia": "Das Tarot-Element (${paloDomCanonico}) steht in Harmonie mit dem des I Ching (${elHexP}).",
+      "resonanciaTension": "Das Tarot-Element (${paloDomCanonico}) steht in Spannung mit dem des I Ching (${elHexP}).",
+      "resonanciaNeutro": "Die Elemente sind neutral zueinander.",
+      "resonanciaSinPalo": "Keine dominante Farbe klar; das I Ching bringt ${elHexP} als Hintergrundqualität ein.",
+      "convergenciaTitulo": "2. Konvergenz des Ergebnisses:",
+      "convergenciaBase": "Die Ergebniskarte (${cartaResultado}) und das Hexagramm (${nombreHex}) ergänzen sich.",
+      "convergenciaCierre": "Beide deuten übereinstimmend auf einen Zyklusabschluss.",
+      "convergenciaInicio": "Beide deuten übereinstimmend auf einen Anfang.",
+      "convergenciaTransformacion": "Die umgekehrte Karte und die mutierenden Linien weisen auf eine Transformation im Gange.",
+      "convergenciaCarta": "Die Karte weist auf: „${sigCarta}.“ Das Hexagramm rät: „${consejo}“",
+      "trayectoriaTitulo": "3. Evolutionäre Bahn:",
+      "trayectoria": "Das zukünftige Hexagramm (${nombreHexF}) und die Karte der Zukunft (${cartaFuturo}) markieren die Richtung.",
+      "sintesisTitulo": "4. Karmische Synthese:",
+      "sintesisKarmica": "Große Arkana + archetypisches Hexagramm: die Situation berührt tiefe karmische Schichten.",
+      "sintesisDificultad": "Umgekehrte Karten + Hexagramm der Schwierigkeit: innere Arbeit wird vor äußeren Handeln verlangt.",
+      "sintesisAvance": "Karten aufrecht + Hexagramm des Fortschritts: günstiger Moment, nutze den Schwung.",
+      "sintesisMixto": "Die Kombination malt ein nuanciertes Bild: weder alles günstig noch alles abträchtig."
+    },
+    "recomendacion": {
+      "r1": "Angesichts so vieler umgekehrter Karten und eines Hexagramms der Schwierigkeit, nichts erzwingen. Höre und benenne, was du fühlst. Die Handlung wird offensichtlich, wenn die Energien nachgeben.",
+      "r2": "Wasser dominiert. Handle aus dem Fühlen, nicht aus dem Kalkül. Emotionen sind jetzt wertvolle Information.",
+      "r3": "Die Erde fordert Konkretheit. Übersetze Intuitionen in praktische Schritte. Fülle materialisiert sich, wenn sie Struktur annimmt.",
+      "r4": "Das Feuer fordert Bewegung. Klarheit wird mit dem Handeln kommen. Trete entschieden voran, ohne Brücken zu verbrennen.",
+      "r5": "Die Luft fordert mentale Klarheit. Definiere, was du wem mitteilst. Ein gut gewähltes Wort wiegt mehr als mehrere Handlungen.",
+      "r6": "Die Situation hat karmisches Gewicht. Richte dich auf den Zyklus aus. Was wie ein Hindernis scheint, kann die Tür sein.",
+      "r7": "Die Situation ist lebendig, in Entwicklung. Sei flexibel, um den Kurs anzupassen, wenn die Energie sich wendet.",
+      "r8": "Ausgeglichene Legung ohne Extreme. Verbinde innere Achtsamkeit mit praktischem Handeln. Stabilität ist eine Basis, kein Ziel."
+    },
+    "aviso": "Diese Analyse ist eine symbolische Interpretation. Verstehe sie als Spiegel zur Reflexion, nicht als deterministische Vorhersage."
+  }
+}

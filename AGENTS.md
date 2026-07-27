@@ -35,7 +35,7 @@ img/tarot/                   # Imágenes de las cartas
 ZCode debe mantener estos puentes al añadir features nativas. R8/ProGuard los conserva (ver `proguard-rules.pro`).
 
 - **`AndroidClipboard.copy(text)` / `.read()`** — portapapeles nativo (navigator.clipboard no funciona en WebView sin HTTPS).
-- **`AndroidShare.share(text)`** — menú compartir de Android. Usa `runOnUiThread` (las @JavascriptInterface corren en hilo de fondo), `ClipData` + `EXTRA_TEXT` + archivo `.txt` temporal vía `FileProvider` para textos largos. Debounce en JS evita choosers apilados.
+- **`AndroidShare.share(text)`** — menú compartir de Android. Usa `runOnUiThread` (las @JavascriptInterface corren en hilo de fondo), `ClipData` + `EXTRA_TEXT`. Debounce en JS evita choosers apilados. **Comportamiento por app**: Gmail/Telegram/Messages leen `EXTRA_TEXT` completo; WhatsApp impone su propio límite interno y trunca el texto a medias (no hay forma de forzarlo). Para textos >500 chars: genera un **PDF** con `android.graphics.pdf.PdfDocument` (API nativa, sin librerías), lo adjunta con `EXTRA_STREAM` vía `FileProvider`, MIME `application/pdf`, y **NO** incluye `EXTRA_TEXT` (si lo incluye, WhatsApp prioriza el texto truncado e ignora el archivo). El texto completo va en el PDF sin truncar, multi-página con wrapping automático. Textos cortos usan `EXTRA_TEXT` + `text/plain` normal.
 
 ## Flujo de trabajo (OBLIGATORIO)
 

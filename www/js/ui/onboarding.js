@@ -2,7 +2,7 @@
 // Se muestra solo la primera vez que el usuario abre la app.
 // Persistencia: localStorage clave "oraculo_onboarding_visto".
 
-import { t } from '../i18n/i18n.js?v=17';
+import { t } from '../i18n/i18n.js?v=18';
 
 const ONBOARDING_KEY = 'oraculo_onboarding_visto';
 
@@ -12,6 +12,7 @@ const PASOS_KEYS = [
   { iconoKey: 'onboarding.paso2_icono', tituloKey: 'onboarding.paso2_titulo', textoKey: 'onboarding.paso2_texto' },
   { iconoKey: 'onboarding.paso3_icono', tituloKey: 'onboarding.paso3_titulo', textoKey: 'onboarding.paso3_texto' },
   { iconoKey: 'onboarding.paso4_icono', tituloKey: 'onboarding.paso4_titulo', textoKey: 'onboarding.paso4_texto' },
+  { iconoKey: 'onboarding.paso5_icono', tituloKey: 'onboarding.paso5_titulo', textoKey: 'onboarding.paso5_texto' },
 ];
 
 // === ESTADO ===

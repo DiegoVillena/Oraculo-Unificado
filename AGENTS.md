@@ -20,7 +20,7 @@ js/                          # Código fuente (ES modules)
   core/                      # astrologia.js, analysis.js, ia-api.js
   data/                      # tarot-kb, iching-kb, sqlite-db, swisseph WASM, ciudades.sqlite
   i18n/locales/               # 6 idiomas: es, en, pt, fr, it, de
-  ui/                        # tarot.js, astral.js, modal.js, tabs.js, onboarding.js, donacion.js
+  ui/                        # tarot.js, astral.js, modal.js, tabs.js, onboarding.js, donacion.js, glossary.js
   main.js                    # Entry point
 www/                         # Copia de js/ servida en el WebView (sincronizar tras editar js/)
 android/                     # Proyecto nativo (Capacitor)
@@ -29,6 +29,19 @@ android/                     # Proyecto nativo (Capacitor)
 worker/                      # Cloudflare Worker (proxy IA Gemini)
 img/tarot/                   # Imágenes de las cartas
 ```
+
+## Términos técnicos seleccionables (glosario beginner-friendly)
+
+Cada término técnico (cartas de Tarot, hexagramas I Ching, planetas, signos, casas, aspectos) es **tapable**: muestra una descripción breve y clara. Sistema en `js/ui/glossary.js`.
+
+- **`data-term="tipo:clave"`** — atributo en cualquier elemento HTML que lo hace seleccionable. `tipo` ∈ `tarot`, `iching`, `planeta`, `signo`, `casa`, `aspecto`. `clave` es **canónica**: nombre español de carta (`tarot:El Loco`), número de hexagrama (`iching:7`), nombre inglés de planeta (`planeta:Sol`), índice 0-11 de signo (`signo:0`), número 1-12 de casa (`casa:5`), tipo inglés de aspecto (`aspecto:Conjunction`). El texto visible es la traducción al idioma actual; `data-term` desacopla identidad de presentación.
+- **Event delegation global**: `inicializarGlosario()` (llamada en `main.js`) instala un listener de `click` en `document` que detecta taps en cualquier `[data-term]`, incluso en HTML generado dinámicamente (análisis IA incluido). No hace falta reasignar handlers.
+- **Cartas e I Ching** → abren el **modal existente** (`window.__tarotUI.abrirModal` / `abrirModalIching`). **Términos astrológicos** → abren un **popover flotante** (`.glossary-popover`, CSS en `styles.css`) con título + descripción breve.
+- **`envolverTerminos(html)`** — función exportada de `glossary.js` que post-procesa HTML y envuelve ocurrencias de nombres de planetas/signos/cartas/aspectos en `<span class="term" data-term="...">`. Usada por `astrologia-analisis.js` (narrativa) y `ia-api.js` (análisis IA Tarot/Astral/Combinado). El análisis local de Tarot (`analysis.js`) envuelve manualmente los spans `.ref-tarot`/`.ref-iching` con `data-term`. La tabla y aspectos de Carta Astral (`astral.js`) envuelven con helper `_termSpan()`.
+- **Glosario de descripciones**: bloque `glosario` en cada `datos-maestros-{locale}.json` con `planetas`, `signos`, `casas`, `aspectos` (1-2 frases por término). Helper `tGlosario(tipo, clave)` en `i18n.js`.
+- **Reset al cambiar idioma**: `resetMapaTerminos()` se llama tras `cambiarIdioma()` porque los nombres traducidos cambian.
+- **Señalización visual**: clase `.term` y selector `[data-term]` dan subrayado punteado discreto. El onboarding tiene un 5º paso (`onboarding.paso5_*`) que lo explica.
+- **Cierre del popover**: tap fuera, botón atrás Android (vía `history.pushState`), scroll, resize, o tap en el mismo término (toggle).
 
 ## Puentes JS ↔ Nativo (MainActivity.java)
 
@@ -93,10 +106,16 @@ adb shell am start -n com.oraculounificado.app/.MainActivity
 - No usar `navigator.clipboard` directamente — usar `AndroidClipboard.copy()`.
 - No editar solo `www/` sin sincronizar `js/` (source of truth) — el orden correcto es editar `js/` y copiar a `www/`.
 
-## Estado actual (última actualización: 2026-07-23)
+## Estado actual (última actualización: 2026-08-03)
 
 - v1.0 subido a GitHub (commit inicial)
 - Botones de copiar y compartir funcionando en Tarot y Carta Astral
 - Fix de crash por choosers apilados (runOnUiThread + debounce + FLAG_ACTIVITY_NEW_TASK)
-- Fix de truncamiento de textos largos al compartir (ClipData + FileProvider con .txt temporal)
+- Fix de truncamiento de textos largos al compartir (ClipData + FileProvider con .txt temporal, luego PDF para WhatsApp)
 - APK release firmado y verificado en emulador
+- **Términos técnicos seleccionables (glosario beginner-friendly)**: cualquier término (cartas, planetas, signos, casas, aspectos, hexagramas, conceptos) es tapable. Cartas/hexagramas abren el modal existente; términos astrológicos abren un popover flotante. Glosario breve en los 6 idiomas. Onboarding ampliado a 5 pasos. (rama `feat/terminos-seleccionables`)
+- **Cartas invertidas**: al pinchar una carta invertida en el análisis (local o IA), abre el modal en modo invertido. `data-reves="1"` en spans. Post-procesador `envolverTerminos` detecta "Reversed"/"Invertida"/"(Inv)" etc. en el texto de la IA.
+- **Imágenes .webp**: las cartas usan `.webp` (no `.jpg`). `getImgUrl` y `onerror` fallbacks actualizados.
+- **Animación tarot**: barajado reducido a 1.5s (antes 2.5s).
+- **Link Ko-fi**: puente nativo `AndroidOpenUrl.open(url)` abre URLs externas en el navegador del sistema. Modal "Acerca de" usa clase `visible`. `abrirKoFi` sin guión.
+- **Detección de idioma**: puente nativo `AndroidLocale.get()` devuelve `Locale.getDefault().getLanguage()` (navigator.language en WebView no es fiable).

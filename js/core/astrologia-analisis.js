@@ -7,8 +7,9 @@
 //
 // i18n: todos los diccionarios y textos narrativos se cargan desde datos-maestros.
 
-import { SIGNOS } from './astrologia.js?v=17';
-import { getAnalisisAstral, t, tSigno, tAspecto } from '../i18n/i18n.js?v=17';
+import { SIGNOS } from './astrologia.js?v=18';
+import { getAnalisisAstral, t, tSigno, tAspecto } from '../i18n/i18n.js?v=18';
+import { envolverTerminos } from '../ui/glossary.js?v=18';
 
 // === DICCIONARIOS FALLBACK (español, usados si i18n no está cargado) ===
 
@@ -374,7 +375,8 @@ export function analizarCartaAstral(carta) {
   html += '<div class="analisis-seccion gold-border"><h4>' + (titulos.s5 || '5. Tu Brújula Kármica') + '</h4>' + s5 + '</div>';
   html += '<div class="recomendacion-final"><h4>' + (titulos.s6 || '6. El Consejo del Oráculo') + '</h4>' + s6 + '</div>';
   html += '<p class="aviso-final">' + (N.avisoFinal || 'Este análisis es una interpretación simbólica de tu carta astral. Tómalo como espejo para la reflexión y el autoconocimiento, no como pronóstico determinista.') + '</p>';
-  return html;
+  // Envolver términos técnicos (planetas, signos, cartas) para que sean tapables.
+  return envolverTerminos(html);
 }
 
 // Evaluar template string desde JSON (sustituye ${var} y ${dict[key]})

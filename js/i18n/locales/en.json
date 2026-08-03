@@ -127,7 +127,8 @@
       "Chiron": "Chiron",
       "Lilith": "Lilith",
       "I ASC": "Ascendant (I)",
-      "X MC": "Midheaven (X)"
+      "X MC": "Midheaven (X)",
+      "S Node": "South Node"
     },
     "horaDesconocidaLabel": "unknown time (12:00)"
   },
@@ -221,7 +222,10 @@
     "paso3_texto": "The ancient Chinese oracle accompanies every Tarot reading. Toss the virtual coins, get your hexagram, and discover the mutant lines that mark your future.",
     "paso4_icono": "✨",
     "paso4_titulo": "AI Analysis",
-    "paso4_texto": "Generate deep, personalized analyses of your readings and birth chart with oracular artificial intelligence. Your guide to self-knowledge."
+    "paso4_texto": "Generate deep, personalized analyses of your readings and birth chart with oracular artificial intelligence. Your guide to self-knowledge.",
+    "paso5_icono": "📖",
+    "paso5_titulo": "Tappable terms",
+    "paso5_texto": "Tap any underlined technical term (cards, planets, signs, houses, aspects) to see a short, clear description. An easy way to learn while you explore your oracle."
   },
   "ia": {
     "generando": "Generating deep analysis with oracular AI...",
@@ -460,5 +464,8 @@
     "snackbarTexto": "If this reading resonated with you and you want the Oracle to stay free for everyone, you can buy me a coffee ☕",
     "snackbarBtn": "☕ Buy me a coffee",
     "snackbarNo": "No, thanks"
+  },
+  "glossary": {
+    "cerrar": "Close"
   }
 }

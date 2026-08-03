@@ -14,7 +14,7 @@ export const dictHexagramas = {
 
 export function getImgUrl(carta) {
   const base = mapaArchivos[carta] || carta.replace(/\s+/g,'_').replace(/[áéíóúñ]/g, c=>({'á':'a','é':'e','í':'i','ó':'o','ú':'u','ñ':'n'})[c]);
-  // Preferir .webp (imágenes reales, optimizadas); si no existe, fallback a .svg
+  // Las imágenes están en formato .webp
   return `img/tarot/${base}.webp`;
 }
 

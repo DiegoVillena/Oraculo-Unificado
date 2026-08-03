@@ -1,9 +1,9 @@
 // ui/astral.js — Formulario y renderizado de Carta Astral (reconstruido)
 import { calcularCartaAstral, getUltimaCarta, setUltimaCarta, getCiudad, setCiudad,
   generarTextoCarta, generarInterpretacion, generarRuedaSVG,
-  SIGNOS, CASAS_ROMANAS } from '../core/astrologia.js?v=17';
-import { buscarCiudadesSQL as buscarCiudades, obtenerOffsetTZ } from '../data/sqlite-db.js?v=17';
-import { t, tSigno, tAspecto } from '../i18n/i18n.js?v=17';
+  SIGNOS, CASAS_ROMANAS } from '../core/astrologia.js?v=18';
+import { buscarCiudadesSQL as buscarCiudades, obtenerOffsetTZ } from '../data/sqlite-db.js?v=18';
+import { t, tSigno, tAspecto } from '../i18n/i18n.js?v=18';
 
 let dropdownResultados = [];
 
@@ -349,7 +349,7 @@ export function render(d) {
   const btnCompartirTodoAstral = document.getElementById('btn-compartir-astral-todo');
   if (btnCompartirTodoAstral) btnCompartirTodoAstral.style.display = 'none';
   // Mostrar botón de análisis combinado si también hay tirada de Tarot
-  import('../ui/tarot.js?v=17').then(mod => {
+  import('../ui/tarot.js?v=18').then(mod => {
     const tirada = mod.getUltimaTirada();
     const btnCombinado = document.getElementById('btn-analisis-combinado');
     if (btnCombinado) btnCombinado.style.display = (tirada && d) ? 'block' : 'none';
@@ -371,6 +371,15 @@ function _nombreSigno(signoObj) {
     if (sT?.nombre) return sT.nombre;
   }
   return signoObj.nombre;
+}
+// Índice del signo en SIGNOS (0-11), para data-term="signo:N"
+function _idxSigno(signoObj) {
+  const idx = SIGNOS.indexOf(signoObj);
+  return idx >= 0 ? idx : 0;
+}
+// Span seleccionable para un término del glosario
+function _termSpan(tipo, clave, texto) {
+  return `<span class="term" data-term="${tipo}:${clave}">${texto}</span>`;
 }
 
 function renderTablaUnificada(d) {
@@ -395,12 +404,13 @@ function renderTablaUnificada(d) {
     const casaRom = casasRom[p.casa-1] || p.casa;
     const posAngulo = p.esAngulo ? ' ' + p.etiquetaAngulo : '';
     const nombreSigno = _nombreSigno(p.signo);
+    const idxSig = _idxSigno(p.signo);
     h += `<tr>`;
-    h += `<td><span class="planet-sym">${p.simbolo}</span> ${nombreES}</td>`;
-    h += `<td><span class="sign-sym">${p.signo.simbolo}</span> ${nombreSigno}</td>`;
+    h += `<td><span class="planet-sym">${p.simbolo}</span> ${_termSpan('planeta', p.nombre, nombreES)}</td>`;
+    h += `<td><span class="sign-sym">${p.signo.simbolo}</span> ${_termSpan('signo', idxSig, nombreSigno)}</td>`;
     h += `<td>${p.grados}°${p.minutos.toString().padStart(2,'0')}'</td>`;
     h += `<td><span class="house-num">${casaRom}</span></td>`;
-    h += `<td>${t('astral.casa')} ${casaRom}${posAngulo}${retro}</td>`;
+    h += `<td>${_termSpan('casa', p.casa, t('astral.casa') + ' ' + casaRom)}${posAngulo}${retro}</td>`;
     h += `</tr>`;
   }
 
@@ -412,12 +422,13 @@ function renderTablaUnificada(d) {
     for (const c of d.casasInfo) {
       const etq = c.esAngulo ? c.etiqueta : casasRom[c.numero-1];
       const nombreSigno = _nombreSigno(c.signo);
+      const idxSig = _idxSigno(c.signo);
       h += `<tr class="casa-row">`;
       h += `<td><span class="house-num">${etq}</span></td>`;
-      h += `<td><span class="sign-sym">${c.signo.simbolo}</span> ${nombreSigno}</td>`;
+      h += `<td><span class="sign-sym">${c.signo.simbolo}</span> ${_termSpan('signo', idxSig, nombreSigno)}</td>`;
       h += `<td>${c.grados}°${c.minutos.toString().padStart(2,'0')}'</td>`;
       h += `<td>—</td>`;
-      h += `<td>${t('astral.cuspideCasa', {n: casasRom[c.numero-1]})}</td>`;
+      h += `<td>${_termSpan('casa', c.numero, t('astral.cuspideCasa', {n: casasRom[c.numero-1]}))}</td>`;
       h += `</tr>`;
     }
   }
@@ -439,21 +450,28 @@ function renderAspectosColapsable(a) {
     const np = t('astral.nombresPlanetarios');
     const p1n = (np && typeof np === 'object' && np[x.p1]) ? np[x.p1] : x.p1;
     const p2n = (np && typeof np === 'object' && np[x.p2]) ? np[x.p2] : x.p2;
-    h += `<tr class="${x.clase}"><td>${p1n}</td><td>${x.simbolo} ${tAspecto(x.tipo)}</td><td>${p2n}</td><td>${o}</td></tr>`;
+    h += `<tr class="${x.clase}"><td>${_termSpan('planeta', x.p1, p1n)}</td><td>${x.simbolo} ${_termSpan('aspecto', x.tipo, tAspecto(x.tipo))}</td><td>${_termSpan('planeta', x.p2, p2n)}</td><td>${o}</td></tr>`;
   }
   h += '</tbody></table></div></div></div>';
   return h;
 }
 
 function renderStats(s) {
+  // Mapeo de claves i18n → clave de concepto en el glosario
+  const conceptoMap = {
+    'astral.masculino': 'masculino', 'astral.femenino': 'femenino',
+    'astral.fuego': 'fuego', 'astral.tierra': 'tierra',
+    'astral.aire': 'aire', 'astral.agua': 'agua',
+    'astral.cardinal': 'cardinal', 'astral.fijo': 'fijo', 'astral.mutable': 'mutable',
+  };
   const items = [
-    [t('astral.masculino'),'masc',s.masculine], [t('astral.femenino'),'fem',s.feminine],
-    [t('astral.fuego'),'fire',s.fuego], [t('astral.tierra'),'earth',s.tierra],
-    [t('astral.aire'),'air',s.aire], [t('astral.agua'),'water',s.agua],
-    [t('astral.cardinal'),'',s.cardinal], [t('astral.fijo'),'',s.fixed], [t('astral.mutable'),'',s.mutable],
+    [t('astral.masculino'),'masc',s.masculine,'masculino'], [t('astral.femenino'),'fem',s.feminine,'femenino'],
+    [t('astral.fuego'),'fire',s.fuego,'fuego'], [t('astral.tierra'),'earth',s.tierra,'tierra'],
+    [t('astral.aire'),'air',s.aire,'aire'], [t('astral.agua'),'water',s.agua,'agua'],
+    [t('astral.cardinal'),'',s.cardinal,'cardinal'], [t('astral.fijo'),'',s.fixed,'fijo'], [t('astral.mutable'),'',s.mutable,'mutable'],
   ];
   return '<h4>' + t('astral.equilibrioElem') + '</h4><div class="stats-grid">' +
-    items.map(([l,c,v])=>`<div class="stat-item"><span class="stat-label ${c}">${l}</span><span class="stat-val">${v}</span></div>`).join('') +
+    items.map(([l,c,v,concepto])=>`<div class="stat-item"><span class="stat-label ${c}" data-term="concepto:${concepto}">${l}</span><span class="stat-val">${v}</span></div>`).join('') +
     '</div>';
 }
 
@@ -461,11 +479,11 @@ function renderExtra(d) {
   let h = '<h4>' + t('astral.caminoFortuna') + '</h4><div class="extra-grid">';
   if (d.partOfFortune) {
     const p = d.partOfFortune;
-    h += `<div class="extra-item"><span class="extra-label">${t('astral.caminoFortunaLabel')}</span><span class="extra-val">${p.signo.simbolo} ${_nombreSigno(p.signo)} ${p.grados}°${p.minutos.toString().padStart(2,'0')}'</span></div>`;
+    h += `<div class="extra-item"><span class="extra-label">${t('astral.caminoFortunaLabel')}</span><span class="extra-val">${p.signo.simbolo} ${_termSpan('signo', _idxSigno(p.signo), _nombreSigno(p.signo))} ${p.grados}°${p.minutos.toString().padStart(2,'0')}'</span></div>`;
   }
   if (d.southNode) {
     const s = d.southNode;
-    h += `<div class="extra-item"><span class="extra-label">${t('astral.nodoSurLabel')}</span><span class="extra-val">${s.signo.simbolo} ${_nombreSigno(s.signo)} ${s.grados}°${s.minutos.toString().padStart(2,'0')}'</span></div>`;
+    h += `<div class="extra-item"><span class="extra-label">${t('astral.nodoSurLabel')}</span><span class="extra-val">${s.signo.simbolo} ${_termSpan('signo', _idxSigno(s.signo), _nombreSigno(s.signo))} ${s.grados}°${s.minutos.toString().padStart(2,'0')}'</span></div>`;
   }
   return h + '</div>';
 }

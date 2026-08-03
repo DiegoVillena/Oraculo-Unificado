@@ -7,8 +7,9 @@
 //
 // i18n: todos los diccionarios y textos narrativos se cargan desde datos-maestros.
 
-import { SIGNOS } from './astrologia.js?v=17';
-import { getAnalisisAstral, t, tSigno, tAspecto } from '../i18n/i18n.js?v=17';
+import { SIGNOS } from './astrologia.js?v=18';
+import { getAnalisisAstral, t, tSigno, tAspecto } from '../i18n/i18n.js?v=18';
+import { envolverTerminos } from '../ui/glossary.js?v=18';
 
 // === DICCIONARIOS FALLBACK (español, usados si i18n no está cargado) ===
 
@@ -143,32 +144,17 @@ export function analizarCartaAstral(carta) {
   const aperturasArr = D.aperturas || [];
   const conectoresArr = D.conectores || [];
   const retroFrasesArr = D.retroFrases || RETRO_FRASES_FB;
-  const gruposRaw = D.grupos || GRUPOS_FB;
-  // Normalizar: si grupos viene como array de strings (solo titulos), combinar
-  // con las casas por defecto de GRUPOS_FB para tener { titulo, casas }.
-  const gruposArr = gruposRaw.map((g, i) => {
-    if (g && typeof g === 'object' && Array.isArray(g.casas)) return g;
-    const fb = GRUPOS_FB[i] || GRUPOS_FB[0];
-    return { titulo: (typeof g === 'string') ? g : (fb.titulo), casas: fb.casas };
-  });
+  const gruposArr = D.grupos || GRUPOS_FB;
 
   const asc = carta.casasInfo.find(c => c.numero === 1);
   const sol = buscar(carta, 'Sun');
   const luna = buscar(carta, 'Moon');
   const st = carta.estadisticas;
   const aIdx = { v: 0 };
-  // Cualidad corta del signo: primera frase de SQ (hasta la primera coma o las 5 primeras palabras)
-  const cualidadCortaDe = (signo) => {
-    const sq = SQ[signo] || '';
-    if (!sq) return '';
-    // Tomar hasta la primera coma
-    const hasta = sq.split(',')[0];
-    return hasta || sq;
-  };
   const siguienteApertura = (n, s) => {
     if (aperturasArr.length > 0) {
       const tpl = aperturasArr[aIdx.v++ % aperturasArr.length];
-      return _evalTpl(tpl, { n, s, CT, SQ, area: CT[n] || '', signo: s, cualidad: SQ[s] || '', cualidadCorta: cualidadCortaDe(s), planeta: '' });
+      return _evalTpl(tpl, { n, s, CT, SQ });
     }
     return '';
   };
@@ -176,7 +162,7 @@ export function analizarCartaAstral(carta) {
   const siguienteConector = (p, s) => {
     if (conectoresArr.length > 0) {
       const tpl = conectoresArr[cIdx.v++ % conectoresArr.length];
-      return _evalTpl(tpl, { p, s, CT, SQ, area: '', signo: s, cualidad: SQ[s] || '', cualidadCorta: cualidadCortaDe(s), planeta: p });
+      return _evalTpl(tpl, { p, s, CT, SQ });
     }
     return '';
   };
@@ -191,71 +177,49 @@ export function analizarCartaAstral(carta) {
     const ascS = _signoKey(asc.signo), solS = _signoKey(sol.signo), lunaS = _signoKey(luna.signo);
     const solE = SE[solS], lunaE = SE[lunaS], ascE = SE[ascS];
     const mismaLuz = solS === lunaS;
-    // BuscaSol / necesitaLuna: cualidades SQ del Sol y de la Luna, en minúsculas
-    const buscaSol = (SQ[solS] || '').toLowerCase();
-    const necesitaLuna = (SQ[lunaS] || '').toLowerCase();
 
     s1 += '<p>';
-    s1 += (N.s1_asc || '')
-      .replace(/\$\{ascS\}/g, ascS).replace(/\$\{sqAsc\}/g, SQ[ascS] || '')
-      .replace(/\$\{SQ\[ascS\]\}/g, SQ[ascS] || '') || '';
+    s1 += N.s1_asc_intro?.replace('${ascS}', ascS).replace(/\$\{SQ\[ascS\]\}/g, SQ[ascS] || '') || '';
     s1 += ' ';
-    s1 += (N.s1_mascara || '').replace(/\$\{ascS\}/g, ascS) || '';
+    s1 += N.s1_asc_mask?.replace('${ascS}', ascS) || '';
     s1 += ' ';
-    s1 += (N.s1_sol || '')
-      .replace(/\$\{solS\}/g, solS).replace(/\$\{sqSol\}/g, SQ[solS] || '')
-      .replace(/\$\{SQ\[solS\]\}/g, SQ[solS] || '') || '';
+    s1 += N.s1_sol?.replace(/\$\{solS\}/g, solS).replace(/\$\{SQ\[solS\]\}/g, SQ[solS] || '') || '';
     s1 += ' ';
-    s1 += (N.s1_solLuz || '') ;
+    s1 += N.s1_sol_luz || '';
 
     if (mismaLuz) {
-      s1 += (N.s1_lunaConj || '').replace(/\$\{solS\}/g, solS) || '';
+      s1 += N.s1_mismaLuz1?.replace(/\$\{solS\}/g, solS) || '';
       s1 += ' ';
-      s1 += (N.s1_lunaConj2 || '').replace(/\$\{solS\}/g, solS).replace(/\$\{solSLower\}/g, (solS||'').toLowerCase()) || '';
+      s1 += N.s1_mismaLuz2?.replace(/\$\{solS\.toLowerCase\(\)\}/g, (solS||'').toLowerCase()) || '';
       s1 += ' ';
-      s1 += (N.s1_lunaConj3 || '').replace(/\$\{solS\}/g, solS).replace(/\$\{sqSol\}/g, SQ[solS] || '').replace(/\$\{SQ\[solS\]\}/g, SQ[solS] || '') || '';
+      s1 += N.s1_mismaLuz3?.replace(/\$\{SQ\[solS\]\}/g, SQ[solS] || '') || '';
       if (ascE !== solE) {
         s1 += ' ';
-        s1 += (N.s1_contrasteAscSol || '')
-          .replace(/\$\{ascS\}/g, ascS).replace(/\$\{solS\}/g, solS)
-          .replace(/\$\{eiAsc\}/g, EI[ascE]||'').replace(/\$\{eiSol\}/g, EI[solE]||'')
-          .replace(/\$\{EI\[ascE\]\}/g, EI[ascE]||'').replace(/\$\{EI\[solE\]\}/g, EI[solE]||'') || '';
+        s1 += N.s1_mismaLuz_contraste?.replace(/\$\{EI\[ascE\]\}/g, EI[ascE]||'').replace(/\$\{EI\[solE\]\}/g, EI[solE]||'') || '';
         s1 += ' ';
-        s1 += (N.s1_contrasteAscSol2 || '')
-          .replace(/\$\{ascS\}/g, ascS).replace(/\$\{solS\}/g, solS)
-          .replace(/\$\{eiAsc\}/g, EI[ascE]||'').replace(/\$\{eiSol\}/g, EI[solE]||'') || '';
-        s1 += ' ';
-        s1 += (N.s1_coherencia || '');
+        s1 += N.s1_mismaLuz_cierre || '';
       } else {
         s1 += ' ';
-        s1 += (N.s1_coherencia || '');
+        s1 += N.s1_mismaLuz_coherencia || '';
       }
     } else {
-      s1 += (N.s1_luna || '')
-        .replace(/\$\{lunaS\}/g, lunaS).replace(/\$\{sqLuna\}/g, SQ[lunaS] || '')
-        .replace(/\$\{SQ\[lunaS\]\}/g, SQ[lunaS] || '') || '';
+      s1 += N.s1_luna?.replace(/\$\{lunaS\}/g, lunaS).replace(/\$\{SQ\[lunaS\]\}/g, SQ[lunaS] || '') || '';
       s1 += ' ';
-      s1 += (N.s1_lunaRefugio || '');
+      s1 += N.s1_luna_refugio || '';
       if (solE !== lunaE) {
         s1 += ' ';
-        s1 += (N.s1_contrasteSolLuna || '')
-          .replace(/\$\{etSol\}/g, ET[solE]||'').replace(/\$\{etLuna\}/g, ET[lunaE]||'')
-          .replace(/\$\{ET\[solE\]\}/g, ET[solE]||'').replace(/\$\{ET\[lunaE\]\}/g, ET[lunaE]||'') || '';
+        s1 += N.s1_contraste_sol?.replace(/\$\{ET\[solE\]\}/g, ET[solE]||'').replace(/\$\{ET\[lunaE\]\}/g, ET[lunaE]||'') || '';
         s1 += ' ';
-        s1 += (N.s1_polaridad1 || '')
-          .replace(/\$\{buscaSol\}/g, buscaSol).replace(/\$\{necesitaLuna\}/g, necesitaLuna) || '';
+        s1 += N.s1_contraste_doble?.replace(/\$\{solE\}/g, solE||'').replace(/\$\{lunaE\}/g, lunaE||'') || '';
       }
       if (ascE !== solE && ascE !== lunaE) {
         s1 += ' ';
-        s1 += (N.s1_triangulacion || '')
-          .replace(/\$\{eiAsc\}/g, EI[ascE]||'').replace(/\$\{eiSol\}/g, EI[solE]||'').replace(/\$\{eiLuna\}/g, EI[lunaE]||'')
-          .replace(/\$\{EI\[ascE\]\}/g, EI[ascE]||'').replace(/\$\{EI\[solE\]\}/g, EI[solE]||'').replace(/\$\{EI\[lunaE\]\}/g, EI[lunaE]||'') || '';
+        s1 += N.s1_triangulacion?.replace(/\$\{EI\[ascE\]\}/g, EI[ascE]||'').replace(/\$\{EI\[solE\]\}/g, EI[solE]||'').replace(/\$\{EI\[lunaE\]\}/g, EI[lunaE]||'') || '';
         s1 += ' ';
-        s1 += (N.s1_triangulacion2 || '')
-          .replace(/\$\{eiAsc\}/g, EI[ascE]||'').replace(/\$\{eiSol\}/g, EI[solE]||'').replace(/\$\{eiLuna\}/g, EI[lunaE]||'') || '';
+        s1 += N.s1_triangulacion_cierre || '';
       } else {
         s1 += ' ';
-        s1 += (N.s1_eje || '');
+        s1 += N.s1_eje || '';
       }
     }
     s1 += '</p>';
@@ -271,36 +235,21 @@ export function analizarCartaAstral(carta) {
     const [domEl, domElC] = elems[0];
     const [weakEl, weakElC] = elems[3];
 
-    s2 += (N.s2_predominio || '')
-      .replace(/\$\{domEl\}/g, domEl).replace(/\$\{domElC\}/g, domElC)
-      .replace(/\$\{etDom\}/g, ET[domEl]||'').replace(/\$\{ET\[domEl\]\}/g, ET[domEl]||'');
+    s2 += (N.s2_predominio || '').replace(/\$\{domEl\}/g, domEl).replace(/\$\{domElC\}/g, domElC).replace(/\$\{ET\[domEl\]\}/g, ET[domEl]||'');
     s2 += ' ';
-    if (domElC >= 5) s2 += (N.s2_concentrado || '')
-      .replace(/\$\{eiDom\}/g, EI[domEl]||'').replace(/\$\{EI\[domEl\]\}/g, EI[domEl]||'') + ' ';
-    else s2 += (N.s2_tendencia || '') + ' ';
-    if (weakElC === 0) s2 += (N.s2_ausencia || '')
-      .replace(/\$\{weakEl\}/g, weakEl).replace(/\$\{etWeak\}/g, ET[weakEl]||'')
-      .replace(/\$\{ET\[weakEl\]\}/g, ET[weakEl]||'') + ' ';
-    else if (weakElC <= 1) s2 += (N.s2_debil || '')
-      .replace(/\$\{weakEl\}/g, weakEl).replace(/\$\{weakElC\}/g, weakElC) + ' ';
-    else s2 += (N.s2_debil2 || '')
-      .replace(/\$\{weakEl\}/g, weakEl).replace(/\$\{weakElC\}/g, weakElC) + ' ';
+    if (domElC >= 5) s2 += (N.s2_predominio_alto || '').replace(/\$\{EI\[domEl\]\}/g, EI[domEl]||'') + ' ';
+    else s2 += (N.s2_predominio_bajo || '') + ' ';
+    if (weakElC === 0) s2 += (N.s2_ausencia || '').replace(/\$\{weakEl\}/g, weakEl).replace(/\$\{ET\[weakEl\]\}/g, ET[weakEl]||'') + ' ';
+    else if (weakElC <= 1) s2 += (N.s2_debil || '').replace(/\$\{weakEl\}/g, weakEl).replace(/\$\{weakElC\}/g, weakElC) + ' ';
+    else s2 += (N.s2_debil_medio || '').replace(/\$\{weakEl\}/g, weakEl).replace(/\$\{weakElC\}/g, weakElC) + ' ';
 
     const mods = [['Cardinal',st.cardinal],['Fijo',st.fixed],['Mutable',st.mutable]];
     mods.sort((a,b) => b[1]-a[1]);
     const [domMod, domModC] = mods[0];
-    s2 += (N.s2_modalidad || '')
-      .replace(/\$\{domMod\}/g, domMod).replace(/\$\{domModC\}/g, domModC)
-      .replace(/\$\{mtDom\}/g, MT[domMod]||'').replace(/\$\{MT\[domMod\]\}/g, MT[domMod]||'') + ' ';
-    if (st.masculine > st.feminine + 2) s2 += (N.s2_yang || '')
-      .replace(/\$\{masculine\}/g, st.masculine).replace(/\$\{feminine\}/g, st.feminine)
-      .replace(/\$\{st\.masculine\}/g, st.masculine).replace(/\$\{st\.feminine\}/g, st.feminine) + ' ';
-    else if (st.feminine > st.masculine + 2) s2 += (N.s2_yin || '')
-      .replace(/\$\{masculine\}/g, st.masculine).replace(/\$\{feminine\}/g, st.feminine)
-      .replace(/\$\{st\.masculine\}/g, st.masculine).replace(/\$\{st\.feminine\}/g, st.feminine) + ' ';
-    else s2 += (N.s2_equilibrio || '')
-      .replace(/\$\{masculine\}/g, st.masculine).replace(/\$\{feminine\}/g, st.feminine)
-      .replace(/\$\{st\.masculine\}/g, st.masculine).replace(/\$\{st\.feminine\}/g, st.feminine) + ' ';
+    s2 += (N.s2_modalidad || '').replace(/\$\{domMod\}/g, domMod).replace(/\$\{domModC\}/g, domModC).replace(/\$\{MT\[domMod\]\}/g, MT[domMod]||'') + ' ';
+    if (st.masculine > st.feminine + 2) s2 += (N.s2_yang || '').replace(/\$\{st\.masculine\}/g, st.masculine).replace(/\$\{st\.feminine\}/g, st.feminine) + ' ';
+    else if (st.feminine > st.masculine + 2) s2 += (N.s2_yin || '').replace(/\$\{st\.feminine\}/g, st.feminine).replace(/\$\{st\.masculine\}/g, st.masculine) + ' ';
+    else s2 += (N.s2_equilibrio || '').replace(/\$\{st\.masculine\}/g, st.masculine).replace(/\$\{st\.feminine\}/g, st.feminine) + ' ';
   }
 
   // Stellium
@@ -311,16 +260,7 @@ export function analizarCartaAstral(carta) {
   }
   if (stelliums.length > 0) {
     const s0 = stelliums[0];
-    const areaStellium = (CT[s0.casa] || '').split(',')[0];
-    const planetasLista = s0.planetas.map(p => pES(p.nombre)).join(', ');
-    const numPlanetas = String(s0.planetas.length);
-    s2 += (N.s2_stellium || '')
-      .replace(/\$\{CT\[s0\.casa\]\}/g, CT[s0.casa]||'')
-      .replace(/\$\{areaStellium\}/g, areaStellium)
-      .replace(/\$\{s0\.planetas\.length\}/g, numPlanetas)
-      .replace(/\$\{numPlanetas\}/g, numPlanetas)
-      .replace(/\$\{planetas\}/g, planetasLista)
-      .replace(/\$\{planetasLista\}/g, planetasLista) + ' ';
+    s2 += (N.s2_stellium1 || '').replace(/\$\{CT\[s0\.casa\]\}/g, CT[s0.casa]||'').replace(/\$\{s0\.planetas\.length\}/g, s0.planetas.length).replace(/\$\{planetas\}/g, s0.planetas.map(p => pES(p.nombre)).join(', ')) + ' ';
     s2 += (N.s2_stellium2 || '') + ' ';
     s2 += (N.s2_stellium3 || '') + '</p>';
   } else {
@@ -372,28 +312,17 @@ export function analizarCartaAstral(carta) {
   if (aspectosClave.length === 0) {
     s4 = '<p>' + (N.s4_sinAspectos || '') + '</p>';
   } else {
-    // Mapeo de nombres de aspecto en inglés (a.tipo) a prefijo corto del JSON
-    const tipoPrefijo = {
-      'Conjunction': 'conj', 'Opposition': 'opp', 'Sextile': 'sex',
-      'Square': 'sq', 'Trine': 'tri',
-    };
     aspectosClave.forEach(a => {
       s4 += '<p>';
       const p1 = pES(a.p1), p2 = pES(a.p2);
       const desc1 = descripcionAspecto(a.p1);
       const desc2 = descripcionAspecto(a.p2);
-      const desc1Cap = desc1.charAt(0).toUpperCase() + desc1.slice(1);
       const orbStr = a.orb.toFixed(1) + '°';
 
-      const pref = tipoPrefijo[a.tipo] || a.tipo.toLowerCase();
-      // Concatenar las 3 partes del aspecto (intro + descripción + consejo)
-      for (const suf of ['1', '2', '3']) {
-        const tpl = N['s4_' + pref + suf];
-        if (!tpl) continue;
-        s4 += tpl
-          .replace(/\$\{p1\}/g, p1).replace(/\$\{p2\}/g, p2).replace(/\$\{orbStr\}/g, orbStr)
-          .replace(/\$\{desc1\}/g, desc1).replace(/\$\{desc2\}/g, desc2)
-          .replace(/\$\{desc1Cap\}/g, desc1Cap);
+      const tk = 's4_' + a.tipo;
+      if (N[tk]) {
+        s4 += N[tk].replace(/\$\{p1\}/g, p1).replace(/\$\{p2\}/g, p2).replace(/\$\{orbStr\}/g, orbStr)
+          .replace(/\$\{desc1\}/g, desc1).replace(/\$\{desc2\}/g, desc2);
       }
       s4 += '</p>';
     });
@@ -405,36 +334,18 @@ export function analizarCartaAstral(carta) {
   let s5 = '<p>';
   const nodoN = buscar(carta, 'N Node');
   if (nodoN) {
-    const signo = _signoKey(nodoN.signo);
-    const sqSigno = SQ[signo] || '';
-    s5 += (N.s5_nodoN || '')
-      .replace(/\$\{nodoN\.signo\.nombre\}/g, signo)
-      .replace(/\$\{SQ\[nodoN\.signo\.nombre\]\}/g, sqSigno)
-      .replace(/\$\{signo\}/g, signo)
-      .replace(/\$\{sqSigno\}/g, sqSigno) + ' ';
+    s5 += (N.s5_nodoN || '').replace(/\$\{nodoN\.signo\.nombre\}/g, _signoKey(nodoN.signo)).replace(/\$\{SQ\[nodoN\.signo\.nombre\]\}/g, SQ[_signoKey(nodoN.signo)]||'') + ' ';
     s5 += (N.s5_nodoN2 || '') + ' ';
   }
   if (carta.southNode) {
-    const signo = _signoKey(carta.southNode.signo);
-    s5 += (N.s5_nodoS || '')
-      .replace(/\$\{carta\.southNode\.signo\.nombre\}/g, signo)
-      .replace(/\$\{signo\}/g, signo) + ' ';
+    s5 += (N.s5_nodoS || '').replace(/\$\{carta\.southNode\.signo\.nombre\}/g, _signoKey(carta.southNode.signo)) + ' ';
   }
   const lilith = buscar(carta, 'Lilith');
   if (lilith) {
-    const signo = _signoKey(lilith.signo);
-    const sqSigno = SQ[signo] || '';
-    s5 += (N.s5_lilith || '')
-      .replace(/\$\{lilith\.signo\.nombre\}/g, signo)
-      .replace(/\$\{SQ\[lilith\.signo\.nombre\]\}/g, sqSigno)
-      .replace(/\$\{signo\}/g, signo)
-      .replace(/\$\{sqSigno\}/g, sqSigno) + ' ';
+    s5 += (N.s5_lilith || '').replace(/\$\{lilith\.signo\.nombre\}/g, _signoKey(lilith.signo)).replace(/\$\{SQ\[lilith\.signo\.nombre\]\}/g, SQ[_signoKey(lilith.signo)]||'') + ' ';
   }
   if (carta.partOfFortune) {
-    const signo = _signoKey(carta.partOfFortune.signo);
-    s5 += (N.s5_fortuna || '')
-      .replace(/\$\{carta\.partOfFortune\.signo\.nombre\}/g, signo)
-      .replace(/\$\{signo\}/g, signo) + ' ';
+    s5 += (N.s5_fortuna || '').replace(/\$\{carta\.partOfFortune\.signo\.nombre\}/g, _signoKey(carta.partOfFortune.signo)) + ' ';
   }
   s5 += '</p>';
 
@@ -449,121 +360,12 @@ export function analizarCartaAstral(carta) {
   }
   if (stelliums.length > 0) {
     const ctStr = (CT[stelliums[0].casa] || '').split(',')[0];
-    s6 += (N.s6_stellium || '')
-      .replace(/\$\{CT\[stelliums\[0\]\.casa\]\.split\(','\)\[0\]\}/g, ctStr)
-      .replace(/\$\{areaStellium\}/g, ctStr) + ' ';
+    s6 += (N.s6_stellium || '').replace(/\$\{CT\[stelliums\[0\]\.casa\]\.split\(','\)\[0\]\}/g, ctStr) + ' ';
   }
   s6 += (N.s6_cierre || '') + '</p>';
 
   // === ENSAMBLAJE ===
   const titulos = D.secciones || {};
-
-  // === MAPA DE SUSTITUCIÓN GENÉRICO ===
-  // Las plantillas del JSON traducido usan nombres cortos (${ascS}, ${sqAsc},
-  // ${eiSol}, ${etSol}, ${signo}, ${sqSigno}, ${domEl}, etc.) que en algunos
-  // casos no coinciden con los replace() puntuales del código. Aquí
-  // reemplazamos de forma genérica cualquier placeholder que haya quedado sin
-  // resolver, usando los valores ya calculados en el análisis.
-  const ascS = asc ? _signoKey(asc.signo) : '';
-  const solS = sol ? _signoKey(sol.signo) : '';
-  const lunaS = luna ? _signoKey(luna.signo) : '';
-  const solE = sol ? SE[solS] : '';
-  const lunaE = luna ? SE[lunaS] : '';
-  const ascE = asc ? SE[ascS] : '';
-  const nodoNSigno = (buscar(carta, 'N Node')) ? _signoKey(buscar(carta, 'N Node').signo) : '';
-  const nodoSSigno = carta.southNode ? _signoKey(carta.southNode.signo) : '';
-  const lilithSigno = (buscar(carta, 'Lilith')) ? _signoKey(buscar(carta, 'Lilith').signo) : '';
-  const fortunaSigno = carta.partOfFortune ? _signoKey(carta.partOfFortune.signo) : '';
-
-  // Elementos dominantes/débiles (si st está disponible)
-  let domEl = '', weakEl = '', domMod = '', mtDom = '', etDom = '', etWeak = '';
-  let domElC = '', weakElC = '', domModC = '', eiDom = '';
-  if (st) {
-    const elems = [['Fuego',st.fuego],['Tierra',st.tierra],['Aire',st.aire],['Agua',st.agua]];
-    elems.sort((a,b) => b[1]-a[1]);
-    [domEl, domElC] = elems[0];
-    [weakEl, weakElC] = elems[3];
-    etDom = ET[domEl] || '';
-    etWeak = ET[weakEl] || '';
-    eiDom = EI[domEl] || '';
-    const mods = [['Cardinal',st.cardinal],['Fijo',st.fixed],['Mutable',st.mutable]];
-    mods.sort((a,b) => b[1]-a[1]);
-    [domMod, domModC] = mods[0];
-    mtDom = MT[domMod] || '';
-  }
-
-  // Stelliums (área)
-  let areaStellium = '', planetasLista = '', numPlanetas = '';
-  if (stelliums.length > 0) {
-    const s0 = stelliums[0];
-    areaStellium = (CT[s0.casa] || '').split(',')[0];
-    planetasLista = s0.planetas.map(p => pES(p.nombre)).join(', ');
-    numPlanetas = String(s0.planetas.length);
-  }
-
-  const placeholderMap = {
-    ascS, solS, lunaS,
-    sqAsc: SQ[ascS] || '', sqSol: SQ[solS] || '', sqLuna: SQ[lunaS] || '',
-    eiAsc: EI[ascE] || '', eiSol: EI[solE] || '', eiLuna: EI[lunaE] || '',
-    etSol: ET[solE] || '', etLuna: ET[lunaE] || '',
-    solSLower: (solS || '').toLowerCase(),
-    domEl, domElC, weakEl, weakElC, etDom, etWeak, eiDom,
-    domMod, domModC, mtDom,
-    masculine: st ? st.masculine : '', feminine: st ? st.feminine : '',
-    areaStellium, planetasLista, numPlanetas,
-    // Sección 5 (kármica): ${signo} y ${sqSigno} se rellenan según el planeta
-    // que toque. Aquí no podemos saber cuál, así que los sustituimos por
-    // el del Nodo Norte por defecto (el más frecuente en s5_nodoN).
-    signo: nodoNSigno,
-    sqSigno: SQ[nodoNSigno] || '',
-  };
-
-  function _resolverPlaceholders(str) {
-    if (!str) return str;
-    let out = str;
-    // Primero los largos (que contienen puntos/indices) para evitar dejar
-    // residuos del estilo ${nodoN.signo.nombre}.
-    out = out.replace(/\$\{nodoN\.signo\.nombre\}/g, nodoNSigno);
-    out = out.replace(/\$\{SQ\[nodoN\.signo\.nombre\]\}/g, SQ[nodoNSigno] || '');
-    out = out.replace(/\$\{carta\.southNode\.signo\.nombre\}/g, nodoSSigno);
-    out = out.replace(/\$\{lilith\.signo\.nombre\}/g, lilithSigno);
-    out = out.replace(/\$\{SQ\[lilith\.signo\.nombre\]\}/g, SQ[lilithSigno] || '');
-    out = out.replace(/\$\{carta\.partOfFortune\.signo\.nombre\}/g, fortunaSigno);
-    out = out.replace(/\$\{SQ\[ascS\]\}/g, SQ[ascS] || '');
-    out = out.replace(/\$\{SQ\[solS\]\}/g, SQ[solS] || '');
-    out = out.replace(/\$\{SQ\[lunaS\]\}/g, SQ[lunaS] || '');
-    out = out.replace(/\$\{EI\[ascE\]\}/g, EI[ascE] || '');
-    out = out.replace(/\$\{EI\[solE\]\}/g, EI[solE] || '');
-    out = out.replace(/\$\{EI\[lunaE\]\}/g, EI[lunaE] || '');
-    out = out.replace(/\$\{ET\[solE\]\}/g, ET[solE] || '');
-    out = out.replace(/\$\{ET\[lunaE\]\}/g, ET[lunaE] || '');
-    out = out.replace(/\$\{ET\[domEl\]\}/g, ET[domEl] || '');
-    out = out.replace(/\$\{ET\[weakEl\]\}/g, ET[weakEl] || '');
-    out = out.replace(/\$\{EI\[domEl\]\}/g, EI[domEl] || '');
-    out = out.replace(/\$\{MT\[domMod\]\}/g, MT[domMod] || '');
-    out = out.replace(/\$\{CT\[s0\.casa\]\}/g, stelliums[0] ? (CT[stelliums[0].casa]||'') : '');
-    out = out.replace(/\$\{s0\.planetas\.length\}/g, stelliums[0] ? String(stelliums[0].planetas.length) : '');
-    out = out.replace(/\$\{planetas\}/g, planetasLista);
-    out = out.replace(/\$\{st\.masculine\}/g, st ? st.masculine : '');
-    out = out.replace(/\$\{st\.feminine\}/g, st ? st.feminine : '');
-    out = out.replace(/\$\{solS\.toLowerCase\(\)\}/g, (solS||'').toLowerCase());
-    // Sustitución genérica de placeholders simples ${name}
-    out = out.replace(/\$\{([a-zA-Z0-9_]+)\}/g, (m, key) => {
-      if (Object.prototype.hasOwnProperty.call(placeholderMap, key)) {
-        return String(placeholderMap[key]);
-      }
-      return m; // si no lo conocemos, dejarlo (pero ya casi no quedan)
-    });
-    return out;
-  }
-
-  s1 = _resolverPlaceholders(s1);
-  s2 = _resolverPlaceholders(s2);
-  s3 = _resolverPlaceholders(s3);
-  s4 = _resolverPlaceholders(s4);
-  s5 = _resolverPlaceholders(s5);
-  s6 = _resolverPlaceholders(s6);
-
   let html = '<div class="analisis-titulo">' + (D.titulo || '✦ Análisis Astral Oracular ✦') + '</div>';
   html += '<div class="analisis-subtitulo">' + (D.subtitulo || 'Un viaje psicológico a través de tu mapa natal') + '</div>';
   html += '<div class="analisis-resumen"><h4>' + (titulos.s1 || '1. El Eje de tu Ser (Tu Gran Trío)') + '</h4>' + s1 + '</div>';
@@ -573,7 +375,8 @@ export function analizarCartaAstral(carta) {
   html += '<div class="analisis-seccion gold-border"><h4>' + (titulos.s5 || '5. Tu Brújula Kármica') + '</h4>' + s5 + '</div>';
   html += '<div class="recomendacion-final"><h4>' + (titulos.s6 || '6. El Consejo del Oráculo') + '</h4>' + s6 + '</div>';
   html += '<p class="aviso-final">' + (N.avisoFinal || 'Este análisis es una interpretación simbólica de tu carta astral. Tómalo como espejo para la reflexión y el autoconocimiento, no como pronóstico determinista.') + '</p>';
-  return html;
+  // Envolver términos técnicos (planetas, signos, cartas) para que sean tapables.
+  return envolverTerminos(html);
 }
 
 // Evaluar template string desde JSON (sustituye ${var} y ${dict[key]})
@@ -588,13 +391,6 @@ function _evalTpl(tpl, ctx) {
   result = result.replace(/\$\{n\}/g, ctx.n || '');
   result = result.replace(/\$\{s\}/g, ctx.s || '');
   result = result.replace(/\$\{p\}/g, ctx.p || '');
-  // Sustituir placeholders simples adicionales (area, signo, cualidad,
-  // cualidadCorta, planeta) usados por las aperturas y conectores del JSON.
-  const extras = ['area', 'signo', 'cualidad', 'cualidadCorta', 'planeta'];
-  for (const k of extras) {
-    const re = new RegExp('\\$\\{' + k + '\\}', 'g');
-    result = result.replace(re, ctx[k] != null ? ctx[k] : '');
-  }
   return result;
 }
 

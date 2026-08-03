@@ -127,7 +127,8 @@
       "Chiron": "Quíron",
       "Lilith": "Lilith",
       "I ASC": "Ascendente (I)",
-      "X MC": "Meio do Céu (X)"
+      "X MC": "Meio do Céu (X)",
+      "S Node": "Nodo Sul"
     },
     "horaDesconocidaLabel": "hora desconhecida (12:00)"
   },
@@ -221,7 +222,10 @@
     "paso3_texto": "O antigo oráculo chinês acompanha cada tiragem de Tarot. Lance as moedas virtuais, obtenha seu hexagrama e descubra as linhas mutantes que marcam seu futuro.",
     "paso4_icono": "✨",
     "paso4_titulo": "Análise com IA",
-    "paso4_texto": "Gere análises profundas e personalizadas de suas tiragens e carta de nascimento com inteligência artificial oracular. Seu guia para o autoconhecimento."
+    "paso4_texto": "Gere análises profundas e personalizadas de suas tiragens e carta de nascimento com inteligência artificial oracular. Seu guia para o autoconhecimento.",
+    "paso5_icono": "📖",
+    "paso5_titulo": "Termos selecionáveis",
+    "paso5_texto": "Toque em qualquer termo técnico sublinhado (cartas, planetas, signos, casas, aspectos) para ver uma descrição breve e clara. Uma forma simples de aprender enquanto explora seu oráculo."
   },
   "ia": {
     "generando": "Gerando análise profunda com IA oracular...",
@@ -460,5 +464,8 @@
     "snackbarTexto": "Se esta leitura ressoou com você e quer que o Oráculo continue grátis para todos, pode me convidar para um café ☕",
     "snackbarBtn": "☕ Pague um café",
     "snackbarNo": "Não, obrigado"
+  },
+  "glossary": {
+    "cerrar": "Fechar"
   }
 }

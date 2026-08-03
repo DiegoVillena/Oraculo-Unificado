@@ -3,11 +3,11 @@
 // Si fallan (timeout, sin red, error), lanzan excepción para que el caller
 // haga fallback al algoritmo local.
 
-import { getIdioma } from '../i18n/i18n.js?v=17';
-import { APP_CONFIG } from '../config.js';
+import { getIdioma } from '../i18n/i18n.js?v=18';
+import { envolverTerminos } from '../ui/glossary.js?v=18';
 
-const WORKER_URL = APP_CONFIG.WORKER_URL;
-const TIMEOUT_MS = APP_CONFIG.IA_TIMEOUT_MS;
+const WORKER_URL = 'https://oraculo-worker.diegovillens.workers.dev';
+const TIMEOUT_MS = 45000;
 
 // === Markdown → HTML (conversor ligero) ===
 function markdownAHtml(md) {
@@ -88,7 +88,7 @@ export async function analisisTarotIA(textoTirada) {
   }
   const data = await resp.json();
   if (!data.texto) throw new Error('Respuesta vacía de la IA');
-  return '<div class="ia-analisis">' + markdownAHtml(data.texto) + '</div>';
+  return envolverTerminos('<div class="ia-analisis">' + markdownAHtml(data.texto) + '</div>');
 }
 
 export async function analisisAstralIA(textoCarta) {
@@ -103,7 +103,7 @@ export async function analisisAstralIA(textoCarta) {
   }
   const data = await resp.json();
   if (!data.texto) throw new Error('Respuesta vacía de la IA');
-  return '<div class="ia-analisis">' + markdownAHtml(data.texto) + '</div>';
+  return envolverTerminos('<div class="ia-analisis">' + markdownAHtml(data.texto) + '</div>');
 }
 
 export async function analisisCombinadoIA(textoTirada, textoCarta) {
@@ -118,7 +118,7 @@ export async function analisisCombinadoIA(textoTirada, textoCarta) {
   }
   const data = await resp.json();
   if (!data.texto) throw new Error('Respuesta vacía de la IA');
-  return '<div class="ia-analisis">' + markdownAHtml(data.texto) + '</div>';
+  return envolverTerminos('<div class="ia-analisis">' + markdownAHtml(data.texto) + '</div>');
 }
 
 // === Generar texto de copia de la carta astral (igual que copiar()) ===

@@ -127,7 +127,8 @@
       "Chiron": "Chiron",
       "Lilith": "Lilith",
       "I ASC": "Aszendent (I)",
-      "X MC": "Mittelpunkt (X)"
+      "X MC": "Mittelpunkt (X)",
+      "S Node": "Südknoten"
     },
     "horaDesconocidaLabel": "unbekannte Zeit (12:00)"
   },
@@ -221,7 +222,10 @@
     "paso3_texto": "Das alte chinesische Orakel begleitet jede Tarot-Legung. Werfen Sie die virtuellen Münzen, erhalten Sie Ihr Hexagramm und entdecken Sie die mutierenden Linien, die Ihre Zukunft markieren.",
     "paso4_icono": "✨",
     "paso4_titulo": "KI-Analyse",
-    "paso4_texto": "Generieren Sie tiefe, personalisierte Analysen Ihrer Legungen und Ihres Geburtscharts mit orakelhafter künstlicher Intelligenz. Ihr Leitfaden zur Selbsterkenntnis."
+    "paso4_texto": "Generieren Sie tiefe, personalisierte Analysen Ihrer Legungen und Ihres Geburtscharts mit orakelhafter künstlicher Intelligenz. Ihr Leitfaden zur Selbsterkenntnis.",
+    "paso5_icono": "📖",
+    "paso5_titulo": "Tippbare Begriffe",
+    "paso5_texto": "Tippe auf einen unterstrichenen Fachbegriff (Karten, Planeten, Zeichen, Häuser, Aspekte), um eine kurze, klare Beschreibung zu sehen. Eine einfache Art, beim Erkunden deines Orakels zu lernen."
   },
   "ia": {
     "generando": "Tiefenanalyse mit orakelhafter KI wird erstellt...",
@@ -460,5 +464,8 @@
     "snackbarTexto": "Wenn dich diese Lesung berührt hat und du möchtest, dass das Orakel für alle kostenlos bleibt, kannst du mir einen Kaffee anbieten ☕",
     "snackbarBtn": "☕ Kaffee anbieten",
     "snackbarNo": "Nein, danke"
+  },
+  "glossary": {
+    "cerrar": "Schließen"
   }
 }

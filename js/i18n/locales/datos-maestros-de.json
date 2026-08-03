@@ -2702,10 +2702,38 @@
       ", rückläufig, was bedeutet, dass diese Qualität in der Intimität verfeinert wird, bevor sie nach außen tritt"
     ],
     "grupos": [
-      "Identität und Materie (Häuser 1, 2 und 3)",
-      "Rückzug und Dienst (Häuser 4, 5 und 6)",
-      "Der Spiegel und die Expansion (Häuser 7, 8 und 9)",
-      "Der Gipfel und das Unbewusste (Häuser 10, 11 und 12)"
+      {
+        "titulo": "Identität und Materie (Häuser 1, 2 und 3)",
+        "casas": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "titulo": "Zuflucht und Dienst (Häuser 4, 5 und 6)",
+        "casas": [
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "titulo": "Der Spiegel und die Expansion (Häuser 7, 8 und 9)",
+        "casas": [
+          7,
+          8,
+          9
+        ]
+      },
+      {
+        "titulo": "Der Gipfel und das Unbewusste (Häuser 10, 11 und 12)",
+        "casas": [
+          10,
+          11,
+          12
+        ]
+      }
     ],
     "narrativa": {
       "s1_asc": "Der erste Eindruck, den du der Welt gibst, ist durch deinen <strong>Aszendenten in ${ascS}</strong> geprägt: ${sqAsc}. ",
@@ -2735,7 +2763,7 @@
       "s2_yang": "Yang-Energie überwiegt (${masculine}/${feminine}), also kommen dir Handlung und Außenwirkung natürlich, doch du wirst dich erinnern müssen, dass wahre Stärke auch anzuhalten und zuzuhören weiß. ",
       "s2_yin": "Yin-Energie überwiegt (${feminine}/${masculine}), also sind Empfänglichkeit und Introspektion dein Rückzugsort, doch du wirst dich erinnern müssen, in die Welt hinauszutreten und das zu manifestieren, was in der Stille gesät wird. ",
       "s2_equilibrio": "Das Gleichgewicht zwischen Yang und Yin (${masculine}/${feminine}) gibt dir eine stabile Basis, von der aus du bewusst wählen kannst. ",
-      "s2_stellium": "Kurioserweise konzentriert sich ein Großteil deiner Lebensenergie im Bereich von ${areaStellium}, wo sich ${numPlanetas} Planeten versammeln: ${planetasLista}. ",
+      "s2_stellium": "Stellium. Kurioserweise konzentriert sich ein Großteil deiner Lebensenergie im Bereich von ${areaStellium}, wo sich ${numPlanetas} Planeten versammeln: ${planetasLista}. ",
       "s2_stellium2": "Diese Konzentration macht diesen Bereich zum Hauptmotor deines Lebens: dort spürst du den größten Druck, aber dort ruht auch dein größtes Potenzial. ",
       "s2_stellium3": "Es ist kein Zufall, dass so viele innere Stimmen an denselben Ort weisen —das Rad zeigt dir, wo deine tiefste Transformation verläuft.",
       "s2_noStellium": "Es gibt keine extremen Konzentrationen in deinem Rad: deine Energie ist über mehrere Bereiche verteilt, was dir Vielseitigkeit verleiht und verhindert, dass ein einziger Bereich deine Existenz monopolisiert.",
@@ -3117,12 +3145,12 @@
       "tematicaEquilibrada": "Die Farben sind ausgeglichen, was anzeigt, dass die Situation mehrere Ebenen zugleich berührt."
     },
     "cruce": {
-      "resuena": "Die dominante Farbe (${paloDom}) resont direkt mit dem Thema deiner Frage (${catDom}).",
-      "noResuena": "Die dominante Farbe (${paloDom}) ist nicht die für ${catDom} erwartete. Die Antwort kommt aus einem anderen Blickwinkel."
+      "resuena": "Die dominante Farbe (${paloDom}) <span class=\"destacado\">resoniert direkt</span> mit dem Thema deiner Frage (${catDom}).",
+      "noResuena": "Die dominante Farbe (${paloDom}) ist nicht die erwartete für ${catDom}. Die Antwort kommt aus einem anderen Winkel."
     },
     "iching": {
-      "principal": "Das Haupt-Hexagramm ist ${nombreHex} (Nr. ${numP}), gebildet aus ${trigInf} und ${trigSup}. ${sig} Der Rat lautet: ${consejo}",
-      "mutantes": "Die mutierenden Linien (${lineas}) deuten auf eine Entwicklung hin zu ${nombreHexF} (Nr. ${numFuturo}). ${sigFuturo}",
+      "principal": "Das Haupthexagramm ist ${hexName} (Nr. ${numP}), gebildet aus ${trigInf} und ${trigSup}. ${sig} Der Rat lautet: <span class=\"destacado\">${consejo}</span>",
+      "mutantes": "Die mutierenden Linien (${mutantes}) deuten eine Entwicklung toward ${hexFName} (Nr. ${numF}). ${hexFSig}",
       "sinMutantes": "Keine mutierenden Linien; die Situation präsentiert sich stabil.",
       "errorHex": "Das Hexagramm konnte nicht geladen werden."
     },
@@ -3135,8 +3163,8 @@
       "invertidas": "Hoher Anteil an umgekehrten Karten (${pctInvertidas}%): innere Blockaden."
     },
     "dignidades": {
-      "amigable": "${c1Ref} und ${c2Ref} stehen in freundlicher Würde (${el1} + ${el2}).",
-      "tension": "${c1Ref} und ${c2Ref} stehen in Spannung (${el1} vs ${el2}).",
+      "amigable": "${c1} und ${c2} sind in freundlicher Würde (${a} + ${b}).",
+      "tension": "${c1} und ${c2} stehen unter Spannung (${a} vs ${b}).",
       "neutro": "Keine signifikanten elementaren Dynamiken zwischen benachbarten Karten beobachtet."
     },
     "posicional": {
@@ -3148,8 +3176,8 @@
       "cruzCard": "${nombre} ${orientacion}. ${plantilla} ${sig}"
     },
     "narrativa": {
-      "cruz": "Von der Vergangenheit (${c4}) ist die Gegenwart durch ${c1} markiert, mit der Herausforderung ${c2}. Die Zukunft weist auf ${c6}, und das Ergebnis auf ${c10}.",
-      "tres": "Der zeitliche Bogen spannt sich von ${c0} (Vergangenheit) zu ${c1} (Gegenwart), hin zu ${c2} (Zukunft).",
+      "cruz": "Aus der Vergangenheit (${c4}) ist die Gegenwart von ${c1} geprägt, mit Herausforderung ${c2}. Die Zukunft weist auf ${c6}, das Ergebnis auf ${c10}.",
+      "tres": "Der zeitliche Bogen geht von ${c0} (Vergangenheit) zu ${c1} (Gegenwart), toward ${c2} (Zukunft).",
       "una": "Die einzelne Karte verdichtet Vergangenheit, Gegenwart und Zukunft in einer einzigen Energie."
     },
     "holistico": {
@@ -3165,12 +3193,13 @@
       "convergenciaTransformacion": "Die umgekehrte Karte und die mutierenden Linien weisen auf eine Transformation im Gange.",
       "convergenciaCarta": "Die Karte weist auf: „${sigCarta}.“ Das Hexagramm rät: „${consejo}“",
       "trayectoriaTitulo": "3. Evolutionäre Bahn:",
-      "trayectoria": "Das zukünftige Hexagramm (${nombreHexF}) und die Karte der Zukunft (${cartaFuturo}) markieren die Richtung.",
+      "trayectoria": "Das zukünftige Hexagramm (${hex}) und die zukünftige Karte (${carta}) markieren die Richtung.",
       "sintesisTitulo": "4. Karmische Synthese:",
       "sintesisKarmica": "Große Arkana + archetypisches Hexagramm: die Situation berührt tiefe karmische Schichten.",
       "sintesisDificultad": "Umgekehrte Karten + Hexagramm der Schwierigkeit: innere Arbeit wird vor äußeren Handeln verlangt.",
       "sintesisAvance": "Karten aufrecht + Hexagramm des Fortschritts: günstiger Moment, nutze den Schwung.",
-      "sintesisMixto": "Die Kombination malt ein nuanciertes Bild: weder alles günstig noch alles abträchtig."
+      "sintesisMixto": "Die Kombination malt ein nuanciertes Bild: weder alles günstig noch alles abträchtig.",
+      "convergencia": "Die Ergebniskarte (${carta}) und das Hexagramm (${hex}) ergänzen sich. "
     },
     "recomendacion": {
       "r1": "Angesichts so vieler umgekehrter Karten und eines Hexagramms der Schwierigkeit, nichts erzwingen. Höre und benenne, was du fühlst. Die Handlung wird offensichtlich, wenn die Energien nachgeben.",
@@ -3183,5 +3212,70 @@
       "r8": "Ausgeglichene Legung ohne Extreme. Verbinde innere Achtsamkeit mit praktischem Handeln. Stabilität ist eine Basis, kein Ziel."
     },
     "aviso": "Diese Analyse ist eine symbolische Interpretation. Verstehe sie als Spiegel zur Reflexion, nicht als deterministische Vorhersage."
+  },
+  "glosario": {
+    "planetas": {
+      "Sun": "Dein Wesen, deine Vitalität und deine Kernidentität. Was dich authentisch macht.",
+      "Moon": "Deine Gefühlswelt, deine intimen Bedürfnisse und wie du dich nährst.",
+      "Mercury": "Dein Verstand, dein Wort und wie du Ideen verbindest und kommunizierst.",
+      "Venus": "Deine Fähigkeit zu lieben, deine Werte und dein Sinn für Schönheit.",
+      "Mars": "Dein Mut, dein Begehren und die Energie, mit der du verfolgst, was du willst.",
+      "Jupiter": "Dein Glaube, deine Expansion und die Suche nach Sinn und Wahrheit.",
+      "Saturn": "Deine Disziplin, deine Grenzen und die Lektionen, die deine Reife strukturieren.",
+      "Uranus": "Deine Originalität, dein Aufstand und der Funke, der das Bestehende bricht.",
+      "Neptune": "Deine Vorstellungskraft, deine Spiritualität und der Schleier zwischen Traum und Hingabe.",
+      "Pluto": "Deine Kraft der Transformation, dein Schatten und die Fähigkeit zu sterben und wiedergeboren zu werden.",
+      "N Node": "Dein karmischer Wachstumspfad: die Richtung, die ängstigt, aber erweitert.",
+      "Chiron": "Die Wunde, die zur Heilung und Quelle der Weisheit wird.",
+      "Lilith": "Dein wildes, verborgenes Ich, das Instinktive, das ohne Scham anerkannt werden will.",
+      "S Node": "Der karmische Punkt der Lösung: Was du schon beherrschst und loslassen musst, um zu wachsen."
+    },
+    "signos": {
+      "0": "Widder (Feuer, Kardinal, Mars): Initiative, Mut und Antrieb.",
+      "1": "Stier (Erde, Fix, Venus): Stabilität, Freude und Beständigkeit.",
+      "2": "Zwillinge (Luft, Veränderlich, Merkur): Neugier, agiler Geist und Kommunikation.",
+      "3": "Krebs (Wasser, Kardinal, Mond): Emotionen, Heim und Schutz.",
+      "4": "Löwe (Feuer, Fix, Sonne): Glanz, Kreativität und Stolz.",
+      "5": "Jungfrau (Erde, Veränderlich, Merkur): Dienst, Analyse und Ordnung.",
+      "6": "Waage (Luft, Kardinal, Venus): Gleichgewicht, Partnerschaft und Harmonie.",
+      "7": "Skorpion (Wasser, Fix, Pluto): Tiefe, Transformation und Intensität.",
+      "8": "Schütze (Feuer, Veränderlich, Jupiter): Expansion, Glaube und Abenteuer.",
+      "9": "Steinbock (Erde, Kardinal, Saturn): Ehrgeiz, Struktur und Verantwortung.",
+      "10": "Wassermann (Luft, Fix, Uranus): Originalität, Gemeinschaft und Aufstand.",
+      "11": "Fische (Wasser, Veränderlich, Neptun): Sensibilität, Träume und Mitgefühl."
+    },
+    "casas": {
+      "1": "Deine Identität und wie die Welt dich beim ersten Treffen wahrnimmt.",
+      "2": "Deine Ressourcen, Finanzen und das Gefühl dessen, was dir gehört.",
+      "3": "Deine alltägliche Kommunikation und der Austausch mit deinem Nahfeld.",
+      "4": "Dein Zuhause, deine Wurzeln und die intime Zuflucht, wo du dich ausruhst.",
+      "5": "Deine Kreativität, wie du spielst und dich verliebst.",
+      "6": "Deine tägliche Arbeit, deine Gesundheit und die Gewohnheiten, die dein Leben tragen.",
+      "7": "Deine intimen Bindungen, deine Partnerschaften und Verträge mit anderen.",
+      "8": "Transformation, tiefe Intimität und was du teilst und loslässt.",
+      "9": "Deine Sinnsuche, die Studien und die Horizonte, die dich rufen.",
+      "10": "Deine Berufung, deine Karriere und die öffentliche Anerkennung, die du aufbaust.",
+      "11": "Deine Freunde, deine Ideale und die Gemeinschaften, in denen deine Vision andere trifft.",
+      "12": "Deine Intuition, dein Unbewusstes und die Abschlusszyklen, die die Wiedergeburt vorbereiten."
+    },
+    "aspectos": {
+      "Conjunction": "Energievereinigung: Intensität und Fokus. Die Planeten wirken zusammen.",
+      "Sextile": "Harmonischer, aber subtiler Fluss: Gelegenheiten, die dein Handeln verlangen.",
+      "Square": "Kreative Spannung: Konflikt, der dich wachsen und lösen lässt.",
+      "Trine": "Natürliche Harmonie: Leichtigkeit und Talente, die ohne Mühe kommen.",
+      "Opposition": "Polarität: Spannung zwischen Gegensätzen, die Integration verlangt."
+    },
+    "conceptos": {
+      "stellium": "Konzentration von 3 oder mehr Planeten in demselben Haus oder Zeichen: ein intensiver Energiefokus in diesem Lebensbereich.",
+      "masculino": "Aktive, Yang-Energien (Feuer und Luft): nach außen gerichteter Antrieb, Handlung und Verstand.",
+      "femenino": "Rezeptive, Yin-Energien (Erde und Wasser): Zurückhaltung, Emotion und Materie.",
+      "fuego": "Element der Handlung, Leidenschaft, Kreativität und Willenskraft. Initiative und Transformation.",
+      "tierra": "Element der Stabilität, Materie, Praktikabilität und Beständigkeit. Das Greifbare und Reale.",
+      "aire": "Element des Geistes, der Kommunikation, Ideen und sozialen Beziehungen. Denken und Logik.",
+      "agua": "Element der Emotion, Intuition, Sensibilität und tiefen Verbindung. Die innere Welt.",
+      "cardinal": "Modus der Initiative: Energie, die startet, führt und neue Zyklen eröffnet.",
+      "fijo": "Modus der Stabilität: Energie, die trägt, ausdauert und aufrechterhält.",
+      "mutable": "Modus der Anpassung: flexible Energie, die fließt, sich anpasst und übergibt."
+    }
   }
 }

@@ -1,9 +1,9 @@
 // ui/modal.js — Modal de zoom para cartas del Tarot e I Ching
-import { KB } from '../data/tarot-kb.js?v=17';
-import { KB_ICHING } from '../data/iching-kb.js?v=17';
-import { getImgUrl } from '../data/tarot-data.js?v=17';
-import { generarHexagramaPorNum } from '../data/iching-svg.js?v=17';
-import { t, tKB, tHexagrama, tCarta } from '../i18n/i18n.js?v=17';
+import { KB } from '../data/tarot-kb.js?v=18';
+import { KB_ICHING } from '../data/iching-kb.js?v=18';
+import { getImgUrl } from '../data/tarot-data.js?v=18';
+import { generarHexagramaPorNum } from '../data/iching-svg.js?v=18';
+import { t, tKB, tHexagrama, tCarta } from '../i18n/i18n.js?v=18';
 
 // === GESTIÓN DEL BOTÓN ATRÁS DE ANDROID ===
 // En una WebView de Capacitor, el botón físico atrás cierra la app si el

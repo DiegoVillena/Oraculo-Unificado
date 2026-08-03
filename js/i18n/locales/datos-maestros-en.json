@@ -2702,10 +2702,38 @@
       ", retrograde, which means this quality is refined in intimacy before being projected outward"
     ],
     "grupos": [
-      "Identity and Matter (Houses 1, 2 and 3)",
-      "Refuge and Service (Houses 4, 5 and 6)",
-      "The Mirror and Expansion (Houses 7, 8 and 9)",
-      "The Summit and the Unconscious (Houses 10, 11 and 12)"
+      {
+        "titulo": "Identity and Matter (Houses 1, 2 and 3)",
+        "casas": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "titulo": "Refuge and Service (Houses 4, 5 and 6)",
+        "casas": [
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "titulo": "The Mirror and Expansion (Houses 7, 8 and 9)",
+        "casas": [
+          7,
+          8,
+          9
+        ]
+      },
+      {
+        "titulo": "The Summit and the Unconscious (Houses 10, 11 and 12)",
+        "casas": [
+          10,
+          11,
+          12
+        ]
+      }
     ],
     "narrativa": {
       "s1_asc": "The first impression you offer the world is marked by your <strong>Ascendant in ${ascS}</strong>: ${sqAsc}. ",
@@ -2735,7 +2763,7 @@
       "s2_yang": "Yang energy predominates (${masculine}/${feminine}), so action and outwardness come naturally to you, though you must remember that true strength also knows how to stop and listen. ",
       "s2_yin": "Yin energy predominates (${feminine}/${masculine}), so receptivity and introspection are your refuge, though you must remember to step out into the world and manifest what is sown in silence. ",
       "s2_equilibrio": "The balance between yang and yin (${masculine}/${feminine}) gives you a stable base from which you can choose consciously. ",
-      "s2_stellium": "Curiously, much of your vital energy is concentrated in the realm of ${areaStellium}, where ${numPlanetas} planets gather: ${planetasLista}. ",
+      "s2_stellium": "Stellium. Curiously, much of your vital energy is concentrated in the realm of ${areaStellium}, where ${numPlanetas} planets gather: ${planetasLista}. ",
       "s2_stellium2": "This concentration turns that area into the main engine of your life: it is where you feel the greatest pressure, but also where your greatest potential resides. ",
       "s2_stellium3": "It is no coincidence that so many inner voices point to the same place —the chart shows you where your deepest transformation passes through.",
       "s2_noStellium": "There are no extreme concentrations in your chart: your energy is spread across several areas, giving you versatility and preventing any single zone from monopolising your existence.",
@@ -3114,12 +3142,12 @@
       "tematicaEquilibrada": "The suits are balanced, indicating that the situation touches several planes at once."
     },
     "cruce": {
-      "resuena": "The dominant suit (${paloDom}) resonates directly with the theme of your question (${catDom}).",
-      "noResuena": "The dominant suit (${paloDom}) is not the one expected for ${catDom}. The answer comes from a different angle."
+      "resuena": "The dominant suit (${paloDom}) <span class=\"destacado\">resonates directly</span> with your question's theme (${catDom}).",
+      "noResuena": "The dominant suit (${paloDom}) is not the expected one for ${catDom}. The answer comes from a different angle."
     },
     "iching": {
-      "principal": "The principal hexagram is ${nombreHex} (nº ${numP}), formed by ${trigInf} and ${trigSup}. ${sig} The counsel is: ${consejo}",
-      "mutantes": "The mutating lines (${lineas}) indicate evolution toward ${nombreHexF} (nº ${numFuturo}). ${sigFuturo}",
+      "principal": "The principal hexagram is ${hexName} (no. ${numP}), formed by ${trigInf} and ${trigSup}. ${sig} The counsel is: <span class=\"destacado\">${consejo}</span>",
+      "mutantes": "The mutating lines (${mutantes}) indicate evolution toward ${hexFName} (no. ${numF}). ${hexFSig}",
       "sinMutantes": "No mutating lines; the situation presents itself as stable.",
       "errorHex": "The hexagram could not be loaded."
     },
@@ -3132,8 +3160,8 @@
       "invertidas": "High percentage of reversed cards (${pctInvertidas}%): inner blocks."
     },
     "dignidades": {
-      "amigable": "${c1Ref} and ${c2Ref} are in friendly dignity (${el1} + ${el2}).",
-      "tension": "${c1Ref} and ${c2Ref} are in tension (${el1} vs ${el2}).",
+      "amigable": "${c1} and ${c2} are in friendly dignity (${a} + ${b}).",
+      "tension": "${c1} and ${c2} are in tension (${a} vs ${b}).",
       "neutro": "No significant elemental dynamics observed between adjacent cards."
     },
     "posicional": {
@@ -3146,7 +3174,7 @@
     },
     "narrativa": {
       "cruz": "From the past (${c4}), the present is marked by ${c1}, with challenge ${c2}. The future points to ${c6}, and the outcome to ${c10}.",
-      "tres": "The temporal arc runs from ${c0} (past) to ${c1} (present), toward ${c2} (future).",
+      "tres": "The temporal arc goes from ${c0} (past) to ${c1} (present), toward ${c2} (future).",
       "una": "The single card condenses past, present and future into one energy."
     },
     "holistico": {
@@ -3162,12 +3190,13 @@
       "convergenciaTransformacion": "The reversed card and the mutating lines indicate transformation underway.",
       "convergenciaCarta": "The card points to: \"${sigCarta}.\" The hexagram counsels: \"${consejo}\"",
       "trayectoriaTitulo": "3. Evolutionary trajectory:",
-      "trayectoria": "The future hexagram (${nombreHexF}) and the future card (${cartaFuturo}) mark the direction.",
+      "trayectoria": "The future hexagram (${hex}) and the future card (${carta}) mark the direction.",
       "sintesisTitulo": "4. Karmic synthesis:",
       "sintesisKarmica": "Major arcana + archetypal hexagram: the situation touches deep karmic layers.",
       "sintesisDificultad": "Reversed cards + hexagram of difficulty: inner work is called for before outer action.",
       "sintesisAvance": "Upright cards + hexagram of advance: a favourable moment, seize the momentum.",
-      "sintesisMixto": "The combination paints a nuanced picture: neither all favourable nor all adverse."
+      "sintesisMixto": "The combination paints a nuanced picture: neither all favourable nor all adverse.",
+      "convergencia": "The result card (${carta}) and the hexagram (${hex}) complement each other. "
     },
     "recomendacion": {
       "r1": "With so many reversed cards and a hexagram of difficulty, do not force. Listen and name what you feel. The action will become evident when the energies yield.",
@@ -3180,5 +3209,70 @@
       "r8": "A balanced spread without extremes. Combine inner listening with practical action. Stability is a base, not a destination."
     },
     "aviso": "This analysis is a symbolic interpretation. Take it as a mirror for reflection, not as a deterministic forecast."
+  },
+  "glosario": {
+    "planetas": {
+      "Sun": "Your essence, vitality and core identity. What makes you feel authentic.",
+      "Moon": "Your emotional world, intimate needs and how you nourish yourself.",
+      "Mercury": "Your mind, your words and how you connect ideas and communicate.",
+      "Venus": "Your capacity to love, your values and your sense of beauty.",
+      "Mars": "Your courage, your drive and the energy you put into pursuing what you want.",
+      "Jupiter": "Your faith, your expansion and the search for meaning and truth.",
+      "Saturn": "Your discipline, your limits and the lessons that structure your maturity.",
+      "Uranus": "Your originality, your rebellion and the spark that breaks the established.",
+      "Neptune": "Your imagination, your spirituality and the veil between dream and surrender.",
+      "Pluto": "Your power of transformation, your shadow and the capacity to die and be reborn.",
+      "N Node": "Your karmic path of growth: the direction that scares but expands you.",
+      "Chiron": "The wound that becomes healing and a source of wisdom.",
+      "Lilith": "Your wild, hidden self, the instinctive that asks to be recognized without shame.",
+      "S Node": "The karmic point of release: what you've already mastered and must let go to grow."
+    },
+    "signos": {
+      "0": "Aries (Fire, Cardinal, Mars): initiative, courage and drive.",
+      "1": "Taurus (Earth, Fixed, Venus): stability, pleasure and persistence.",
+      "2": "Gemini (Air, Mutable, Mercury): curiosity, agile mind and communication.",
+      "3": "Cancer (Water, Cardinal, Moon): emotions, home and protection.",
+      "4": "Leo (Fire, Fixed, Sun): radiance, creativity and pride.",
+      "5": "Virgo (Earth, Mutable, Mercury): service, analysis and order.",
+      "6": "Libra (Air, Cardinal, Venus): balance, partnership and harmony.",
+      "7": "Scorpio (Water, Fixed, Pluto): depth, transformation and intensity.",
+      "8": "Sagittarius (Fire, Mutable, Jupiter): expansion, faith and adventure.",
+      "9": "Capricorn (Earth, Cardinal, Saturn): ambition, structure and responsibility.",
+      "10": "Aquarius (Air, Fixed, Uranus): originality, community and rebellion.",
+      "11": "Pisces (Water, Mutable, Neptune): sensitivity, dreams and compassion."
+    },
+    "casas": {
+      "1": "Your identity and how the world perceives you at first meeting.",
+      "2": "Your resources, finances and sense of what belongs to you.",
+      "3": "Your everyday communication and exchange with your close environment.",
+      "4": "Your home, your roots and the intimate refuge where you rest.",
+      "5": "Your creativity, how you play and fall in love.",
+      "6": "Your daily work, your health and the habits that sustain your life.",
+      "7": "Your intimate bonds, your partnerships and contracts with others.",
+      "8": "Transformation, deep intimacy and what you share and let go of.",
+      "9": "Your search for meaning, studies and the horizons that call you.",
+      "10": "Your vocation, your career and the public recognition you build.",
+      "11": "Your friends, your ideals and the communities where your vision meets others.",
+      "12": "Your intuition, your unconscious and the cycles of closure that prepare rebirth."
+    },
+    "aspectos": {
+      "Conjunction": "Union of energies: intensity and focus. The planets act together.",
+      "Sextile": "Harmonic but subtle flow: opportunities that ask for your action.",
+      "Square": "Creative tension: conflict that pushes you to grow and resolve.",
+      "Trine": "Natural harmony: flow and talents that come without effort.",
+      "Opposition": "Polarity: tension between opposites that asks for integration and balance."
+    },
+    "conceptos": {
+      "stellium": "A concentration of 3 or more planets in the same house or sign: an intense focus of energy in that area of your life.",
+      "masculino": "Active, yang energies (Fire and Air): outward drive, action and mind.",
+      "femenino": "Receptive, yin energies (Earth and Water): containment, emotion and matter.",
+      "fuego": "Element of action, passion, creativity and will. Initiative and transformation.",
+      "tierra": "Element of stability, matter, practicality and constancy. The tangible and real.",
+      "aire": "Element of mind, communication, ideas and social relations. Thought and logic.",
+      "agua": "Element of emotion, intuition, sensitivity and deep connection. The inner world.",
+      "cardinal": "Mode of initiation: energy that starts, leads and opens new cycles.",
+      "fijo": "Mode of stability: energy that sustains, persists and maintains.",
+      "mutable": "Mode of adaptation: flexible energy that flows, adjusts and transitions."
+    }
   }
 }

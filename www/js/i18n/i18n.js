@@ -20,8 +20,19 @@ function detectarIdioma() {
     if (guardado && IDIOMAS_SOPORTADOS.includes(guardado)) return guardado;
   } catch (e) {}
 
-  // 2. Detectar idioma del dispositivo
-  const navLang = (navigator.language || navigator.userLanguage || 'es').toLowerCase();
+  // 2. Detectar idioma del dispositivo. En WebView de Capacitor,
+  // navigator.language puede devolver 'en-US' aunque el dispositivo esté
+  // en español. Usar el puente nativo AndroidLocale si está disponible.
+  let navLang = 'es';
+  try {
+    if (window.AndroidLocale && typeof window.AndroidLocale.get === 'function') {
+      navLang = window.AndroidLocale.get().toLowerCase();
+    } else {
+      navLang = (navigator.language || navigator.userLanguage || 'es').toLowerCase();
+    }
+  } catch (e) {
+    navLang = (navigator.language || 'es').toLowerCase();
+  }
   const codigo2 = navLang.split('-')[0];
 
   // 3. Si el idioma del dispositivo es soportado, usarlo
@@ -160,6 +171,26 @@ export function tPosicion(clave) {
 export function tPais(nombreES) {
   if (!_traducciones || !_traducciones.paises) return nombreES;
   return _traducciones.paises[nombreES] || nombreES;
+}
+
+// === GLOSARIO (descripciones breves de términos astrológicos) ===
+// tipo: 'planeta' | 'signo' | 'casa' | 'aspecto' | 'tarot' | 'iching'
+// clave: nombre canónico (ej: 'Sol', '0', '5', 'Conjunction', 'El Loco', '7')
+// Devuelve { titulo, desc } traducidos, o null si no hay glosario cargado.
+export function tGlosario(tipo, clave) {
+  if (!_datosMaestros.glosario) return null;
+  const g = _datosMaestros.glosario;
+  // data-term usa singular (planeta, signo, casa, aspecto) pero el glosario
+  // del JSON usa plural (planetas, signos, casas, aspectos). Mapear.
+  const MAPA_PLURAL = { planeta: 'planetas', signo: 'signos', casa: 'casas', aspecto: 'aspectos', concepto: 'conceptos' };
+  const bucketName = MAPA_PLURAL[tipo] || tipo;
+  const bucket = g[bucketName];
+  if (!bucket) return null;
+  const entry = bucket[String(clave)];
+  if (!entry) return null;
+  // entry puede ser string (desc directa) u objeto { titulo, desc }
+  if (typeof entry === 'string') return { titulo: String(clave), desc: entry };
+  return { titulo: entry.titulo || String(clave), desc: entry.desc || '' };
 }
 
 // === DATOS DE ANÁLISIS (motores de análisis local) ===

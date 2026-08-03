@@ -1,8 +1,8 @@
 // core/analysis.js — Motor de análisis holístico Tarot + I Ching
 // i18n: todos los textos se cargan desde datos-maestros (analisisTarot)
-import { KB } from '../data/tarot-kb.js?v=17';
-import { KB_ICHING } from '../data/iching-kb.js?v=17';
-import { tCarta, tKB, tHexagrama, getAnalisisTarot } from '../i18n/i18n.js?v=17';
+import { KB } from '../data/tarot-kb.js?v=18';
+import { KB_ICHING } from '../data/iching-kb.js?v=18';
+import { tCarta, tKB, tHexagrama, getAnalisisTarot } from '../i18n/i18n.js?v=18';
 
 export const ELEMENTOS = {
   fuego:  { dual: "aire",   opuesto: "agua"   },
@@ -263,8 +263,7 @@ export function analizarTirada(tirada) {
     const sig = kbHexP_T?.sig || kbHexP?.sig || '';
     const consejo = kbHexP_T?.consejo || kbHexP?.consejo || '';
     lecturaIching = (ichingT.principal || 'El hexagrama principal es <span class="ref-iching">${hexName}</span> (nº ${numP}), formado por <span class="ref-iching">${trigInf}</span> y <span class="ref-iching">${trigSup}</span>. ${sig} El consejo es: <span class="destacado">${consejo}</span>')
-      .replace(/\$\{nombreHex\}/g, hexName).replace(/\$\{hexName\}/g, hexName)
-      .replace(/\$\{numP\}/g, numP)
+      .replace(/\$\{hexName\}/g, `<span data-term="iching:${numP}">${hexName}</span>`).replace(/\$\{numP\}/g, numP)
       .replace(/\$\{trigInf\}/g, trigInf).replace(/\$\{trigSup\}/g, trigSup)
       .replace(/\$\{sig\}/g, sig).replace(/\$\{consejo\}/g, consejo);
     if (iching.hayMutacion && iching.numFuturo) {
@@ -274,11 +273,9 @@ export function analizarTirada(tirada) {
         const hexFName = kbHexF_T?.nombre || kbHexF?.nombre || '';
         const hexFSig = kbHexF_T?.sig || kbHexF?.sig || '';
         lecturaIching += '\n\n' + (ichingT.mutantes || 'Las líneas mutantes (${mutantes}) indican evolución hacia <span class="ref-iching">${hexFName}</span> (nº ${numF}). ${hexFSig}')
-          .replace(/\$\{lineas\}/g, iching.lineasMutantes.join(', '))
           .replace(/\$\{mutantes\}/g, iching.lineasMutantes.join(', '))
-          .replace(/\$\{nombreHexF\}/g, hexFName).replace(/\$\{hexFName\}/g, hexFName)
-          .replace(/\$\{numFuturo\}/g, iching.numFuturo).replace(/\$\{numF\}/g, iching.numFuturo)
-          .replace(/\$\{sigFuturo\}/g, hexFSig).replace(/\$\{hexFSig\}/g, hexFSig);
+          .replace(/\$\{hexFName\}/g, `<span data-term="iching:${iching.numFuturo}">${hexFName}</span>`).replace(/\$\{numF\}/g, iching.numFuturo)
+          .replace(/\$\{hexFSig\}/g, hexFSig);
       }
     } else {
       lecturaIching += '\n\n' + (ichingT.sinMutantes || 'Sin líneas mutantes, la situación se presenta estable.');
@@ -305,33 +302,30 @@ export function analizarTirada(tirada) {
       const b = KB[cartas[i + 1].nombre];
       if (!a || !b) continue;
       const d = dignidadEntre(a.elemento, b.elemento);
-      const c1Ref = `${cartas[i].posicion.split('.')[0]}·${tCarta(cartas[i].nombre)}`;
-      const c2Ref = `${cartas[i + 1].posicion.split('.')[0]}·${tCarta(cartas[i + 1].nombre)}`;
+      const c1Ref = `${cartas[i].posicion.split('.')[0]}·<span class="ref-tarot" data-term="tarot:${cartas[i].nombre}"${cartas[i].alReves ? ' data-reves="1"' : ''}>${tCarta(cartas[i].nombre)}</span>`;
+      const c2Ref = `${cartas[i + 1].posicion.split('.')[0]}·<span class="ref-tarot" data-term="tarot:${cartas[i + 1].nombre}"${cartas[i + 1].alReves ? ' data-reves="1"' : ''}>${tCarta(cartas[i + 1].nombre)}</span>`;
       if (d === "amigable") {
         dignidades.push((dignidadesT.amigable || '<span class="ref-tarot">${c1}</span> y <span class="ref-tarot">${c2}</span> están en dignidad amigable (${a} + ${b}).')
-          .replace(/\$\{c1Ref\}/g, c1Ref).replace(/\$\{c2Ref\}/g, c2Ref)
-          .replace(/\$\{c1\}/g, c1Ref).replace(/\$\{c2\}/g, c2Ref)
-          .replace(/\$\{el1\}/g, a.elemento).replace(/\$\{el2\}/g, b.elemento)
-          .replace(/\$\{a\}/g, a.elemento).replace(/\$\{b\}/g, b.elemento));
+          .replace(/\$\{c1\}/g, c1Ref).replace(/\$\{c2\}/g, c2Ref).replace(/\$\{a\}/g, a.elemento).replace(/\$\{b\}/g, b.elemento));
       } else if (d === "tenso") {
         dignidades.push((dignidadesT.tension || '<span class="ref-tarot">${c1}</span> y <span class="ref-tarot">${c2}</span> están en tensión (${a} vs ${b}).')
-          .replace(/\$\{c1Ref\}/g, c1Ref).replace(/\$\{c2Ref\}/g, c2Ref)
-          .replace(/\$\{c1\}/g, c1Ref).replace(/\$\{c2\}/g, c2Ref)
-          .replace(/\$\{el1\}/g, a.elemento).replace(/\$\{el2\}/g, b.elemento)
-          .replace(/\$\{a\}/g, a.elemento).replace(/\$\{b\}/g, b.elemento));
+          .replace(/\$\{c1\}/g, c1Ref).replace(/\$\{c2\}/g, c2Ref).replace(/\$\{a\}/g, a.elemento).replace(/\$\{b\}/g, b.elemento));
       }
     }
   }
   if (dignidades.length === 0) dignidades.push(dignidadesT.neutro || "No se observan dinámicas elementales significativas entre cartas adyacentes.");
 
   const posicional = [];
+  // Helper: envolver nombre de carta como término seleccionable.
+  // alReves se pasa para que al tap abra el modal con la orientación correcta.
+  const cartaTerm = (nombre, alReves) => `<span class="ref-tarot" data-term="tarot:${nombre}"${alReves ? ' data-reves="1"' : ''}>${tCarta(nombre)}</span>`;
   if (tirada.tipo === 'una') {
     const c = cartas[0];
     const kb = KB[c.nombre];
     const kbT = tKB(c.nombre);
     const data = c.alReves ? { kw: kbT?.revesKw || kb.reves.kw, sig: kbT?.revesSig || kb.reves.sig }
                            : { kw: kbT?.kw || kb.derecho.kw, sig: kbT?.sig || kb.derecho.sig };
-    posicional.push({ titulo: c.posicion, texto: `${tCarta(c.nombre)} ${c.orientacion}: ${data.sig} ${(posicionalT.kwLabel || 'Palabras clave:')} ${data.kw.join(', ')}.` });
+    posicional.push({ titulo: c.posicion, texto: `${cartaTerm(c.nombre, c.alReves)} ${c.orientacion}: ${data.sig} ${(posicionalT.kwLabel || 'Palabras clave:')} ${data.kw.join(', ')}.` });
   } else if (tirada.tipo === 'tres') {
     cartas.forEach(c => {
       const kb = KB[c.nombre];
@@ -341,14 +335,14 @@ export function analizarTirada(tirada) {
       if (c.num === 1) contexto = posicionalT.pasado || "El pasado ha dejado esta energía como herencia.";
       else if (c.num === 2) contexto = posicionalT.presente || "En el presente, esta carta describe la energía actual.";
       else contexto = posicionalT.futuro || "En el futuro cercano, esta energía se vislumbra como tendencia.";
-      posicional.push({ titulo: c.posicion, texto: `${tCarta(c.nombre)} ${c.orientacion}. ${contexto} ${data.sig}` });
+      posicional.push({ titulo: c.posicion, texto: `${cartaTerm(c.nombre, c.alReves)} ${c.orientacion}. ${contexto} ${data.sig}` });
     });
   } else if (tirada.tipo === 'cruz') {
     cartas.forEach(c => {
       const kb = KB[c.nombre];
       const kbT = tKB(c.nombre);
       const data = c.alReves ? { sig: kbT?.revesSig || kb.reves.sig } : { sig: kbT?.sig || kb.derecho.sig };
-      posicional.push({ titulo: c.posicion, texto: `${tCarta(c.nombre)} ${c.orientacion}. ${plantilla[c.num] || ''} ${data.sig}` });
+      posicional.push({ titulo: c.posicion, texto: `${cartaTerm(c.nombre, c.alReves)} ${c.orientacion}. ${plantilla[c.num] || ''} ${data.sig}` });
     });
   }
 
@@ -360,13 +354,13 @@ export function analizarTirada(tirada) {
     const c6 = cartas.find(c => c.num === 6);
     const c10 = cartas.find(c => c.num === 10);
     narrativa = (narrativaT.cruz || 'Desde el pasado (<span class="ref-tarot">${c4}</span>), el presente está marcado por <span class="ref-tarot">${c1}</span>, con desafío <span class="ref-tarot">${c2}</span>. El futuro apunta a <span class="ref-tarot">${c6}</span>, y el resultado a <span class="ref-tarot">${c10}</span>.')
-      .replace(/\$\{c4\}/g, tCarta(c4.nombre)).replace(/\$\{c1\}/g, tCarta(c1.nombre))
-      .replace(/\$\{c2\}/g, tCarta(c2.nombre)).replace(/\$\{c6\}/g, tCarta(c6.nombre))
-      .replace(/\$\{c10\}/g, tCarta(c10.nombre));
+      .replace(/\$\{c4\}/g, cartaTerm(c4.nombre, c4.alReves)).replace(/\$\{c1\}/g, cartaTerm(c1.nombre, c1.alReves))
+      .replace(/\$\{c2\}/g, cartaTerm(c2.nombre, c2.alReves)).replace(/\$\{c6\}/g, cartaTerm(c6.nombre, c6.alReves))
+      .replace(/\$\{c10\}/g, cartaTerm(c10.nombre, c10.alReves));
   } else if (tirada.tipo === 'tres') {
     narrativa = (narrativaT.tres || 'El arco temporal va de <span class="ref-tarot">${c0}</span> (pasado) a <span class="ref-tarot">${c1}</span> (presente), hacia <span class="ref-tarot">${c2}</span> (futuro).')
-      .replace(/\$\{c0\}/g, tCarta(cartas[0].nombre)).replace(/\$\{c1\}/g, tCarta(cartas[1].nombre))
-      .replace(/\$\{c2\}/g, tCarta(cartas[2].nombre));
+      .replace(/\$\{c0\}/g, cartaTerm(cartas[0].nombre, cartas[0].alReves)).replace(/\$\{c1\}/g, cartaTerm(cartas[1].nombre, cartas[1].alReves))
+      .replace(/\$\{c2\}/g, cartaTerm(cartas[2].nombre, cartas[2].alReves));
   } else {
     narrativa = narrativaT.una || 'La carta única condensa pasado, presente y futuro en una sola energía.';
   }
@@ -382,17 +376,11 @@ export function analizarTirada(tirada) {
   holistico += `<strong>${holisticoT.resonanciaTitulo || '1. Resonancia elemental:'}</strong> `;
   if (paloDomCanonico && elHexP) {
     const d = dignidadEntre(paloDomCanonico, elHexP);
-    if (d === "amigable") holistico += (holisticoT.armonia || 'El elemento del Tarot (${palo}) está en <span class="destacado">armonía</span> con el del I Ching (${elHex}).')
-      .replace(/\$\{paloDomCanonico\}/g, paloDomCanonico).replace(/\$\{palo\}/g, paloDomCanonico)
-      .replace(/\$\{elHexP\}/g, elHexP).replace(/\$\{elHex\}/g, elHexP);
-    else if (d === "tenso") holistico += (holisticoT.tension || 'El elemento del Tarot (${palo}) está en <span class="destacado">tensión</span> con el del I Ching (${elHex}).')
-      .replace(/\$\{paloDomCanonico\}/g, paloDomCanonico).replace(/\$\{palo\}/g, paloDomCanonico)
-      .replace(/\$\{elHexP\}/g, elHexP).replace(/\$\{elHex\}/g, elHexP);
+    if (d === "amigable") holistico += (holisticoT.armonia || 'El elemento del Tarot (${palo}) está en <span class="destacado">armonía</span> con el del I Ching (${elHex}).').replace(/\$\{palo\}/g, paloDomCanonico).replace(/\$\{elHex\}/g, elHexP);
+    else if (d === "tenso") holistico += (holisticoT.tension || 'El elemento del Tarot (${palo}) está en <span class="destacado">tensión</span> con el del I Ching (${elHex}).').replace(/\$\{palo\}/g, paloDomCanonico).replace(/\$\{elHex\}/g, elHexP);
     else holistico += holisticoT.neutro || 'Los elementos son <span class="destacado">neutros</span> entre sí.';
   } else {
-    holistico += (holisticoT.sinPalo || 'No hay palo dominante claro; el I Ching aporta ${elHex} como cualidad de fondo.')
-      .replace(/\$\{elHexP\}/g, elHexP || (holisticoT.indefinido || 'indefinido'))
-      .replace(/\$\{elHex\}/g, elHexP || (holisticoT.indefinido || 'indefinido'));
+    holistico += (holisticoT.sinPalo || 'No hay palo dominante claro; el I Ching aporta ${elHex} como cualidad de fondo.').replace(/\$\{elHex\}/g, elHexP || (holisticoT.indefinido || 'indefinido'));
   }
 
   holistico += `\n\n<strong>${holisticoT.convergenciaTitulo || '2. Convergencia del resultado:'}</strong> `;
@@ -408,7 +396,7 @@ export function analizarTirada(tirada) {
     const hexName = kbHexP_T?.nombre || kbHexP?.nombre || '';
     const hexConsejo = kbHexP_T?.consejo || kbHexP?.consejo || '';
     holistico += (holisticoT.convergencia || 'La carta resultado (<span class="ref-tarot">${carta}</span>) y el hexagrama (<span class="ref-iching">${hex}</span>) se complementan. ')
-      .replace(/\$\{carta\}/g, tCarta(cartaResultado.nombre)).replace(/\$\{hex\}/g, hexName);
+      .replace(/\$\{carta\}/g, cartaTerm(cartaResultado.nombre, cartaResultado.alReves)).replace(/\$\{hex\}/g, `<span data-term="iching:${numP}">${hexName}</span>`);
     const cierreCarta = ['El Mundo','La Muerte','La Torre','El Juicio','10 de Espadas','10 de Bastos','10 de Copas','10 de Oros'].includes(cartaResultado.nombre);
     const cierreHex = ['23','24','49','63','64'].includes(String(numP));
     const comienzoCarta = cartaResultado.nombre.startsWith('As') || ['El Loco','El Mago','La Rueda de la Fortuna'].includes(cartaResultado.nombre);
@@ -431,7 +419,7 @@ export function analizarTirada(tirada) {
     if ((kbHexF_T || kbHexF) && cartaFuturo) {
       const hexFName = kbHexF_T?.nombre || kbHexF?.nombre || '';
       holistico += (holisticoT.trayectoria || 'El hexagrama futuro (<span class="ref-iching">${hex}</span>) y la carta del futuro (<span class="ref-tarot">${carta}</span>) marcan la dirección.')
-        .replace(/\$\{hex\}/g, hexFName).replace(/\$\{carta\}/g, tCarta(cartaFuturo.nombre));
+        .replace(/\$\{hex\}/g, `<span data-term="iching:${iching.numFuturo}">${hexFName}</span>`).replace(/\$\{carta\}/g, cartaTerm(cartaFuturo.nombre, cartaFuturo.alReves));
     }
   }
 

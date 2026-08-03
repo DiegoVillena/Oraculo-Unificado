@@ -4,7 +4,7 @@
 // No intrusivo: respeta "No, gracias" y nunca se muestra al primer arranque.
 // Toda la UI se construye con t() para soportar los 6 idiomas (es/en/pt/fr/de/it).
 
-import { t } from '../i18n/i18n.js?v=17';
+import { t } from '../i18n/i18n.js?v=18';
 
 const KOFI_URL = 'https://ko-fi.com/diegovill';
 const STORAGE_KEY = 'oraculo_donacion_ultima_vez';
@@ -31,7 +31,7 @@ export function mostrarDonacionSiToca(contenedor) {
   snackbar.innerHTML = `
     <div class="donacion-texto">${t('donacion.snackbarTexto')}</div>
     <div class="donacion-acciones">
-      <a href="${KOFI_URL}" target="_blank" rel="noopener" class="donacion-btn-cafe">${t('donacion.snackbarBtn')}</a>
+      <button type="button" class="donacion-btn-cafe">${t('donacion.snackbarBtn')}</button>
       <button type="button" class="donacion-btn-no">${t('donacion.snackbarNo')}</button>
     </div>
   `;
@@ -42,6 +42,7 @@ export function mostrarDonacionSiToca(contenedor) {
   try { localStorage.setItem(STORAGE_KEY, String(Date.now())); } catch (e) {}
 
   snackbar.querySelector('.donacion-btn-cafe').addEventListener('click', () => {
+    abrirKoFi();
     setTimeout(() => snackbar.remove(), 400);
   });
   snackbar.querySelector('.donacion-btn-no').addEventListener('click', () => {
@@ -66,13 +67,14 @@ export function abrirAcercaDe() {
         <p class="acerca-linea">${t('donacion.modalLinea')}</p>
         <p class="acerca-texto">${t('donacion.modalP1')}</p>
         <p class="acerca-texto">${t('donacion.modalP2')}</p>
-        <a href="${KOFI_URL}" target="_blank" rel="noopener" class="acerca-btn-cafe">${t('donacion.modalBtn')}</a>
+        <button type="button" class="acerca-btn-cafe">${t('donacion.modalBtn')}</button>
         <p class="acerca-mini">${KOFI_URL}</p>
         <p class="acerca-texto acerca-gracias">${t('donacion.modalGracias')}</p>
       </div>
     </div>
   `;
   document.body.appendChild(modal);
+  modal.querySelector('.acerca-btn-cafe').addEventListener('click', abrirKoFi);
   modal.querySelector('.acerca-cerrar').addEventListener('click', () => modal.remove());
   modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
 }
@@ -90,3 +92,18 @@ export function actualizarFooterDonacion() {
 // Exponer para botones inline del HTML (header/footer).
 window.__donacion = window.__donacion || {};
 window.__donacion.abrirAcercaDe = abrirAcercaDe;
+// Abrir Ko-fi en el navegador del sistema (no en el WebView).
+// Usa el puente nativo AndroidOpenUrl si está disponible; si no (web/navegador),
+// usa window.open como fallback.
+function abrirKoFi() {
+  try {
+    if (window.AndroidOpenUrl && window.AndroidOpenUrl.open) {
+      window.AndroidOpenUrl.open(KOFI_URL);
+    } else {
+      window.open(KOFI_URL, '_blank');
+    }
+  } catch (e) {
+    try { window.open(KOFI_URL, '_blank'); } catch (e2) {}
+  }
+}
+window.__donacion.abrirKoFi = abrirKoFi;

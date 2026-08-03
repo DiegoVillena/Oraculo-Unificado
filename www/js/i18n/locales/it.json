@@ -127,7 +127,8 @@
       "Chiron": "Chirone",
       "Lilith": "Lilith",
       "I ASC": "Ascendente (I)",
-      "X MC": "Medio Cielo (X)"
+      "X MC": "Medio Cielo (X)",
+      "S Node": "Nodo Sud"
     },
     "horaDesconocidaLabel": "ora sconosciuta (12:00)"
   },
@@ -221,7 +222,10 @@
     "paso3_texto": "L'antico oracolo cinese accompagna ogni estrazione dei Tarocchi. Lancia le monete virtuali, ottieni il tuo Esagramma e scopri le linee mutanti che segnano il tuo futuro.",
     "paso4_icono": "✨",
     "paso4_titulo": "Analisi con IA",
-    "paso4_texto": "Genera analisi profonde e personalizzate delle tue estrazioni e del tuo tema natale con intelligenza artificiale oracolare. La tua guida alla conoscenza di sé."
+    "paso4_texto": "Genera analisi profonde e personalizzate delle tue estrazioni e del tuo tema natale con intelligenza artificiale oracolare. La tua guida alla conoscenza di sé.",
+    "paso5_icono": "📖",
+    "paso5_titulo": "Termini selezionabili",
+    "paso5_texto": "Tocca qualsiasi termine tecnico sottolineato (carte, pianeti, segni, case, aspetti) per vedere una descrizione breve e chiara. Un modo semplice per imparare mentre esplori il tuo oracolo."
   },
   "ia": {
     "generando": "Generazione dell'analisi profonda con IA oracolare...",
@@ -460,5 +464,8 @@
     "snackbarTexto": "Se questa lettura ha risuonato in te e vuoi che l'Oracolo resti gratis per tutti, puoi offrirmi un caffè ☕",
     "snackbarBtn": "☕ Offrimi un caffè",
     "snackbarNo": "No, grazie"
+  },
+  "glossary": {
+    "cerrar": "Chiudi"
   }
 }

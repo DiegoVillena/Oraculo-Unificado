@@ -1,16 +1,17 @@
 // main.js — Entry point Oráculo Unificado (reconstruido)
-import { initTabs, cambiarPestana } from './ui/tabs.js?v=17';
-import { initFormularioAstral, render as renderAstral } from './ui/astral.js?v=17';
-import { realizarConsulta, mostrarAnalisis, copiarResultados, compartirResultados, getUltimaTirada, getTextoCopia, visualizarTiradaGuardada } from './ui/tarot.js?v=17';
-import { abrirModal, abrirModalIching, cerrarModal } from './ui/modal.js?v=17';
-import * as storage from './storage.js?v=17';
-import { getUltimaCarta, generarTextoCarta } from './core/astrologia.js?v=17';
-import { analizarCartaAstral, extraerTextoAnalisisAstral } from './core/astrologia-analisis.js?v=17';
-import { analisisAstralIA, analisisCombinadoIA, generarTextoCopiaAstral } from './core/ia-api.js?v=17';
-import { mostrarDonacionSiToca, abrirAcercaDe, actualizarFooterDonacion } from './ui/donacion.js?v=17';
-import { initDB } from './data/sqlite-db.js?v=17';
-import { initOnboarding } from './ui/onboarding.js?v=17';
-import { initI18n, t, cambiarIdioma, getIdioma, getIdiomasSoportados } from './i18n/i18n.js?v=17';
+import { initTabs, cambiarPestana } from './ui/tabs.js?v=18';
+import { initFormularioAstral, render as renderAstral } from './ui/astral.js?v=18';
+import { realizarConsulta, mostrarAnalisis, copiarResultados, compartirResultados, getUltimaTirada, getTextoCopia, visualizarTiradaGuardada } from './ui/tarot.js?v=18';
+import { abrirModal, abrirModalIching, cerrarModal } from './ui/modal.js?v=18';
+import { inicializarGlosario, resetMapaTerminos } from './ui/glossary.js?v=18';
+import * as storage from './storage.js?v=18';
+import { getUltimaCarta, generarTextoCarta } from './core/astrologia.js?v=18';
+import { analizarCartaAstral, extraerTextoAnalisisAstral } from './core/astrologia-analisis.js?v=18';
+import { analisisAstralIA, analisisCombinadoIA, generarTextoCopiaAstral } from './core/ia-api.js?v=18';
+import { mostrarDonacionSiToca, abrirAcercaDe, actualizarFooterDonacion } from './ui/donacion.js?v=18';
+import { initDB } from './data/sqlite-db.js?v=18';
+import { initOnboarding } from './ui/onboarding.js?v=18';
+import { initI18n, t, cambiarIdioma, getIdioma, getIdiomasSoportados } from './i18n/i18n.js?v=18';
 
 window.__tarotUI = { abrirModal, abrirModalIching, realizarConsulta, mostrarAnalisis, copiarResultados, compartirResultados, cerrarModal };
 
@@ -86,6 +87,7 @@ function mostrarSelectorIdioma() {
     btn.addEventListener('click', async () => {
       const lang = btn.getAttribute('data-lang');
       await cambiarIdioma(lang);
+      resetMapaTerminos(); // resetear mapa de términos del glosario (nombres traducidos cambian)
       modal.remove();
       // Re-renderizar onboarding si está visible
       const onb = document.getElementById('onboarding-overlay');
@@ -309,6 +311,9 @@ async function init() {
   // Inicializar i18n (detecta idioma del dispositivo, carga traducciones)
   await initI18n();
 
+  // Inicializar glosario: hace tapables los términos técnicos (data-term)
+  inicializarGlosario();
+
   // Configurar selector de idioma
   const btnIdioma = document.getElementById('btn-idioma');
   if (btnIdioma) btnIdioma.addEventListener('click', mostrarSelectorIdioma);
@@ -328,11 +333,12 @@ async function init() {
       }
     });
   }
-  // Tras cada cambio de idioma, regenerar el footer con el nuevo idioma
+  // Tras cada cambio de idioma, regenerar el footer y resetear el mapa de términos
   const _cambiarIdiomaOriginal = window.__app.cambiarIdioma || cambiarIdioma;
   window.__app.cambiarIdioma = async function(loc) {
     await cambiarIdioma(loc);
     actualizarFooterDonacion();
+    resetMapaTerminos(); // los nombres traducidos cambian con el idioma
   };
 
   // Tutorial de onboarding (solo la primera vez)

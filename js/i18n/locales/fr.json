@@ -127,7 +127,8 @@
       "Chiron": "Chiron",
       "Lilith": "Lilith",
       "I ASC": "Ascendant (I)",
-      "X MC": "Milieu du Ciel (X)"
+      "X MC": "Milieu du Ciel (X)",
+      "S Node": "Nœud Sud"
     },
     "horaDesconocidaLabel": "heure inconnue (12:00)"
   },
@@ -221,7 +222,10 @@
     "paso3_texto": "L'ancien oracle chinois accompagne chaque tirage de Tarot. Lancez les pièces virtuelles, obtenez votre hexagramme et découvrez les lignes mutantes qui marquent votre avenir.",
     "paso4_icono": "✨",
     "paso4_titulo": "Analyse par IA",
-    "paso4_texto": "Générez des analyses profondes et personnalisées de vos tirages et de votre thème astral avec une intelligence artificielle oraculaire. Votre guide vers la connaissance de soi."
+    "paso4_texto": "Générez des analyses profondes et personnalisées de vos tirages et de votre thème astral avec une intelligence artificielle oraculaire. Votre guide vers la connaissance de soi.",
+    "paso5_icono": "📖",
+    "paso5_titulo": "Termes sélectionnables",
+    "paso5_texto": "Touchez tout terme technique souligné (cartes, planètes, signes, maisons, aspects) pour voir une description brève et claire. Une façon simple d'apprendre en explorant ton oracle."
   },
   "ia": {
     "generando": "Génération de l'analyse profonde avec l'IA oraculaire...",
@@ -460,5 +464,8 @@
     "snackbarTexto": "Si cette lecture a résoné en vous et que vous souhaitez que l'Oracle reste gratuit pour tous, vous pouvez m'offrir un café ☕",
     "snackbarBtn": "☕ Offrez-moi un café",
     "snackbarNo": "Non, merci"
+  },
+  "glossary": {
+    "cerrar": "Fermer"
   }
 }

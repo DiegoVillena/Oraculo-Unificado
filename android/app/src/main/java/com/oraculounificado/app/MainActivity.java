@@ -133,6 +133,38 @@ public class MainActivity extends BridgeActivity {
                     });
                 }
             }, "AndroidShare");
+
+            // Puente JS → nativo para abrir URLs externas en el navegador del sistema.
+            // Los <a href target="_blank"> no funcionan en WebView sin HTTPS, así que
+            // exponemos AndroidOpenUrl.open(url) que lanza Intent.ACTION_VIEW.
+            webView.addJavascriptInterface(new Object() {
+                @JavascriptInterface
+                public void open(final String url) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Intent intent = new Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url));
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            } catch (Exception e) {
+                                // URL inválida o sin navegador instalado
+                            }
+                        }
+                    });
+                }
+            }, "AndroidOpenUrl");
+
+            // Puente JS → nativo para obtener el locale real del dispositivo.
+            // navigator.language en WebView puede devolver 'en-US' aunque el
+            // dispositivo esté en español. Este puente devuelve el locale real.
+            webView.addJavascriptInterface(new Object() {
+                @JavascriptInterface
+                public String get() {
+                    java.util.Locale loc = java.util.Locale.getDefault();
+                    return loc.getLanguage();
+                }
+            }, "AndroidLocale");
         }
 
         // Botón físico atrás de Android.

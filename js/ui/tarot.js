@@ -1,15 +1,15 @@
 // ui/tarot.js — Renderizado de tiradas de Tarot + I Ching
 // FIX: Layout rediseñado sin solapamientos. Cruz Celta usa CSS Grid responsivo
 // en lugar de position:absolute con porcentajes que causaban pisado en móvil.
-import { barajaTarot, posicionesCruzCelta, posicionesTres, dictHexagramas, codigoANumero, getImgUrl } from '../data/tarot-data.js?v=17';
-import { t, tCarta, tKB, tHexagrama, tPosicion } from '../i18n/i18n.js?v=17';
-import { KB } from '../data/tarot-kb.js?v=17';
-import { KB_ICHING } from '../data/iching-kb.js?v=17';
-import { abrirModal, abrirModalIching } from './modal.js?v=17';
-import { generarAnalisis, extraerTextoAnalisis } from '../core/analysis.js?v=17';
-import { generarHexagramaPorNum } from '../data/iching-svg.js?v=17';
-import { analisisTarotIA } from '../core/ia-api.js?v=17';
-import { mostrarDonacionSiToca } from './donacion.js?v=17';
+import { barajaTarot, posicionesCruzCelta, posicionesTres, dictHexagramas, codigoANumero, getImgUrl } from '../data/tarot-data.js?v=18';
+import { t, tCarta, tKB, tHexagrama, tPosicion } from '../i18n/i18n.js?v=18';
+import { KB } from '../data/tarot-kb.js?v=18';
+import { KB_ICHING } from '../data/iching-kb.js?v=18';
+import { abrirModal, abrirModalIching } from './modal.js?v=18';
+import { generarAnalisis, extraerTextoAnalisis } from '../core/analysis.js?v=18';
+import { generarHexagramaPorNum } from '../data/iching-svg.js?v=18';
+import { analisisTarotIA } from '../core/ia-api.js?v=18';
+import { mostrarDonacionSiToca } from './donacion.js?v=18';
 
 let ultimaTirada = null;
 let textoGlobalCopia = '';
@@ -231,7 +231,7 @@ export function realizarConsulta(tipoTiradaTarot) {
       const target = visual || resultadosDiv;
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 250);
-  }, 2500);
+  }, 1500);
 }
 
 // Mostrar/ocultar botón de análisis combinado según si hay tirada y carta astral
@@ -239,7 +239,7 @@ function actualizarBotonCombinado() {
   const btnCombinado = document.getElementById('btn-analisis-combinado');
   if (!btnCombinado) return;
   // Importar getUltimaCarta dinámicamente para evitar dependencia circular
-  import('../core/astrologia.js?v=17').then(mod => {
+  import('../core/astrologia.js?v=18').then(mod => {
     const carta = mod.getUltimaCarta();
     if (ultimaTirada && carta) {
       btnCombinado.style.display = 'block';
@@ -300,7 +300,7 @@ function renderCartasSimples(cartasTiradas) {
     const tipoClass = kbEntry && kbEntry.tipo === 'mayor' ? '' : 'arcano-menor';
     const paloT = kbT && kbT.palo ? ' · ' + kbT.palo.charAt(0).toUpperCase() + kbT.palo.slice(1) : '';
     const delay = (c.num * 0.15).toFixed(2);
-    html += `\n      <div class="carta" style="animation-delay:${delay}s" onclick="window.__tarotUI.abrirModal('${escaped}',${c.alReves},'${c.posicion}')">\n        <img src="${getImgUrl(c.nombre)}" alt="${nombreT}" class="carta-img ${invClass}" loading="lazy" onerror="this.onerror=null;this.src=this.src.replace('.jpg','.svg')">\n        <div>\n          <div class="posicion-label">${c.posicion}</div>\n          <div class="carta-nombre ${c.alReves ? 'reves' : 'derecho'}">${nombreT} ${c.orientacion}</div>\n          ${tipoLabel ? `<div class="carta-tipo ${tipoClass}">${tipoLabel}${paloT}</div>` : ''}\n        </div>\n      </div>`;
+    html += `\n      <div class="carta" style="animation-delay:${delay}s" onclick="window.__tarotUI.abrirModal('${escaped}',${c.alReves},'${c.posicion}')">\n        <img src="${getImgUrl(c.nombre)}" alt="${nombreT}" class="carta-img ${invClass}" loading="lazy" onerror="this.onerror=null;this.src=this.src.replace('.webp','.svg')">\n        <div>\n          <div class="posicion-label">${c.posicion}</div>\n          <div class="carta-nombre ${c.alReves ? 'reves' : 'derecho'}">${nombreT} ${c.orientacion}</div>\n          ${tipoLabel ? `<div class="carta-tipo ${tipoClass}">${tipoLabel}${paloT}</div>` : ''}\n        </div>\n      </div>`;
   });
   if (esTres) {
     html += `</div>`;
@@ -363,7 +363,7 @@ function renderCcCard(c, areaClass) {
   const desafioClass = c.num === 2 ? 'debajo' : '';
   return `<div class="cc-card-wrap ${areaClass}" style="animation-delay:${delay}s">
     <div class="cc-card-label">${c.posicion}</div>
-    <img src="${getImgUrl(c.nombre)}" alt="${c.nombre}" class="cc-carta ${desafioClass} ${invClass}" loading="lazy" onerror="this.onerror=null;this.src=this.src.replace('.jpg','.svg')" onclick="window.__tarotUI.abrirModal('${escaped}',${c.alReves},'${c.posicion}')">
+    <img src="${getImgUrl(c.nombre)}" alt="${c.nombre}" class="cc-carta ${desafioClass} ${invClass}" loading="lazy" onerror="this.onerror=null;this.src=this.src.replace('.webp','.svg')" onclick="window.__tarotUI.abrirModal('${escaped}',${c.alReves},'${c.posicion}')">
   </div>`;
 }
 

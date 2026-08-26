@@ -2,9 +2,9 @@
 // Se muestra solo la primera vez que el usuario abre la app.
 // Persistencia: localStorage clave "oraculo_onboarding_visto".
 
-import { t } from '../i18n/i18n.js?v=18';
+import { t } from '../i18n/i18n.js?v=69';
 
-const ONBOARDING_KEY = 'oraculo_onboarding_visto';
+const ONBOARDING_KEY = 'oraculo_onboarding_visto_v2';
 
 // === PASOS DEL CARRUSEL (claves i18n) ===
 const PASOS_KEYS = [
@@ -13,6 +13,7 @@ const PASOS_KEYS = [
   { iconoKey: 'onboarding.paso3_icono', tituloKey: 'onboarding.paso3_titulo', textoKey: 'onboarding.paso3_texto' },
   { iconoKey: 'onboarding.paso4_icono', tituloKey: 'onboarding.paso4_titulo', textoKey: 'onboarding.paso4_texto' },
   { iconoKey: 'onboarding.paso5_icono', tituloKey: 'onboarding.paso5_titulo', textoKey: 'onboarding.paso5_texto' },
+  { iconoKey: 'onboarding.paso6_icono', tituloKey: 'onboarding.paso6_titulo', textoKey: 'onboarding.paso6_texto' },
 ];
 
 // === ESTADO ===
@@ -40,7 +41,7 @@ function mostrarOnboarding() {
 
   // Botón Saltar (esquina superior derecha) + selector idioma
   html += '<button class="onboarding-skip" id="onboarding-skip">' + t('onboarding.saltar') + '</button>';
-  html += '<button class="onboarding-idioma" onclick="window.__app && document.getElementById(\'btn-idioma\') && document.getElementById(\'btn-idioma\').click()">🌐</button>';
+  html += '<button id="btn-onboarding-idioma" class="onboarding-idioma" onclick="window.__app && document.getElementById(\'btn-idioma\') && document.getElementById(\'btn-idioma\').click()">🌐</button>';
 
   // Carrusel
   html += '<div class="onboarding-slider" id="onboarding-slider">';

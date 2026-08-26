@@ -69,6 +69,40 @@ export function borrarTodasCartas() {
   localStorage.removeItem(CARTAS_KEY);
 }
 
+// === SINASTRIAS ===
+const SINASTRIAS_KEY = 'sinastrias_guardadas';
+
+export function guardarSinastria(sinastriaData) {
+  let lista = [];
+  try { lista = JSON.parse(localStorage.getItem(SINASTRIAS_KEY) || '[]'); } catch (e) { lista = []; }
+  const entrada = {
+    fecha: new Date().toISOString(),
+    titulo: sinastriaData.titulo,
+    subtitulo: sinastriaData.subtitulo || '',
+    texto: sinastriaData.texto,
+    datos: sinastriaData.datos || null
+  };
+  lista.unshift(entrada);
+  try { localStorage.setItem(SINASTRIAS_KEY, JSON.stringify(lista)); } catch (e) { console.error('Error guardando sinastria:', e); }
+  return entrada;
+}
+
+export function obtenerSinastrias() {
+  try { return JSON.parse(localStorage.getItem(SINASTRIAS_KEY) || '[]'); } catch (e) { return []; }
+}
+
+export function borrarSinastria(idx) {
+  let lista = [];
+  try { lista = JSON.parse(localStorage.getItem(SINASTRIAS_KEY) || '[]'); } catch (e) { lista = []; }
+  if (idx < 0 || idx >= lista.length) return;
+  lista.splice(idx, 1);
+  try { localStorage.setItem(SINASTRIAS_KEY, JSON.stringify(lista)); } catch (e) {}
+}
+
+export function borrarTodasSinastrias() {
+  localStorage.removeItem(SINASTRIAS_KEY);
+}
+
 // === UTILIDAD ===
 export function escapeHtml(str) {
   if (str == null) return '';

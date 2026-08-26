@@ -4,7 +4,7 @@
 // No intrusivo: respeta "No, gracias" y nunca se muestra al primer arranque.
 // Toda la UI se construye con t() para soportar los 6 idiomas (es/en/pt/fr/de/it).
 
-import { t } from '../i18n/i18n.js?v=18';
+import { t } from '../i18n/i18n.js?v=69';
 
 const KOFI_URL = 'https://ko-fi.com/diegovill';
 const STORAGE_KEY = 'oraculo_donacion_ultima_vez';
@@ -31,8 +31,8 @@ export function mostrarDonacionSiToca(contenedor) {
   snackbar.innerHTML = `
     <div class="donacion-texto">${t('donacion.snackbarTexto')}</div>
     <div class="donacion-acciones">
-      <button type="button" class="donacion-btn-cafe">${t('donacion.snackbarBtn')}</button>
-      <button type="button" class="donacion-btn-no">${t('donacion.snackbarNo')}</button>
+      <button type="button" id="btn-donar-cafe" class="donacion-btn-cafe">${t('donacion.snackbarBtn')}</button>
+      <button type="button" id="btn-donar-no" class="donacion-btn-no">${t('donacion.snackbarNo')}</button>
     </div>
   `;
   contenedor.parentElement.appendChild(snackbar);
@@ -61,13 +61,13 @@ export function abrirAcercaDe() {
   modal.className = 'modal-overlay visible';
   modal.innerHTML = `
     <div class="modal-card acerca-de-card">
-      <button class="acerca-cerrar" aria-label="Cerrar">✕</button>
+      <button id="btn-cerrar-acerca" class="acerca-cerrar" aria-label="Cerrar">✕</button>
       <div class="acerca-cuerpo">
         <h2>${t('donacion.modalTitulo')}</h2>
         <p class="acerca-linea">${t('donacion.modalLinea')}</p>
         <p class="acerca-texto">${t('donacion.modalP1')}</p>
         <p class="acerca-texto">${t('donacion.modalP2')}</p>
-        <button type="button" class="acerca-btn-cafe">${t('donacion.modalBtn')}</button>
+        <button type="button" id="btn-ko-fi" class="acerca-btn-cafe">${t('donacion.modalBtn')}</button>
         <p class="acerca-mini">${KOFI_URL}</p>
         <p class="acerca-texto acerca-gracias">${t('donacion.modalGracias')}</p>
       </div>
@@ -85,7 +85,7 @@ export function actualizarFooterDonacion() {
   const foot = document.querySelector('footer');
   if (!foot) return;
   const enlace = t('donacion.footerEnlace');
-  const texto = t('donacion.footer', { enlace: `<a href="#" class="donacion-link">${enlace}</a>` });
+  const texto = t('donacion.footer', { enlace: `<a href="#" id="link-donacion" class="donacion-link">${enlace}</a>` });
   foot.innerHTML = texto;
 }
 

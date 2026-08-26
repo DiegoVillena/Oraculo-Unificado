@@ -3,14 +3,14 @@
 // Si fallan (timeout, sin red, error), lanzan excepción para que el caller
 // haga fallback al algoritmo local.
 
-import { getIdioma } from '../i18n/i18n.js?v=18';
-import { envolverTerminos } from '../ui/glossary.js?v=18';
+import { getIdioma } from '../i18n/i18n.js?v=69';
+import { envolverTerminos } from '../ui/glossary.js?v=69';
 
 const WORKER_URL = 'https://oraculo-worker.diegovillens.workers.dev';
 const TIMEOUT_MS = 45000;
 
 // === Markdown → HTML (conversor ligero) ===
-function markdownAHtml(md) {
+export function markdownAHtml(md) {
   if (!md) return '';
   // Escapar HTML peligroso
   let html = md
@@ -111,6 +111,28 @@ export async function analisisCombinadoIA(textoTirada, textoCarta) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ tipo: 'combinado', datos: { tirada: textoTirada, carta: textoCarta }, idioma: getIdioma() }),
+  }, TIMEOUT_MS);
+  if (!resp.ok) {
+    const err = await resp.json().catch(() => ({}));
+    throw new Error(err.error || 'Error del servidor (' + resp.status + ')');
+  }
+  const data = await resp.json();
+  if (!data.texto) throw new Error('Respuesta vacía de la IA');
+  return envolverTerminos('<div class="ia-analisis">' + markdownAHtml(data.texto) + '</div>');
+}
+
+// Sinastria: compatibilidad entre 2 cartas astrales.
+// textoCartaA/textoCartaB = salida de generarTextoCopiaAstral(carta)
+// scoresText = resultado.promptDataText (puntuaciones + aspectos exactos + casas)
+export async function analisisSinastriaIA(textoCartaA, textoCartaB, scoresText) {
+  const resp = await fetchConTimeout(WORKER_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      tipo: 'sinastria',
+      datos: { carta1: textoCartaA, carta2: textoCartaB, scores: scoresText },
+      idioma: getIdioma(),
+    }),
   }, TIMEOUT_MS);
   if (!resp.ok) {
     const err = await resp.json().catch(() => ({}));

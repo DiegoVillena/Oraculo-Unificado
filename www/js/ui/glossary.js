@@ -10,9 +10,9 @@
 // aspectos, índice para signos, número para casas). El texto visible es la
 // traducción al idioma actual; data-term desacopla identidad de presentación.
 
-import { t, tGlosario, tCarta, tSigno, tAspecto, getIdioma } from '../i18n/i18n.js?v=18';
-import { SIGNOS, PLANETAS_UI } from '../core/astrologia.js?v=18';
-import { barajaTarot } from '../data/tarot-data.js?v=18';
+import { t, tGlosario, tCarta, tSigno, tAspecto, getIdioma } from '../i18n/i18n.js?v=69';
+import { SIGNOS, PLANETAS_UI } from '../core/astrologia.js?v=69';
+import { barajaTarot } from '../data/tarot-data.js?v=69';
 
 let popoverEl = null;
 let terminoActivoEl = null;   // elemento del término actualmente abierto
@@ -126,7 +126,7 @@ export function abrirPopover(tipo, clave, hostEl) {
   }
   const btnCerrarTxt = t('glossary.cerrar') || 'Cerrar';
   popoverEl.innerHTML =
-    `<button class="gl-cerrar" aria-label="${btnCerrarTxt}">&times;</button>` +
+    `<button id="btn-cerrar-glosario" class="gl-cerrar" aria-label="${btnCerrarTxt}">&times;</button>` +
     `<div class="gl-titulo">${titulo}</div>` +
     `<div class="gl-desc">${entry.desc}</div>`;
 
@@ -327,14 +327,14 @@ function _construirMapaTerminos() {
 
   // Conceptos astrológicos: stellium, elementos, modalidades, polaridades.
   // Se buscan por su nombre traducido en el idioma actual.
-  const conceptosClaves = ['stellium','masculino','femenino','fuego','tierra','aire','agua','cardinal','fijo','mutable'];
+  const conceptosClaves = ['stellium','masculino','femenino','fuego','tierra','aire','agua','cardinal','fijo','mutable','medioCielo','ascendente'];
   const traduccionesConceptos = {
-    es: { stellium:'Stellium', masculino:'Masculino', femenino:'Femenino', fuego:'Fuego', tierra:'Tierra', aire:'Aire', agua:'Agua', cardinal:'Cardinal', fijo:'Fijo', mutable:'Mutable' },
-    en: { stellium:'Stellium', masculino:'Masculine', femenino:'Feminine', fuego:'Fire', tierra:'Earth', aire:'Air', agua:'Water', cardinal:'Cardinal', fijo:'Fixed', mutable:'Mutable' },
-    pt: { stellium:'Stellium', masculino:'Masculino', femenino:'Feminino', fuego:'Fogo', tierra:'Terra', aire:'Ar', agua:'Água', cardinal:'Cardinal', fijo:'Fixo', mutable:'Mutável' },
-    fr: { stellium:'Stellium', masculino:'Masculin', femenino:'Féminin', fuego:'Feu', tierra:'Terre', aire:'Air', agua:'Eau', cardinal:'Cardinal', fijo:'Fixe', mutable:'Mutable' },
-    de: { stellium:'Stellium', masculino:'Männlich', femenino:'Weiblich', fuego:'Feuer', tierra:'Erde', aire:'Luft', agua:'Wasser', cardinal:'Kardinal', fijo:'Fix', mutable:'Veränderlich' },
-    it: { stellium:'Stellium', masculino:'Maschile', femenino:'Femminile', fuego:'Fuoco', tierra:'Terra', aire:'Aria', agua:'Acqua', cardinal:'Cardinale', fijo:'Fisso', mutable:'Mutabile' },
+    es: { stellium:'Stellium', masculino:'Masculino', femenino:'Femenino', fuego:'Fuego', tierra:'Tierra', aire:'Aire', agua:'Agua', cardinal:'Cardinal', fijo:'Fijo', mutable:'Mutable', medioCielo:'Medio Cielo', ascendente:'Ascendente' },
+    en: { stellium:'Stellium', masculino:'Masculine', femenino:'Feminine', fuego:'Fire', tierra:'Earth', aire:'Air', agua:'Water', cardinal:'Cardinal', fijo:'Fixed', mutable:'Mutable', medioCielo:'Midheaven', ascendente:'Ascendant' },
+    pt: { stellium:'Stellium', masculino:'Masculino', femenino:'Feminino', fuego:'Fogo', tierra:'Terra', aire:'Ar', agua:'Água', cardinal:'Cardinal', fijo:'Fixo', mutable:'Mutável', medioCielo:'Meio do Céu', ascendente:'Ascendente' },
+    fr: { stellium:'Stellium', masculino:'Masculin', femenino:'Féminin', fuego:'Feu', tierra:'Terre', aire:'Air', agua:'Eau', cardinal:'Cardinal', fijo:'Fixe', mutable:'Mutable', medioCielo:'Milieu du Ciel', ascendente:'Ascendant' },
+    de: { stellium:'Stellium', masculino:'Männlich', femenino:'Weiblich', fuego:'Feuer', tierra:'Erde', aire:'Luft', agua:'Wasser', cardinal:'Kardinal', fijo:'Fix', mutable:'Veränderlich', medioCielo:'Medium Coeli', ascendente:'Aszendent' },
+    it: { stellium:'Stellium', masculino:'Maschile', femenino:'Femminile', fuego:'Fuoco', tierra:'Terra', aria:'Aria', agua:'Acqua', cardinal:'Cardinale', fijo:'Fisso', mutable:'Mutabile', medioCielo:'Medio Cielo', ascendente:'Ascendente' },
   };
   const tc = traduccionesConceptos[loc] || traduccionesConceptos.en;
   for (const clave of conceptosClaves) {

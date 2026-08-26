@@ -1,9 +1,9 @@
 // ui/astral.js — Formulario y renderizado de Carta Astral (reconstruido)
 import { calcularCartaAstral, getUltimaCarta, setUltimaCarta, getCiudad, setCiudad,
   generarTextoCarta, generarInterpretacion, generarRuedaSVG,
-  SIGNOS, CASAS_ROMANAS } from '../core/astrologia.js?v=18';
-import { buscarCiudadesSQL as buscarCiudades, obtenerOffsetTZ } from '../data/sqlite-db.js?v=18';
-import { t, tSigno, tAspecto } from '../i18n/i18n.js?v=18';
+  SIGNOS, CASAS_ROMANAS } from '../core/astrologia.js?v=69';
+import { buscarCiudadesSQL as buscarCiudades, obtenerOffsetTZ } from '../data/sqlite-db.js?v=69';
+import { t, tSigno, tAspecto } from '../i18n/i18n.js?v=69';
 
 let dropdownResultados = [];
 
@@ -210,7 +210,7 @@ const CONSTELACIONES_REALES = [
   },
 ];
 
-function mostrarAnimacionConstelaciones() {
+export function mostrarAnimacionConstelaciones(textoKey) {
   window.__constellationStartTime = Date.now();
 
   const overlay = document.createElement('div');
@@ -296,11 +296,12 @@ function mostrarAnimacionConstelaciones() {
   });
 
   svgContent += '</svg>';
-  overlay.innerHTML = svgContent + '<div class="constellation-text">' + t('astral.descifrandoCielo') + '</div>';
+  const texto = (textoKey && t(textoKey)) || t('astral.descifrandoCielo');
+  overlay.innerHTML = svgContent + '<div class="constellation-text">' + texto + '</div>';
   document.body.appendChild(overlay);
 }
 
-function ocultarAnimacionConstelaciones() {
+export function ocultarAnimacionConstelaciones() {
   const overlay = document.getElementById('constellation-overlay');
   if (overlay) {
     overlay.classList.add('hide');
@@ -349,7 +350,7 @@ export function render(d) {
   const btnCompartirTodoAstral = document.getElementById('btn-compartir-astral-todo');
   if (btnCompartirTodoAstral) btnCompartirTodoAstral.style.display = 'none';
   // Mostrar botón de análisis combinado si también hay tirada de Tarot
-  import('../ui/tarot.js?v=18').then(mod => {
+  import('../ui/tarot.js?v=69').then(mod => {
     const tirada = mod.getUltimaTirada();
     const btnCombinado = document.getElementById('btn-analisis-combinado');
     if (btnCombinado) btnCombinado.style.display = (tirada && d) ? 'block' : 'none';

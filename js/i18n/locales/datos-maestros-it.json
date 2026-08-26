@@ -3278,7 +3278,15 @@
       "agua": "Elemento di emozione, intuizione, sensibilità e connessione profonda. Il mondo interiore.",
       "cardinal": "Modalità di inizio: energia che avvia, guida e apre nuovi cicli.",
       "fijo": "Modalità di stabilità: energia che sostiene, persiste e mantiene.",
-      "mutable": "Modalità di adattamento: energia flessibile che fluisce, si adatta e transita."
+      "mutable": "Modalità di adattamento: energia flessibile che fluisce, si adatta e transita.",
+      "medioCielo": {
+        "titulo": "Medio Cielo",
+        "desc": "Il punto più alto della carta (cuspide della Casa 10): la tua vocazione, immagine pubblica e scopo."
+      },
+      "ascendente": {
+        "titulo": "Ascendente",
+        "desc": "Il segno che sorgeva all'orizzonte est alla tua nascita (cuspide della Casa 1): come ti presenti e la tua prima impressione."
+      }
     }
   }
 }

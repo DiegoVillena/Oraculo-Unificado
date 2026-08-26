@@ -102,3 +102,33 @@ Formato: bullet conciso. Categorizar. Sin prosa larga.
 - **Cómo**: `adb forward tcp:9222 localabstract:webview_devtools_remote_<PID>` → `curl http://localhost:9222/json` → obtener `id` → WebSocket a `ws://localhost:9222/devtools/page/<id>` → `Runtime.evaluate` con `returnByValue: true`.
 - **Truco**: Usar IIFE `(function(){ ... })()` en vez de `try { return ... }` para que `returnByValue` capture el resultado.
 - **Requiere**: `WebView.setWebContentsDebuggingEnabled(true)` en debug builds.
+
+## `return` huérfano en main.js (sinastria)
+
+- **Síntoma**: La app arranca pero los tabs no responden al tap. El onboarding no se muestra. Logcat: `Uncaught SyntaxError: Illegal return statement` en `main.js`. `init()` aborta antes de `initTabs()`/`initFormularioSinastria()`.
+- **Causa**: Al añadir las funciones de sinastria (`renderSinastriasGuardadas`, `verSinastriaGuardada`), la función `renderTiradasGuardadas()` perdió su declaración `function renderTiradasGuardadas() {` — el cuerpo quedó suelto en el scope del módulo, con un `return` ilegal.
+- **Solución**: Añadir `function renderTiradasGuardadas() {` antes del cuerpo huérfano (línea ~339 de `main.js`). Verificar con `node --check js/main.js`.
+- **Lección**: Al añadir funciones nuevas a `main.js`, cuidar los límites de las funciones existentes. `node --check` NO detecta esto (es syntax válida a nivel de archivo si el return está dentro de un bloque, pero el motor JS sí lo detecta en runtime como Illegal return). El error solo se ve en logcat del WebView.
+
+## `alert()` bloquea el hilo JS del WebView (CDP se cuelga)
+
+- **Síntoma**: De repente `Runtime.evaluate` vía CDP deja de responder (timeout) aunque antes funcionaba. La app parece congelada.
+- **Causa**: Un `alert()`/`confirm()` nativo de Android WebView BLOQUEA el hilo JS hasta que se pulsa OK. Mientras el diálogo está visible, CDP no puede evaluar nada. Ej: el `calcular()` de sinastría mostró "Selecciona las dos cartas astrales." porque los selects estaban vacíos (índices inválidos) y eso colgó todo.
+- **Solución**: Detectar el diálogo con `android_ui_describe` (buscar `android:id/message` + botón OK), tocar OK para desbloquear, y luego revalidar la causa del alert. También: al fijar índices en selects de sinastría, usar los índices REALES (opción 0 es el placeholder; las cartas empiezan en 1). Reestablecer el forward CDP tras force-stop/relaunch (`adb forward tcp:9222 localabstract:webview_devtools_remote_<PID>`).
+
+## Caché de WebView persiste tras force-stop Y reinstalar `adb install -r`
+
+- **Síntoma**: Tras editar un `.js`, forzar force-stop + `am start` y/o reinstalar con `-r` y relanzar, la app sigue ejecutando el CÓDIGO VIEJO (mismo error que ya corregiste).
+- **Causa**: El WebView cachea módulos ES por URL (`archivo.js?v=N`). `force-stop` NO borra la caché, y `adb install -r` conserva los datos de la app (incluida la caché del WebView). Si el contenido cambia pero la URL `?v=N` es la misma, se sirve la copia cacheada obsoleta.
+- **Solución**: Al cambiar contenido de un módulo, bumpear el version tag (`?v=N` → `?v=N+1`) en TODOS los archivos `.js` e `index.html` (js/, www/, assets), reconstruir el APK e instalar. NO usar `adb shell pm clear` (borraría las cartas guardadas del usuario). Para verificar qué versión carga, chequear `main.js?v=` en el `<script src>` del index.html.
+
+## Scroll del WebView en emulador
+
+- **Síntoma**: Los swipes no hacen scroll en el WebView, o el header se colapsa bajo el status bar haciendo los tabs inaccesibles.
+- **Causa**: El WebView de Capacitor tiene su propio scroll interno. Los swipes de UIAutomator a veces no se traducen bien. Tras scroll arriba, el header fijo se pega bajo el status bar (top=66, bottom=96) y los taps no registran.
+- **Solución**: Evitar `am force-stop` (reinicia el emulador a veces). Para volver al scroll top, recargar la app con `am start`. Los swipes de scroll funcionan mejor con `durationMs=400-600` y distancias de ~800px. Para tabs inaccesibles (y<100), hacer scroll abajo un poco para que el header vuelva a posición normal (~635).
+## `node --check` no siempre detecta una llave sobrante en módulos ES
+
+- **Síntoma**: Tras editar un `.js` (p. ej. reemplazar una función grande), `node --check js/foo.js` pasa OK pero el WebView lanza `SyntaxError: Unexpected token '}'` en logcat al cargar la app.
+- **Causa**: `node --check` puede no validar del todo la sintaxis de ES modules (`.js` con `import/export`); una `}` sobrante a nivel de módulo puede pasar desapercibida (se parsea de forma distinta que en el motor del WebView).
+- **Solución**: Al reemplazar bloques grandes de código, revisar el balance de llaves (p. ej. `grep -n '^}'` o contar `{}`). Y SIEMPRE comprobar logcat del WebView tras instalar: un `Uncaught SyntaxError: Unexpected token` en `sinastria.js?v=N` es síntoma de esto. Bumpear version tag y reinstalar para verificar la corrección.

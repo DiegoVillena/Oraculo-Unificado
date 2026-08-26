@@ -30,6 +30,9 @@
   --success: #4dffb3;
   --border: rgba(232, 196, 106, 0.2);
   --border-bright: rgba(232, 196, 106, 0.5);
+  /* Sinastria: 2 colores armónicos para las cartas A y B */
+  --sinastria-a: #e8c46a;   /* dorado (persona A) */
+  --sinastria-b: #b89cff;   /* morado armónico (persona B) */
 
   /* Espaciado (múltiplos de 4px) */
   --space-xs: 4px;
@@ -646,14 +649,20 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 .btn-aspectos-toggle:active::before {
   left: 100%;
 }
-.tabla-aspectos { width: 100%; border-collapse: collapse; font-size: 0.78rem; margin-top: 10px; }
-.tabla-aspectos th { padding: 8px 6px; text-align: left; color: var(--gold); border-bottom: 1px solid var(--border-bright); white-space: nowrap; }
-.tabla-aspectos td { padding: 6px; border-bottom: 1px solid rgba(232,196,106,0.08); white-space: nowrap; }
+.tabla-aspectos { width: 100%; border-collapse: collapse; font-size: 0.72rem; margin-top: 10px; }
+.tabla-aspectos th { padding: 8px 4px; text-align: left; color: var(--gold); border-bottom: 1px solid var(--border-bright); white-space: nowrap; }
+.tabla-aspectos td { padding: 6px 4px; border-bottom: 1px solid rgba(232,196,106,0.08); white-space: normal; word-break: keep-all; line-height: 1.3; vertical-align: top; }
 .tabla-aspectos tr.asp-conj td { color: #e5e7eb; }
 .tabla-aspectos tr.asp-sext td { color: #4dffb3; }
 .tabla-aspectos tr.asp-square td { color: #ff5252; }
 .tabla-aspectos tr.asp-trine td { color: #5ab8ff; }
 .tabla-aspectos tr.asp-opp td { color: #ff8a3d; }
+/* Sinastria: anchos de columna para table-layout fixed */
+.tabla-aspectos-sinastria .col-planeta { width: 26%; }
+.tabla-aspectos-sinastria .col-tipo { width: 16%; }
+.tabla-aspectos-sinastria .col-orbe { width: 10%; }
+.tabla-aspectos-sinastria .col-dim { width: 18%; }
+.tabla-aspectos-sinastria .col-expand { width: 6%; text-align: center; }
 
 .astral-stats { margin-bottom: var(--space-lg); }
 .astral-stats h4 { color: var(--gold); font-size: 0.95rem; margin-bottom: 10px; }
@@ -687,7 +696,8 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 .astral-buttons button { flex: 1 1 45%; }
 
 /* === GUARDADOS === */
-.guardados-lista { margin-top: 16px; }
+.guardados-lista { display: none; margin-top: 16px; }
+.guardados-lista.visible { display: block; }
 .guardados-lista h3 { color: var(--gold); font-size: 1rem; margin-bottom: var(--space-md); }
 .guardado-vacio { padding: var(--space-xl); text-align: center; color: var(--text-dim); font-style: italic; }
 .guardado-item {
@@ -1480,3 +1490,414 @@ footer {
 #btn-acerca-de:active { transform: scale(0.92); }
 
 footer a { text-decoration: underline; text-decoration-color: rgba(232,196,106,0.4); }
+
+/* ============================================================
+   SINASTRIA — compatibilidad entre 2 cartas astrales
+   ============================================================ */
+
+.sinastria-form {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin: 12px 0;
+  box-shadow: var(--shadow);
+}
+.sinastria-form h2 {
+  color: var(--gold-bright);
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 1.25rem;
+}
+.sinastria-intro {
+  color: var(--text-mut);
+  text-align: center;
+  font-size: 0.85rem;
+  margin-bottom: 14px;
+}
+.sinastria-form .form-row { margin-bottom: 12px; }
+.sinastria-form label {
+  display: block;
+  color: var(--gold);
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+.sinastria-form select {
+  width: 100%;
+  padding: 10px;
+  background: var(--bg-mid);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+}
+.sinastria-form select:focus {
+  outline: none;
+  border-color: var(--border-bright);
+}
+
+.sinastria-output {
+  display: none;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-top: 14px;
+  box-shadow: var(--shadow-gold);
+}
+.sinastria-output.visible {
+  display: block;
+  animation: slideUp 0.5s ease;
+}
+.sinastria-output h3 {
+  color: var(--gold-bright);
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+/* Rueda bicarta */
+.sinastria-rueda-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 8px 0 14px;
+}
+.sinastria-rueda-wrap svg {
+  max-width: 100%;
+  height: auto;
+}
+.sinastria-rueda-info {
+  color: var(--text-mut);
+  font-size: 0.82rem;
+  text-align: center;
+  margin-top: 6px;
+  min-height: 1.4em;
+}
+
+/* Radar pentagonal + círculo global */
+.sinastria-radar-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin: 12px 0;
+}
+.sinastria-radar { flex: 0 0 auto; }
+.sinastria-radar-svg { width: 100%; height: auto; display: block; }
+.sinastria-radar-leyenda { display: flex; flex-wrap: wrap; gap: 10px 16px; justify-content: center; margin-top: 6px; }
+.leyenda-item { display: inline-flex; align-items: center; gap: 5px; color: var(--text-mut); font-size: 0.72rem; white-space: nowrap; }
+.leyenda-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.leyenda-dash { width: 12px; height: 0; border-top: 2px dashed rgba(184,156,255,0.7); display: inline-block; }
+.sinastria-radar svg { max-width: 240px; width: 100%; height: auto; }
+.sinastria-global {
+  flex: 0 0 auto;
+  text-align: center;
+  padding: 12px 18px;
+  background: radial-gradient(circle, rgba(232,196,106,0.12), transparent 70%);
+  border-radius: 18px;
+  min-width: 150px;
+  max-width: 260px;
+}
+.sinastria-global-score {
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: var(--gold-bright);
+  line-height: 1;
+  text-shadow: var(--gold-text-shadow);
+}
+.sinastria-global-pct { font-size: 1.2rem; color: var(--gold); }
+.sinastria-global-label {
+  color: var(--text-mut);
+  font-size: 0.78rem;
+  margin-top: 4px;
+  font-style: italic;
+  max-width: 160px;
+}
+
+/* Desglose de la puntuación (8 factores) */
+.sinastria-desglose-wrap { margin: 16px 0; }
+.sinastria-desglose {
+  background: var(--bg-mid);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+}
+.sinastria-desglose-nota { color: var(--text-mut); font-size: 0.75rem; margin: 4px 0 12px; line-height: 1.4; }
+.desglose-fila { margin-bottom: 10px; }
+.desglose-cab { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
+.desglose-nombre { flex: 1; color: var(--text); font-size: 0.82rem; font-weight: 600; }
+.desglose-peso { color: var(--text-mut); font-size: 0.72rem; }
+.desglose-score { font-size: 0.85rem; font-weight: 700; min-width: 28px; text-align: right; }
+.desglose-bar { height: 6px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.desglose-bar-fill { height: 100%; border-radius: 999px; transition: width 0.6s ease; }
+.desglose-desc { color: var(--text-mut); font-size: 0.72rem; margin-top: 3px; line-height: 1.35; }
+.desglose-detalle { margin-top: 4px; }
+.desglose-detalle ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 8px; }
+.desglose-detalle li { color: var(--text-mut); font-size: 0.68rem; background: rgba(255,255,255,0.05); border-radius: 6px; padding: 1px 6px; }
+.desglose-contrib { color: var(--text-mut); font-size: 0.68rem; margin-top: 2px; }
+.desglose-total { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); color: var(--text); font-size: 0.85rem; }
+.desglose-total strong { color: var(--gold-bright); font-size: 1rem; }
+
+/* Panel de 8 factores (barras horizontales por sector) — sustituye al pentágono */
+.sinastria-factores-wrap { margin: 14px 0; }
+.sinastria-factores-panel { background: var(--bg-mid); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+.sinastria-factores-radar { display: flex; justify-content: center; margin-bottom: 6px; }
+.sinastria-radar-oct { width: 100%; max-width: 300px; height: auto; display: block; }
+.sinastria-factores-global { display: flex; align-items: center; gap: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
+.sinastria-factores-global .fg-pct { font-size: 1.6rem; font-weight: 800; color: var(--gold-bright); min-width: 72px; text-align: center; }
+.sinastria-factores-global .fg-texto { display: flex; flex-direction: column; }
+.sinastria-factores-global .fg-label { font-size: 0.72rem; color: var(--text-mut); text-transform: uppercase; letter-spacing: 0.04em; }
+.sinastria-factores-global .fg-frase { font-size: 0.85rem; color: var(--text); line-height: 1.3; }
+.sinastria-factores-leyenda { display: flex; flex-wrap: wrap; gap: 6px 14px; justify-content: center; margin: 0 0 12px; }
+.sinastria-factores-leyenda .leyenda-item { display: inline-flex; align-items: center; gap: 5px; color: var(--text-mut); font-size: 0.7rem; }
+.sinastria-factores-leyenda .leyenda-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex: 0 0 auto; }
+.factor-row { margin-bottom: 12px; }
+.factor-row-top { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.factor-nombre { flex: 1; color: var(--text); font-size: 0.82rem; font-weight: 600; }
+.factor-nivel { font-size: 0.66rem; padding: 1px 8px; border-radius: 999px; border: 1px solid; font-weight: 600; white-space: nowrap; }
+.factor-score { font-size: 0.9rem; font-weight: 700; min-width: 30px; text-align: right; }
+.factor-bar { height: 9px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.factor-bar-fill { height: 100%; border-radius: 999px; transition: width 0.6s ease; }
+.factor-desc { color: var(--text-mut); font-size: 0.72rem; margin-top: 3px; line-height: 1.35; }
+.factor-friccion { color: #f59e0b; font-weight: 600; }
+.factor-detalle { margin-top: 4px; }
+.factor-detalle ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 8px; }
+.factor-detalle li { color: var(--text-mut); font-size: 0.68rem; background: rgba(255,255,255,0.05); border-radius: 6px; padding: 1px 6px; }
+
+/* Neto de aspectos (balance armónicos vs tensión) */
+.sinastria-neto { font-size: 0.75rem; margin: 14px 0 4px; text-align: center; line-height: 1.6; color: var(--text-mut); background: var(--bg-mid); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; }
+.neto-pos { color: #4ade80; }
+.neto-neg { color: #f87171; }
+.neto-total { color: var(--gold-bright); font-weight: 600; }
+.neto-sep { opacity: 0.5; margin: 0 3px; }
+.neto-disclaimer { margin-top: 6px; font-size: 0.7rem; color: var(--text-mut); opacity: 0.9; line-height: 1.4; overflow-wrap: break-word; word-break: break-word; }
+
+/* Perfil de la pareja (puntos fuertes y débil) */
+.sinastria-global-perfil { margin-top: 8px; font-size: 0.7rem; line-height: 1.4; color: var(--text-mut); }
+.perfil-fuertes { color: var(--pos); }
+.perfil-debil { color: var(--neg); }
+.perfil-sep { opacity: 0.4; margin: 0 3px; }
+
+/* Consejo del área a trabajar */
+.sinastria-consejo-wrap { margin: 14px 0; }
+.sinastria-consejo { display: flex; align-items: flex-start; gap: 10px; background: linear-gradient(135deg, rgba(232,196,106,0.12), rgba(184,156,255,0.12)); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; }
+.sinastria-consejo-icon { font-size: 1.3rem; line-height: 1.2; }
+.sinastria-consejo-titulo { color: var(--gold-bright); font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 3px; }
+.sinastria-consejo-texto { color: var(--text); font-size: 0.8rem; line-height: 1.4; }
+/* Consejo dentro del panel (debajo del diagrama) */
+.sinastria-consejo-panel { margin: 2px 0 12px; }
+.sinastria-consejo-extra { display: block; color: var(--text-mut); font-size: 0.72rem; line-height: 1.35; margin-top: 5px; padding-left: 2px; }
+.sinastria-consejo-extra strong { color: var(--gold-bright); }
+
+/* Tabla de detalles técnicos por sector */
+.tabla-detalles { width: 100%; border-collapse: collapse; font-size: 0.72rem; }
+.tabla-detalles th { text-align: left; color: var(--text-mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--border); }
+.tabla-detalles td { padding: 4px 8px; vertical-align: top; }
+.tabla-detalles .td-sector { width: 46%; }
+.tabla-detalles .td-peso, .tabla-detalles .td-score, .tabla-detalles .td-contrib { text-align: right; white-space: nowrap; }
+.detalles-sector { border-top: 1px solid var(--border); }
+.detalles-sector td { padding-top: 7px; }
+.detalles-asp-row td { padding-top: 0; }
+.detalles-asp-row ul { list-style: none; margin: 0 0 4px; padding: 0 0 0 14px; }
+.detalles-asp-row li { color: var(--text-mut); font-size: 0.68rem; line-height: 1.5; }
+/* Apartado "Datos completos" (toda la sinastría técnica) */
+.detalles-completos { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border); }
+.detalles-completos .detalles-sub { color: var(--gold-bright); font-size: 0.75rem; font-weight: 700; margin: 12px 0 5px; }
+.detalles-completos .tabla-detalles { margin-bottom: 8px; }
+.detalles-cartas { display: flex; flex-wrap: wrap; gap: 10px; }
+.detalles-cartas > .detalles-carta { flex: 1 1 45%; min-width: 220px; }
+.detalles-lista { list-style: none; margin: 4px 0 8px; padding: 0; }
+.detalles-lista li { color: var(--text-mut); font-size: 0.7rem; line-height: 1.5; margin-bottom: 2px; }
+.detalles-p { color: var(--text-mut); font-size: 0.72rem; line-height: 1.5; margin: 4px 0 8px; }
+/* Botón "Copiar sinastria + análisis" tras el análisis */
+.sinastria-analisis-actions { margin-top: 12px; text-align: center; }
+.sinastria-analisis-actions .btn-sec { margin: 0 auto; }
+/* Fallback local de sinastría (estructura alineada con el informe IA) */
+.analisis-titulo-grande { color: var(--gold-bright); font-size: 0.95rem; font-weight: 800; text-align: center; margin: 0 0 10px; letter-spacing: 0.5px; }
+.analisis-area { color: var(--gold-bright); font-weight: 700; margin: 10px 0 4px; }
+.analisis-linea { margin: 4px 0; }
+/* Modal de confirmación (confirm() nativo no funciona en WebView) */
+.confirm-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.confirm-modal { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px 20px; max-width: 300px; width: 90%; }
+.confirm-msg { margin-bottom: 14px; color: var(--text); font-size: 0.9rem; line-height: 1.4; }
+.confirm-btns { display: flex; gap: 10px; justify-content: flex-end; }
+
+/* Pills fuerte / desafío */
+.sinastria-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 12px 0;
+}
+.sinastria-pill {
+  flex: 1 1 200px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-mid);
+  border: 1px solid var(--border);
+}
+.sinastria-pill.fuerte { border-left: 3px solid var(--gold-bright); }
+.sinastria-pill.desafio { border-left: 3px solid var(--danger); }
+.sinastria-pill-icon { font-size: 1rem; margin-right: 4px; }
+.sinastria-pill-label {
+  display: block;
+  color: var(--gold);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 3px;
+}
+.sinastria-pill-text { color: var(--text-mut); font-size: 0.75rem; display: block; margin-top: 4px; opacity: 0.8; line-height: 1.3; }
+.sinastria-pill-title { color: var(--text); font-size: 0.95rem; font-weight: 600; display: block; margin-bottom: 2px; line-height: 1.3; }
+
+/* Casas destacadas */
+.sinastria-seccion-titulo {
+  color: var(--gold);
+  font-size: 0.95rem;
+  margin: 14px 0 8px;
+}
+.sinastria-casas-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.casa-card {
+  padding: 10px;
+  background: var(--bg-mid);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.casa-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.casa-card-planeta { color: var(--gold-bright); font-weight: bold; font-size: 0.9rem; }
+.casa-card-origen { color: var(--text-mut); font-size: 0.75rem; }
+.casa-card-significado { color: var(--text); font-size: 0.82rem; }
+.casa-card-desc { color: var(--gold); font-size: 0.78rem; margin-top: 4px; font-style: italic; line-height: 1.3; }
+.casa-card-dim { display: inline-block; margin-top: 6px; padding: 2px 8px; border-radius: 999px; background: rgba(184,156,255,0.12); color: var(--sinastria-b); font-size: 0.72rem; font-weight: 600; }
+
+/* Leyenda "Cómo leer esta sinastría" */
+.sinastria-leyenda-wrap { margin: 14px 0; }
+.sinastria-leyenda { background: var(--bg-mid); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; }
+.sinastria-leyenda summary { cursor: pointer; color: var(--gold-bright); font-weight: 600; font-size: 0.85rem; }
+.sinastria-leyenda ul { margin: 8px 0 0; padding-left: 18px; }
+.sinastria-leyenda li { color: var(--text-mut); font-size: 0.78rem; line-height: 1.5; margin-bottom: 6px; }
+
+/* Botón expandir descripción de aspecto (por fila) */
+.aspecto-expand { background: none; border: none; color: var(--gold); font-size: 0.8rem; cursor: pointer; padding: 2px 6px; }
+.aspecto-row { cursor: pointer; }
+
+/* Aspectos: filas de descripción */
+.aspecto-desc-row td { padding: 2px 6px 6px !important; border-bottom: 1px solid rgba(232,196,106,0.08); }
+.aspecto-desc { color: var(--text-mut); font-size: 0.72rem; font-style: italic; line-height: 1.3; }
+
+/* Análisis local sinastria: espaciado generoso para que el texto respire */
+.sinastria-interpretacion .analisis-sub { margin-top: 18px; margin-bottom: 6px; }
+.sinastria-interpretacion p { margin-bottom: 14px; line-height: 1.6; }
+.sinastria-interpretacion .casas-lista { list-style: none; padding: 0; margin: 0; }
+.sinastria-interpretacion .casas-lista li { margin-bottom: 16px; line-height: 1.5; padding-left: 14px; position: relative; }
+.sinastria-interpretacion .casas-lista li::before { content: '•'; position: absolute; left: 0; color: var(--gold); }
+.sinastria-interpretacion .casa-desc { display: block; margin-top: 4px; color: var(--text-mut); font-size: 0.82rem; font-style: italic; }
+
+/* Aspectos */
+.sinastria-aspectos { margin: 10px 0; }
+.aspectos-nota { color: var(--text-mut); font-size: 0.75rem; font-style: italic; margin: 4px 0 8px; line-height: 1.4; }
+
+/* Interpretación (análisis IA/local) */
+.sinastria-interpretacion {
+  margin: 12px 0;
+  color: var(--text);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.sinastria-interpretacion h3, .sinastria-interpretacion h4 {
+  color: var(--gold-bright);
+  margin-top: 12px;
+}
+.sinastria-interpretacion .analisis-origen {
+  font-size: 0.72rem;
+  color: var(--text-mut);
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.sinastria-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.sinastria-vacio { color: var(--text-mut); font-size: 0.85rem; padding: 8px; }
+
+/* === Animación de fusión (2 ruedas que se atraen) === */
+.sinastria-fusion-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: rgba(5, 2, 20, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.sinastria-fusion-overlay.hide { opacity: 0; transition: opacity 0.5s; }
+.sinastria-fusion-wrap {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  max-width: 80vw;
+  max-height: 80vw;
+}
+.sinastria-fusion-wheel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.sinastria-fusion-a {
+  fill: var(--sinastria-a);
+  transform: translateY(-60%) scale(0.6);
+  opacity: 0.9;
+  animation: sinastriaFusionA 1500ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.sinastria-fusion-b {
+  fill: var(--sinastria-b);
+  transform: translateY(60%) scale(0.6);
+  opacity: 0.9;
+  animation: sinastriaFusionB 1500ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.sinastria-fusion-spark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245,215,110,0.9), rgba(184,156,255,0.6), transparent 70%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  animation: sinastriaFusionSpark 1500ms ease-out forwards;
+}
+@keyframes sinastriaFusionA {
+  0%   { transform: translateY(-60%) scale(0.6); opacity: 0.9; }
+  70%  { transform: translateY(-15%) scale(0.75); opacity: 0.95; }
+  100% { transform: translateY(0) scale(0.9); opacity: 0.35; }
+}
+@keyframes sinastriaFusionB {
+  0%   { transform: translateY(60%) scale(0.6); opacity: 0.9; }
+  70%  { transform: translateY(15%) scale(0.75); opacity: 0.95; }
+  100% { transform: translateY(0) scale(0.9); opacity: 0.35; }
+}
+@keyframes sinastriaFusionSpark {
+  0%   { width: 0; height: 0; opacity: 0; }
+  60%  { width: 20px; height: 20px; opacity: 0; }
+  75%  { width: 240px; height: 240px; opacity: 1; }
+  100% { width: 320px; height: 320px; opacity: 0; }
+}

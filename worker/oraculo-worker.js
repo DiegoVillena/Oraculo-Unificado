@@ -109,6 +109,34 @@ Estructura tu respuesta en los siguientes pasos:
 
 Utiliza formato Markdown con encabezados (###), negritas y listas. Escribe todo en español.`;
 
+const PROMPT_SINASTRIA = `Actúa como un analista de relaciones empático, perspicaz y constructivo. Con los datos y puntuaciones de la sinastría, redacta un informe completo, cálido y equilibrado que celebre la conexión romántica y oriente con madurez sobre las áreas de aprendizaje.
+
+En los datos recibes: las posiciones de los planetas personales de cada persona, las puntuaciones de los 8 sectores con su nivel y los aspectos que los alimentan (con su dueño, tipo y orbe), un resumen por sector, la carta compuesta y las casas de impacto. Usa estrictamente los aspectos provistos; no asumas ni inventes aspectos adicionales.
+
+ESTRUCTURA DEL INFORME:
+
+=== ANÁLISIS INTEGRAL DE COMPATIBILIDAD ===
+
+🌟 1. LA ALQUIMIA Y LA IDENTIDAD DE LA PAREJA
+- % global y la chispa que hace única a esta unión.
+- La energía y el proyecto que construyen juntos como equipo (Carta Compuesta resumida en un párrafo cercano y visual).
+
+💫 2. RADIOGRAFÍA COMPLETA POR ÁREAS (Recorre todos los sectores)
+- CONEXIÓN EMOCIONAL Y AFECTIVA (Emocional + Valores): El lenguaje del cariño, la ternura compartida y cómo sincronizar sus formas de amar.
+- COMUNICACIÓN Y CONVIVENCIA (Mental + Estabilidad + Casa 7): La complicidad mental, las conversaciones diarias, la rutina y la visión de compromiso.
+- PASIÓN Y MAGNETISMO (Química + Transformación): La atracción física, el deseo y la intensidad que mantiene viva la chispa.
+- PROPÓSITO COMPARTIDO (Espiritual): El sentido de destino o crecimiento que despiertan el uno en el otro.
+
+🔑 3. LA LLAVE DEL VÍNCULO (Consejo Evolutivo)
+- El mayor regalo o aprendizaje que cada uno aporta a la vida del otro.
+- 2 pautas claras y cariñosas para cuidar la relación y resolver las diferencias cotidianas sin drama.
+
+REGLAS:
+1. Idioma: Escribe la respuesta estrictamente en el idioma indicado.
+2. Longitud: Entre 500 y 700 palabras.
+3. Tono: cálido, empático, maduro y constructivo. Sin generalidades ni lenguaje superficial.
+4. Usa los niveles de cada sector (Facilidad/Matiz/Intenso/Desafío) para matizar cada área; en Química y Transformación la tensión es intensidad/fricción (aporta pasión), no un defecto.`;
+
 // === HANDLER ===
 
 export default {
@@ -201,6 +229,9 @@ export default {
     } else if (tipo === 'combinado') {
       systemPrompt = PROMPT_COMBINADO + instrIdioma;
       userPrompt = `DATOS DE LA TIRADA DE TAROT + I-CHING:\n\n${datos.tirada}\n\n=== CARTA ASTRAL NATAL ===\n\n${datos.carta}`;
+    } else if (tipo === 'sinastria') {
+      systemPrompt = PROMPT_SINASTRIA + instrIdioma;
+      userPrompt = `DATOS DE LAS PERSONAS:\n- Persona A:\n${datos.carta1}\n\n- Persona B:\n${datos.carta2}\n\nPUNTUACIONES Y ASPECTOS:\n${datos.scores}`;
     } else {
       return new Response(JSON.stringify({ error: 'Tipo no válido' }), { status: 400, headers: corsHeaders });
     }

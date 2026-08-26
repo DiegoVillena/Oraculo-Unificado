@@ -3323,7 +3323,15 @@
       "agua": "Élément d'émotion, intuition, sensibilité et connexion profonde. Le monde intérieur.",
       "cardinal": "Modalité d'initiation : énergie qui démarre, mène et ouvre de nouveaux cycles.",
       "fijo": "Modalité de stabilité : énergie qui soutient, persiste et maintient.",
-      "mutable": "Modalité d'adaptation : énergie flexible qui coule, ajuste et transitionne."
+      "mutable": "Modalité d'adaptation : énergie flexible qui coule, ajuste et transitionne.",
+      "medioCielo": {
+        "titulo": "Milieu du Ciel",
+        "desc": "Le point le plus haut du thème (cuspide de la Maison 10) : votre vocation, votre image publique et votre but."
+      },
+      "ascendente": {
+        "titulo": "Ascendant",
+        "desc": "Le signe qui se levait à l'horizon est à votre naissance (cuspide de la Maison 1) : votre façon de vous présenter et votre première impression."
+      }
     }
   }
 }

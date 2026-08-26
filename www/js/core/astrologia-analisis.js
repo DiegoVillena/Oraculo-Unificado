@@ -7,9 +7,9 @@
 //
 // i18n: todos los diccionarios y textos narrativos se cargan desde datos-maestros.
 
-import { SIGNOS } from './astrologia.js?v=18';
-import { getAnalisisAstral, t, tSigno, tAspecto } from '../i18n/i18n.js?v=18';
-import { envolverTerminos } from '../ui/glossary.js?v=18';
+import { SIGNOS } from './astrologia.js?v=69';
+import { getAnalisisAstral, t, tSigno, tAspecto } from '../i18n/i18n.js?v=69';
+import { envolverTerminos } from '../ui/glossary.js?v=69';
 
 // === DICCIONARIOS FALLBACK (español, usados si i18n no está cargado) ===
 
@@ -375,6 +375,39 @@ export function analizarCartaAstral(carta) {
   html += '<div class="analisis-seccion gold-border"><h4>' + (titulos.s5 || '5. Tu Brújula Kármica') + '</h4>' + s5 + '</div>';
   html += '<div class="recomendacion-final"><h4>' + (titulos.s6 || '6. El Consejo del Oráculo') + '</h4>' + s6 + '</div>';
   html += '<p class="aviso-final">' + (N.avisoFinal || 'Este análisis es una interpretación simbólica de tu carta astral. Tómalo como espejo para la reflexión y el autoconocimiento, no como pronóstico determinista.') + '</p>';
+
+  // Pase final de placeholders de plantilla que el código no sustituye en línea
+  // (${sqSol}, ${eiAsc}, ${etDom}, ${mtDom}, ${masculine}...). Los templates de
+  // datos-maestros usan esta nomenclatura; el código usa ${SQ[solS]}, ${EI[ascE]}...
+  const _ascS = asc ? _signoKey(asc.signo) : '';
+  const _solS = sol ? _signoKey(sol.signo) : '';
+  const _lunaS = luna ? _signoKey(luna.signo) : '';
+  const _solE = _solS ? SE[_solS] : '';
+  const _lunaE = _lunaS ? SE[_lunaS] : '';
+  const _ascE = _ascS ? SE[_ascS] : '';
+  let _domEl = '', _domMod = '', _weakEl = '';
+  if (st) {
+    const _elems = [['Fuego',st.fuego],['Tierra',st.tierra],['Aire',st.aire],['Agua',st.agua]].sort((a,b)=>b[1]-a[1]);
+    _domEl = _elems[0][0]; _weakEl = _elems[_elems.length-1][0];
+    _domMod = [['Cardinal',st.cardinal],['Fijo',st.fixed],['Mutable',st.mutable]].sort((a,b)=>b[1]-a[1])[0][0];
+  }
+  html = html
+    .replace(/\$\{sqSol\}/g, SQ[_solS] || '')
+    .replace(/\$\{sqLuna\}/g, SQ[_lunaS] || '')
+    .replace(/\$\{sqAsc\}/g, SQ[_ascS] || '')
+    .replace(/\$\{eiAsc\}/g, EI[_ascE] || '')
+    .replace(/\$\{eiSol\}/g, EI[_solE] || '')
+    .replace(/\$\{eiLuna\}/g, EI[_lunaE] || '')
+    .replace(/\$\{eiDom\}/g, EI[_domEl] || '')
+    .replace(/\$\{etSol\}/g, ET[_solE] || '')
+    .replace(/\$\{etLuna\}/g, ET[_lunaE] || '')
+    .replace(/\$\{etDom\}/g, ET[_domEl] || '')
+    .replace(/\$\{etWeak\}/g, ET[_weakEl] || '')
+    .replace(/\$\{mtDom\}/g, MT[_domMod] || '')
+    .replace(/\$\{masculine\}/g, st ? st.masculine : '')
+    .replace(/\$\{feminine\}/g, st ? st.feminine : '')
+    .replace(/\$\{solSLower\}/g, (_solS || '').toLowerCase());
+
   // Envolver términos técnicos (planetas, signos, cartas) para que sean tapables.
   return envolverTerminos(html);
 }
@@ -391,6 +424,13 @@ function _evalTpl(tpl, ctx) {
   result = result.replace(/\$\{n\}/g, ctx.n || '');
   result = result.replace(/\$\{s\}/g, ctx.s || '');
   result = result.replace(/\$\{p\}/g, ctx.p || '');
+  // Placeholders de aperturas/conectores (sección 3): ${area} (casa), ${signo},
+  // ${cualidad} (descripción del signo) y ${cualidadCorta} (primer término).
+  result = result.replace(/\$\{area\}/g, ctx.CT[ctx.n] || '');
+  result = result.replace(/\$\{signo\}/g, ctx.s || '');
+  result = result.replace(/\$\{cualidad\}/g, ctx.SQ[ctx.s] || '');
+  result = result.replace(/\$\{cualidadCorta\}/g, (ctx.SQ[ctx.s] || '').split(',')[0] || '');
+  result = result.replace(/\$\{planeta\}/g, ctx.p || '');
   return result;
 }
 

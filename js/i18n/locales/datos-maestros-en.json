@@ -3272,7 +3272,15 @@
       "agua": "Element of emotion, intuition, sensitivity and deep connection. The inner world.",
       "cardinal": "Mode of initiation: energy that starts, leads and opens new cycles.",
       "fijo": "Mode of stability: energy that sustains, persists and maintains.",
-      "mutable": "Mode of adaptation: flexible energy that flows, adjusts and transitions."
+      "mutable": "Mode of adaptation: flexible energy that flows, adjusts and transitions.",
+      "medioCielo": {
+        "titulo": "Midheaven",
+        "desc": "The highest point of the chart (10th House cusp): your vocation, public image and life purpose."
+      },
+      "ascendente": {
+        "titulo": "Ascendant",
+        "desc": "The sign rising on the eastern horizon at your birth (1st House cusp): how you present yourself and your first impression."
+      }
     }
   }
 }

@@ -56,6 +56,8 @@ medallon_puro.png
 medallon_con_fondo.png
 medallon_interior.png
 centro_medallon.png
+sinastria_test_*.png
+sinastria_live_*.png
 
 # === Duplicados www/ (se regeneran con cap sync desde js/) ===
 # www/ es la salida de js/, se sincroniza con cap sync.
@@ -66,3 +68,10 @@ www/js/data/ciudades.sqlite
 # === Archivos temporales ===
 *.tmp
 .bash_history
+
+# === Herramientas y notas de sesión (no forman parte de la app) ===
+.zcode/
+CONTINUAR_*.txt
+prompt_sesion*.txt
+sesion*_estado_actual.png
+sinastrias_*.html

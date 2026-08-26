@@ -3275,7 +3275,15 @@
       "agua": "Element der Emotion, Intuition, Sensibilität und tiefen Verbindung. Die innere Welt.",
       "cardinal": "Modus der Initiative: Energie, die startet, führt und neue Zyklen eröffnet.",
       "fijo": "Modus der Stabilität: Energie, die trägt, ausdauert und aufrechterhält.",
-      "mutable": "Modus der Anpassung: flexible Energie, die fließt, sich anpasst und übergibt."
+      "mutable": "Modus der Anpassung: flexible Energie, die fließt, sich anpasst und übergibt.",
+      "medioCielo": {
+        "titulo": "Medium Coeli",
+        "desc": "Der höchste Punkt des Horoskops (Spitze des 10. Hauses): Ihre Berufung, Ihr öffentliches Bild und Ihr Lebensziel."
+      },
+      "ascendente": {
+        "titulo": "Aszendent",
+        "desc": "Das Zeichen, das bei Ihrer Geburt am östlichen Horizont aufging (Spitze des 1. Hauses): wie Sie sich präsentieren und Ihr erster Eindruck."
+      }
     }
   }
 }

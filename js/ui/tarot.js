@@ -1,15 +1,15 @@
 // ui/tarot.js — Renderizado de tiradas de Tarot + I Ching
 // FIX: Layout rediseñado sin solapamientos. Cruz Celta usa CSS Grid responsivo
 // en lugar de position:absolute con porcentajes que causaban pisado en móvil.
-import { barajaTarot, posicionesCruzCelta, posicionesTres, dictHexagramas, codigoANumero, getImgUrl } from '../data/tarot-data.js?v=18';
-import { t, tCarta, tKB, tHexagrama, tPosicion } from '../i18n/i18n.js?v=18';
-import { KB } from '../data/tarot-kb.js?v=18';
-import { KB_ICHING } from '../data/iching-kb.js?v=18';
-import { abrirModal, abrirModalIching } from './modal.js?v=18';
-import { generarAnalisis, extraerTextoAnalisis } from '../core/analysis.js?v=18';
-import { generarHexagramaPorNum } from '../data/iching-svg.js?v=18';
-import { analisisTarotIA } from '../core/ia-api.js?v=18';
-import { mostrarDonacionSiToca } from './donacion.js?v=18';
+import { barajaTarot, posicionesCruzCelta, posicionesTres, dictHexagramas, codigoANumero, getImgUrl } from '../data/tarot-data.js?v=69';
+import { t, tCarta, tKB, tHexagrama, tPosicion } from '../i18n/i18n.js?v=69';
+import { KB } from '../data/tarot-kb.js?v=69';
+import { KB_ICHING } from '../data/iching-kb.js?v=69';
+import { abrirModal, abrirModalIching } from './modal.js?v=69';
+import { generarAnalisis, extraerTextoAnalisis } from '../core/analysis.js?v=69';
+import { generarHexagramaPorNum } from '../data/iching-svg.js?v=69';
+import { analisisTarotIA } from '../core/ia-api.js?v=69';
+import { mostrarDonacionSiToca } from './donacion.js?v=69';
 
 let ultimaTirada = null;
 let textoGlobalCopia = '';
@@ -239,7 +239,7 @@ function actualizarBotonCombinado() {
   const btnCombinado = document.getElementById('btn-analisis-combinado');
   if (!btnCombinado) return;
   // Importar getUltimaCarta dinámicamente para evitar dependencia circular
-  import('../core/astrologia.js?v=18').then(mod => {
+  import('../core/astrologia.js?v=69').then(mod => {
     const carta = mod.getUltimaCarta();
     if (ultimaTirada && carta) {
       btnCombinado.style.display = 'block';

@@ -1,8 +1,8 @@
 // core/analysis.js — Motor de análisis holístico Tarot + I Ching
 // i18n: todos los textos se cargan desde datos-maestros (analisisTarot)
-import { KB } from '../data/tarot-kb.js?v=18';
-import { KB_ICHING } from '../data/iching-kb.js?v=18';
-import { tCarta, tKB, tHexagrama, getAnalisisTarot } from '../i18n/i18n.js?v=18';
+import { KB } from '../data/tarot-kb.js?v=69';
+import { KB_ICHING } from '../data/iching-kb.js?v=69';
+import { tCarta, tKB, tHexagrama, getAnalisisTarot } from '../i18n/i18n.js?v=69';
 
 export const ELEMENTOS = {
   fuego:  { dual: "aire",   opuesto: "agua"   },
@@ -189,7 +189,9 @@ export function analizarTirada(tirada) {
       contextoPregunta = VG.sinCategoria || 'Tu pregunta/intención se enfoca en un tema general sin una categoría temática dominante clara. ';
     }
   } else {
-    contextoPregunta = VG.sinPregunta || 'No se formuló una pregunta explícita, por lo que la lectura se ofrece como radiografía general del momento vital actual. ';
+    // Sin pregunta: la línea 201 ya muestra el aviso "No se especificó ninguna
+    // pregunta", así que aquí no se repite el mensaje (evita duplicación).
+    contextoPregunta = '';
   }
 
   const pctMayores = Math.round((mayores / total) * 100);

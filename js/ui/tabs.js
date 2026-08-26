@@ -18,4 +18,6 @@ export function cambiarPestana(nombre) {
   paneles.forEach(p => {
     p.classList.toggle('active', p.getAttribute('data-panel') === nombre);
   });
+  // Avisar a los módulos (p. ej. sinastria repuebla sus selects al abrirse)
+  document.dispatchEvent(new CustomEvent('pestana-cambiada', { detail: { tab: nombre } }));
 }

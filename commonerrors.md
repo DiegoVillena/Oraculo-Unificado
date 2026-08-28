@@ -132,3 +132,9 @@ Formato: bullet conciso. Categorizar. Sin prosa larga.
 - **Síntoma**: Tras editar un `.js` (p. ej. reemplazar una función grande), `node --check js/foo.js` pasa OK pero el WebView lanza `SyntaxError: Unexpected token '}'` en logcat al cargar la app.
 - **Causa**: `node --check` puede no validar del todo la sintaxis de ES modules (`.js` con `import/export`); una `}` sobrante a nivel de módulo puede pasar desapercibida (se parsea de forma distinta que en el motor del WebView).
 - **Solución**: Al reemplazar bloques grandes de código, revisar el balance de llaves (p. ej. `grep -n '^}'` o contar `{}`). Y SIEMPRE comprobar logcat del WebView tras instalar: un `Uncaught SyntaxError: Unexpected token` en `sinastria.js?v=N` es síntoma de esto. Bumpear version tag y reinstalar para verificar la corrección.
+
+## Investigación web: buscadores y endpoints de búsqueda bloquean con CAPTCHA
+
+- **Síntoma**: Los subagentes que investigan se atascan: Google/DuckDuckGo/Bing/Mojeek devuelven CAPTCHA o "blocked"; los endpoints de búsqueda por fetch también (Jina `s.jina.ai` → 401 por API key; DuckDuckGo HTML → CAPTCHA). La investigación queda incompleta o con conclusiones erróneas.
+- **Causa**: Motores y endpoints bloquean tráfico automatizado. Caso real: la búsqueda por fetch NO detectó el repo `deepseek-ai/deepseek-harness` (200k stars) y se concluyó erróneamente que no existía; el navegador real sí lo encontró.
+- **Solución (orden de preferencia)**: (1) **Navegador real** con la skill `browser-use` para buscar en DuckDuckGo/Bing como humano (no dispara CAPTCHA; solo el agente principal, no subagentes). (2) `WebFetch` directo a la fuente primaria. (3) Para GitHub `gh` o `api.github.com`. (4) Reader `https://r.jina.ai/<URL>` si un sitio bloquea el fetch (un 404 = ruta inexistente, no bloqueo). (5) Delegar con instrucción explícita al subagente de NO usar buscadores. Documentado en `~/.zcode/AGENTS.md` (sección "Investigación web sin bloqueos").

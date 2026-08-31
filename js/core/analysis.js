@@ -1,8 +1,8 @@
 // core/analysis.js — Motor de análisis holístico Tarot + I Ching
 // i18n: todos los textos se cargan desde datos-maestros (analisisTarot)
-import { KB } from '../data/tarot-kb.js?v=69';
-import { KB_ICHING } from '../data/iching-kb.js?v=69';
-import { tCarta, tKB, tHexagrama, getAnalisisTarot } from '../i18n/i18n.js?v=69';
+import { KB } from '../data/tarot-kb.js?v=72';
+import { KB_ICHING } from '../data/iching-kb.js?v=72';
+import { tCarta, tKB, tHexagrama, getAnalisisTarot } from '../i18n/i18n.js?v=72';
 
 export const ELEMENTOS = {
   fuego:  { dual: "aire",   opuesto: "agua"   },
@@ -146,6 +146,23 @@ export function analizarTirada(tirada) {
   const total = cartas.length;
   const pregunta = (tirada.pregunta || '').trim();
   const tienePregunta = pregunta.length > 0;
+  // Helper: envolver nombre de carta como término seleccionable.
+  // alReves se pasa para que al tap abra el modal con la orientación correcta.
+  const cartaTerm = (nombre, alReves) => `<span class="ref-tarot" data-term="tarot:${nombre}"${alReves ? ' data-reves="1"' : ''}>${tCarta(nombre)}</span>`;
+  // Primera frase (recortada) de un significado: base de la síntesis narrativa.
+  const _primeraFrase = (sig) => ((sig || '').split('. ')[0] || '').replace(/\.$/, '');
+  // KB localizada de una carta según orientación (kw + sig + arquetipo).
+  const _kbCarta = (c) => {
+    const kb = KB[c.nombre] || {};
+    const kbT = tKB(c.nombre) || {};
+    const base = c.alReves ? (kb.reves || {}) : (kb.derecho || {});
+    return {
+      sig: (c.alReves ? (kbT.revesSig || base.sig) : (kbT.sig || base.sig)) || '',
+      kw: (c.alReves ? (kbT.revesKw || base.kw) : (kbT.kw || base.kw)) || [],
+      arquetipo: kbT.arquetipo || kb.arquetipo || '',
+    };
+  };
+  const _norm = (s) => (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
   let mayores = 0, menores = 0, invertidas = 0, ases = 0;
   let palos = { copas: 0, oros: 0, espadas: 0, bastos: 0 };
   let figuras = { Sota: 0, Caballero: 0, Reina: 0, Rey: 0 };
@@ -187,6 +204,20 @@ export function analizarTirada(tirada) {
       contextoPregunta = (VG.preguntaVersa || 'Tu pregunta/intención versa sobre <span class="destacado">{desc}</span>. ').replace('{desc}', descripciones[catDom] || 'tu situación');
     } else {
       contextoPregunta = VG.sinCategoria || 'Tu pregunta/intención se enfoca en un tema general sin una categoría temática dominante clara. ';
+    }
+    // Cruce por solapamiento léxico: cartas cuyas keywords tocan palabras reales
+    // de la pregunta concreta (no solo la categoría). Se señalan por su nombre.
+    const palabrasP = _norm(pregunta).split(/[^a-zñü]+/).filter(w => w.length >= 4);
+    const cartasKw = cartas.filter(c => {
+      const d = _kbCarta(c);
+      return d.kw.some(k => {
+        const partes = _norm(k).split(/[^a-zñü]+/);
+        return partes.some(pk => pk.length >= 4 && palabrasP.some(w => w === pk || (w.length >= 5 && pk.length >= 5 && (w.startsWith(pk.slice(0, 5)) || pk.startsWith(w.slice(0, 5))))));
+      });
+    });
+    if (cartasKw.length) {
+      contextoPregunta += (VG.cruceKw || 'Estas cartas hablan directamente de tu pregunta: ${cartas}.')
+        .replace(/\$\{cartas\}/g, cartasKw.map(c => cartaTerm(c.nombre, c.alReves)).join(', '));
     }
   } else {
     // Sin pregunta: la línea 201 ya muestra el aviso "No se especificó ninguna
@@ -233,6 +264,24 @@ export function analizarTirada(tirada) {
   } else {
     tematica = VG.palosEquilibrados || 'Los palos están equilibrados, lo que indica que la situación toca varios planos a la vez.';
   }
+  // Balance elemental fino (los 4 elementos, más fino que el palo dominante):
+  // dominio ≥40% del total → qué energía impera; carencia total → qué se pide cultivar.
+  {
+    const elEntries = Object.entries(elementosTarot).sort((a, b) => b[1] - a[1]);
+    const [elDom, elDomC] = elEntries[0];
+    const [elMin, elMinC] = elEntries[elEntries.length - 1];
+    const elTextos = VG.elTexto || {};
+    if (elDomC >= total * 0.4 && VG.elDominante) {
+      tematica += ' ' + (VG.elDominante || '')
+        .replace(/\$\{el\}/g, (elTextos[elDom] && elTextos[elDom].label) || elDom)
+        .replace(/\$\{c\}/g, elDomC).replace(/\$\{total\}/g, total)
+        .replace(/\$\{texto\}/g, (elTextos[elDom] && elTextos[elDom].texto) || '');
+    } else if (elMinC === 0 && VG.elCarencia) {
+      tematica += ' ' + (VG.elCarencia || '')
+        .replace(/\$\{el\}/g, (elTextos[elMin] && elTextos[elMin].label) || elMin)
+        .replace(/\$\{texto\}/g, (elTextos[elMin] && elTextos[elMin].texto) || '');
+    }
+  }
 
   let crucePreguntaTirada = "";
   if (tienePregunta) {
@@ -268,6 +317,9 @@ export function analizarTirada(tirada) {
       .replace(/\$\{hexName\}/g, `<span data-term="iching:${numP}">${hexName}</span>`).replace(/\$\{numP\}/g, numP)
       .replace(/\$\{trigInf\}/g, trigInf).replace(/\$\{trigSup\}/g, trigSup)
       .replace(/\$\{sig\}/g, sig).replace(/\$\{consejo\}/g, consejo);
+    // Keywords del hexagrama (campo kw de la KB, antes sin usar en el análisis)
+    const kwHex = (kbHexP_T?.kw || kbHexP?.kw || []).slice(0, 3).join(', ');
+    if (kwHex) lecturaIching += (ichingT.temas || ' Temas del hexagrama: ${kw}.').replace(/\$\{kw\}/g, kwHex);
     if (iching.hayMutacion && iching.numFuturo) {
       const kbHexF_T = tHexagrama(iching.numFuturo);
       const kbHexF = KB_ICHING[String(iching.numFuturo)];
@@ -292,10 +344,39 @@ export function analizarTirada(tirada) {
   if (figTotal >= 3) dinamicas.push((dinamicasT.corte || 'Hay ${figTotal} cartas de corte: otras personas juegan un papel relevante.').replace(/\$\{figTotal\}/g, figTotal));
   if (figuras.Rey >= 2) dinamicas.push(dinamicasT.reyes || 'Varios Reyes: autoridades masculinas influyen.');
   if (figuras.Reina >= 2) dinamicas.push(dinamicasT.reinas || 'Varias Reinas: figuras femeninas son centrales.');
+  if (figuras.Sota >= 2) dinamicas.push(dinamicasT.sotas || 'Varias Sotas: mensajes y estudios en marcha; curiosidad activa.');
+  if (figuras.Caballero >= 2) dinamicas.push(dinamicasT.caballeros || 'Varios Caballeros: movimiento y acción; las cosas avanzan rápido.');
+  // Numerología interpretativa: el número repetido se lee, no solo se cuenta.
   Object.entries(numeros).forEach(([n, c]) => {
-    if (c >= 2) dinamicas.push((dinamicasT.numero || 'El número ${n} aparece ${c} veces: su cualidad numerológica se refuerza.').replace(/\$\{n\}/g, n).replace(/\$\{c\}/g, c));
+    if (c >= 2) {
+      const sig = (dinamicasT.numeroSig || {})[n] || '';
+      dinamicas.push((dinamicasT.numero || 'El número ${n} aparece ${c} veces: su cualidad numerológica se refuerce.')
+        .replace(/\$\{n\}/g, n).replace(/\$\{c\}/g, c) + (sig ? ' — ' + sig + '.' : ''));
+    }
   });
   if (invertidas >= total * 0.4) dinamicas.push((dinamicasT.invertidas || 'Alto porcentaje de invertidas (${pctInvertidas}%): bloqueos internos.').replace(/\$\{pctInvertidas\}/g, pctInvertidas));
+  // Secuencias arquetípicas notables: pares célebres en posiciones consecutivas
+  // o en el arco pasado→futuro (La Torre→La Estrella, El Diablo→La Templanza…).
+  const SEC = dinamicasT.secuencias || {};
+  const paresOrdenados = [];
+  for (let i = 0; i < total - 1; i++) paresOrdenados.push([cartas[i], cartas[i + 1]]);
+  if (tirada.tipo === 'tres') { /* cubierto por consecutivas */ }
+  if (tirada.tipo === 'cruz') {
+    // Ejes simbólicos adicionales: corazón→resultado y raíz→futuro inmediato
+    const porNum = (n) => cartas.find(c => c.num === n);
+    [[1, 10], [4, 6]].forEach(([n1, n2]) => { if (porNum(n1) && porNum(n2)) paresOrdenados.push([porNum(n1), porNum(n2)]); });
+  }
+  const vistosSeq = new Set();
+  for (const [ca, cb] of paresOrdenados) {
+    const clave = `${ca.nombre}>${cb.nombre}`;
+    if (SEC[clave] && !vistosSeq.has(clave)) {
+      vistosSeq.add(clave);
+      dinamicas.push((dinamicasT.secuencia || 'Secuencia arquetípica: ${a} → ${b} — ${frase}')
+        .replace(/\$\{a\}/g, cartaTerm(ca.nombre, ca.alReves))
+        .replace(/\$\{b\}/g, cartaTerm(cb.nombre, cb.alReves))
+        .replace(/\$\{frase\}/g, SEC[clave]));
+    }
+  }
 
   const dignidades = [];
   if (total >= 2) {
@@ -316,55 +397,97 @@ export function analizarTirada(tirada) {
     }
   }
   if (dignidades.length === 0) dignidades.push(dignidadesT.neutro || "No se observan dinámicas elementales significativas entre cartas adyacentes.");
+  // Dignidades entre posiciones simbólicamente relacionadas (Cruz Celta):
+  // corazón↔desafío (1↔2), corazón↔resultado (1↔10), raíz↔futuro (4↔6),
+  // meta↔resultado (5↔10). La inversión atenúa el matiz (se vive por dentro).
+  if (tirada.tipo === 'cruz') {
+    const porNum = (n) => cartas.find(c => c.num === n);
+    const PARES_POS = [[1, 2], [1, 10], [4, 6], [5, 10]];
+    for (const [n1, n2] of PARES_POS) {
+      const cA = porNum(n1), cB = porNum(n2);
+      if (!cA || !cB) continue;
+      const ka = KB[cA.nombre], kb = KB[cB.nombre];
+      if (!ka || !kb) continue;
+      const d = dignidadEntre(ka.elemento, kb.elemento);
+      if (d === 'neutro') continue;
+      const tpl = d === 'amigable' ? (dignidadesT.parPosAmigable || '') : (dignidadesT.parPosTenso || '');
+      if (!tpl) continue;
+      dignidades.push(tpl
+        .replace(/\$\{pos1\}/g, cA.posicion).replace(/\$\{pos2\}/g, cB.posicion)
+        .replace(/\$\{c1\}/g, cartaTerm(cA.nombre, cA.alReves))
+        .replace(/\$\{c2\}/g, cartaTerm(cB.nombre, cB.alReves))
+        .replace(/\$\{a\}/g, ka.elemento).replace(/\$\{b\}/g, kb.elemento)
+        + ((cA.alReves || cB.alReves) ? (dignidadesT.nuanceInv || '') : ''));
+    }
+  }
 
   const posicional = [];
-  // Helper: envolver nombre de carta como término seleccionable.
-  // alReves se pasa para que al tap abra el modal con la orientación correcta.
-  const cartaTerm = (nombre, alReves) => `<span class="ref-tarot" data-term="tarot:${nombre}"${alReves ? ' data-reves="1"' : ''}>${tCarta(nombre)}</span>`;
   if (tirada.tipo === 'una') {
     const c = cartas[0];
-    const kb = KB[c.nombre];
-    const kbT = tKB(c.nombre);
-    const data = c.alReves ? { kw: kbT?.revesKw || kb.reves.kw, sig: kbT?.revesSig || kb.reves.sig }
-                           : { kw: kbT?.kw || kb.derecho.kw, sig: kbT?.sig || kb.derecho.sig };
-    posicional.push({ titulo: c.posicion, texto: `${cartaTerm(c.nombre, c.alReves)} ${c.orientacion}: ${data.sig} ${(posicionalT.kwLabel || 'Palabras clave:')} ${data.kw.join(', ')}.` });
+    const data = _kbCarta(c);
+    posicional.push({ titulo: c.posicion, texto: `${cartaTerm(c.nombre, c.alReves)} ${c.orientacion}${data.arquetipo ? ` <em>— ${data.arquetipo} —</em>` : ''}: ${data.sig} ${(posicionalT.kwLabel || 'Palabras clave:')} ${data.kw.join(', ')}.` });
   } else if (tirada.tipo === 'tres') {
     cartas.forEach(c => {
-      const kb = KB[c.nombre];
-      const kbT = tKB(c.nombre);
-      const data = c.alReves ? { sig: kbT?.revesSig || kb.reves.sig } : { sig: kbT?.sig || kb.derecho.sig };
+      const data = _kbCarta(c);
       let contexto = "";
       if (c.num === 1) contexto = posicionalT.pasado || "El pasado ha dejado esta energía como herencia.";
       else if (c.num === 2) contexto = posicionalT.presente || "En el presente, esta carta describe la energía actual.";
       else contexto = posicionalT.futuro || "En el futuro cercano, esta energía se vislumbra como tendencia.";
-      posicional.push({ titulo: c.posicion, texto: `${cartaTerm(c.nombre, c.alReves)} ${c.orientacion}. ${contexto} ${data.sig}` });
+      posicional.push({ titulo: c.posicion, texto: `${cartaTerm(c.nombre, c.alReves)} ${c.orientacion}${data.arquetipo ? ` <em>— ${data.arquetipo} —</em>` : ''}. ${contexto} ${data.sig} ${(posicionalT.kwLabel || 'Palabras clave:')} ${data.kw.slice(0, 3).join(', ')}.` });
     });
   } else if (tirada.tipo === 'cruz') {
     cartas.forEach(c => {
-      const kb = KB[c.nombre];
-      const kbT = tKB(c.nombre);
-      const data = c.alReves ? { sig: kbT?.revesSig || kb.reves.sig } : { sig: kbT?.sig || kb.derecho.sig };
-      posicional.push({ titulo: c.posicion, texto: `${cartaTerm(c.nombre, c.alReves)} ${c.orientacion}. ${plantilla[c.num] || ''} ${data.sig}` });
+      const data = _kbCarta(c);
+      posicional.push({ titulo: c.posicion, texto: `${cartaTerm(c.nombre, c.alReves)} ${c.orientacion}${data.arquetipo ? ` <em>— ${data.arquetipo} —</em>` : ''}. ${plantilla[c.num] || ''} ${data.sig} ${(posicionalT.kwLabel || 'Palabras clave:')} ${data.kw.slice(0, 3).join(', ')}.` });
     });
   }
 
   let narrativa = "";
+  // Síntesis narrativa real: combina las primeras frases de cada significado en
+  // un mini-relato por arcos (no solo nombres interpolados). Determinista.
   if (tirada.tipo === 'cruz') {
-    const c4 = cartas.find(c => c.num === 4);
-    const c1 = cartas.find(c => c.num === 1);
-    const c2 = cartas.find(c => c.num === 2);
-    const c6 = cartas.find(c => c.num === 6);
-    const c10 = cartas.find(c => c.num === 10);
-    narrativa = (narrativaT.cruz || 'Desde el pasado (<span class="ref-tarot">${c4}</span>), el presente está marcado por <span class="ref-tarot">${c1}</span>, con desafío <span class="ref-tarot">${c2}</span>. El futuro apunta a <span class="ref-tarot">${c6}</span>, y el resultado a <span class="ref-tarot">${c10}</span>.')
-      .replace(/\$\{c4\}/g, cartaTerm(c4.nombre, c4.alReves)).replace(/\$\{c1\}/g, cartaTerm(c1.nombre, c1.alReves))
-      .replace(/\$\{c2\}/g, cartaTerm(c2.nombre, c2.alReves)).replace(/\$\{c6\}/g, cartaTerm(c6.nombre, c6.alReves))
-      .replace(/\$\{c10\}/g, cartaTerm(c10.nombre, c10.alReves));
+    const porN = (n) => cartas.find(c => c.num === n);
+    const fr = (n) => _primeraFrase(_kbCarta(porN(n)).sig);
+    const term = (n) => cartaTerm(porN(n).nombre, porN(n).alReves);
+    if (narrativaT.cruzNucleo) {
+      // Versión rica (núcleo 1+2, raíz→futuro 4→6, meta→desenlace 5→10)
+      const partes = [
+        (narrativaT.cruzNucleo || '').replace(/\$\{c1\}/g, term(1)).replace(/\$\{c2\}/g, term(2)).replace(/\$\{s1\}/g, fr(1)).replace(/\$\{s2\}/g, fr(2)),
+        (narrativaT.cruzRaiz || '').replace(/\$\{c4\}/g, term(4)).replace(/\$\{c6\}/g, term(6)).replace(/\$\{s4\}/g, fr(4)).replace(/\$\{s6\}/g, fr(6)),
+        (narrativaT.cruzMeta || '').replace(/\$\{c5\}/g, term(5)).replace(/\$\{c10\}/g, term(10)).replace(/\$\{s5\}/g, fr(5)).replace(/\$\{s10\}/g, fr(10)),
+      ].filter(Boolean);
+      narrativa = partes.join(' ');
+      if (porN(10).alReves && narrativaT.cruzMetaInv) {
+        narrativa += narrativaT.cruzMetaInv.replace(/\$\{c10\}/g, term(10));
+      }
+    } else {
+      // Legacy (datos-maestros antiguos sin claves nuevas)
+      const c4 = porN(4), c1 = porN(1), c2 = porN(2), c6 = porN(6), c10 = porN(10);
+      narrativa = (narrativaT.cruz || 'Desde el pasado (<span class="ref-tarot">${c4}</span>), el presente está marcado por <span class="ref-tarot">${c1}</span>, con desafío <span class="ref-tarot">${c2}</span>. El futuro apunta a <span class="ref-tarot">${c6}</span>, y el resultado a <span class="ref-tarot">${c10}</span>.')
+        .replace(/\$\{c4\}/g, term(4)).replace(/\$\{c1\}/g, term(1))
+        .replace(/\$\{c2\}/g, term(2)).replace(/\$\{c6\}/g, term(6))
+        .replace(/\$\{c10\}/g, term(10));
+    }
   } else if (tirada.tipo === 'tres') {
-    narrativa = (narrativaT.tres || 'El arco temporal va de <span class="ref-tarot">${c0}</span> (pasado) a <span class="ref-tarot">${c1}</span> (presente), hacia <span class="ref-tarot">${c2}</span> (futuro).')
-      .replace(/\$\{c0\}/g, cartaTerm(cartas[0].nombre, cartas[0].alReves)).replace(/\$\{c1\}/g, cartaTerm(cartas[1].nombre, cartas[1].alReves))
-      .replace(/\$\{c2\}/g, cartaTerm(cartas[2].nombre, cartas[2].alReves));
+    if (narrativaT.arcoTres) {
+      const fr = (i) => _primeraFrase(_kbCarta(cartas[i]).sig);
+      const term = (i) => cartaTerm(cartas[i].nombre, cartas[i].alReves);
+      narrativa = (narrativaT.arcoTres || '')
+        .replace(/\$\{c0\}/g, term(0)).replace(/\$\{s0\}/g, fr(0))
+        .replace(/\$\{c1\}/g, term(1)).replace(/\$\{s1\}/g, fr(1))
+        .replace(/\$\{c2\}/g, term(2)).replace(/\$\{s2\}/g, fr(2));
+    } else {
+      narrativa = (narrativaT.tres || 'El arco temporal va de <span class="ref-tarot">${c0}</span> (pasado) a <span class="ref-tarot">${c1}</span> (presente), hacia <span class="ref-tarot">${c2}</span> (futuro).')
+        .replace(/\$\{c0\}/g, cartaTerm(cartas[0].nombre, cartas[0].alReves)).replace(/\$\{c1\}/g, cartaTerm(cartas[1].nombre, cartas[1].alReves))
+        .replace(/\$\{c2\}/g, cartaTerm(cartas[2].nombre, cartas[2].alReves));
+    }
   } else {
+    const c0 = cartas[0];
+    const d0 = _kbCarta(c0);
     narrativa = narrativaT.una || 'La carta única condensa pasado, presente y futuro en una sola energía.';
+    if (d0.arquetipo && narrativaT.unaArquetipo) {
+      narrativa += ' ' + narrativaT.unaArquetipo.replace(/\$\{arq\}/g, d0.arquetipo);
+    }
   }
 
   const elHexP = kbHexP ? kbHexP.elemento : null;
@@ -437,7 +560,29 @@ export function analizarTirada(tirada) {
   }
 
   let recomendacion = "";
-  if (pctInvertidas >= 50 && kbHexP && ['29','39','47','3'].includes(String(numP))) {
+  if (recomendacionT.base) {
+    // Recomendación compuesta: (base por categoría de la pregunta) + (matiz por
+    // %de invertidas) + (acción desde las keywords de la carta de resultado) +
+    // (consejo del hexagrama futuro si hay mutación).
+    let catG = null, catGC = 0;
+    Object.entries(palabrasClavePregunta).forEach(([k, c]) => { if (c > catGC) { catGC = c; catG = k; } });
+    recomendacion = (recomendacionT.base[catG] || recomendacionT.base.general || '');
+    if (pctInvertidas >= 40) recomendacion += ' ' + (recomendacionT.matizAlta || '').replace(/\$\{pct\}/g, pctInvertidas);
+    else if (pctInvertidas > 0) recomendacion += ' ' + (recomendacionT.matizMedia || '');
+    if (cartaResultado) {
+      const kwR = _kbCarta(cartaResultado).kw;
+      if (kwR.length >= 2) {
+        recomendacion += ' ' + (recomendacionT.accion || '').replace(/\$\{kw1\}/g, kwR[0]).replace(/\$\{kw2\}/g, kwR[1]);
+      }
+    }
+    if (iching.hayMutacion && iching.numFuturo) {
+      const kbHexF_T = tHexagrama(iching.numFuturo);
+      const kbHexF = KB_ICHING[String(iching.numFuturo)];
+      const consejoF = kbHexF_T?.consejo || kbHexF?.consejo;
+      if (consejoF) recomendacion += ' ' + (recomendacionT.consejoHex || '').replace(/\$\{consejo\}/g, consejoF);
+    }
+    if (!recomendacion.trim()) recomendacion = recomendacionT.r8 || "Tirada equilibrada sin extremos. Combina escucha interior con acción práctica. La estabilidad es una base, no un destino.";
+  } else if (pctInvertidas >= 50 && kbHexP && ['29','39','47','3'].includes(String(numP))) {
     recomendacion = recomendacionT.r1 || "Ante tantas invertidas y hexagrama de dificultad, no forzar. Escucha y nombra qué sientes. La acción se volverá evidente cuando las energías cedan.";
   } else if (paloDom === 'copas' && kbHexP && ['17','31','54','37','8'].includes(String(numP))) {
     recomendacion = recomendacionT.r2 || "El agua domina. Actúa desde el sentir, no desde el cálculo. Las emociones son información valiosa ahora.";

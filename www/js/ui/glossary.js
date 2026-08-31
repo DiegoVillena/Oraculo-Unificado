@@ -10,9 +10,9 @@
 // aspectos, índice para signos, número para casas). El texto visible es la
 // traducción al idioma actual; data-term desacopla identidad de presentación.
 
-import { t, tGlosario, tCarta, tSigno, tAspecto, getIdioma } from '../i18n/i18n.js?v=69';
-import { SIGNOS, PLANETAS_UI } from '../core/astrologia.js?v=69';
-import { barajaTarot } from '../data/tarot-data.js?v=69';
+import { t, tGlosario, tCarta, tSigno, tAspecto, getIdioma } from '../i18n/i18n.js?v=72';
+import { SIGNOS, PLANETAS_UI } from '../core/astrologia.js?v=72';
+import { barajaTarot } from '../data/tarot-data.js?v=72';
 
 let popoverEl = null;
 let terminoActivoEl = null;   // elemento del término actualmente abierto
@@ -290,8 +290,8 @@ function _construirMapaTerminos() {
     if (display) _mapaTerminos.push({ display, tipo: 'tarot', clave: nombreES });
   }
 
-  // Aspectos: tipos en ASPECTOS_DEF
-  const aspectosTipos = ['Conjunction','Sextile','Square','Trine','Opposition'];
+  // Aspectos: tipos en ASPECTOS_DEF (incluye Quincuncio 150°)
+  const aspectosTipos = ['Conjunction','Sextile','Square','Trine','Quincunx','Opposition'];
   for (const clave of aspectosTipos) {
     const display = tAspecto(clave);
     if (display && display !== clave) _mapaTerminos.push({ display, tipo: 'aspecto', clave });

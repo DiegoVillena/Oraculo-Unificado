@@ -1,0 +1,662 @@
+================================================================================
+PLAN DE MEJORA: FALLBACKS LOCALES AL NIVEL DE LOS ANÁLISIS IA
+================================================================================
+Proyecto: Oráculo Unificado (C:\Users\Diego\Desktop\OraculoUnificado)
+Fecha del plan: 2026-08-28
+Objetivo: que los 3 análisis locales (Tarot, Carta Astral, Sinastría) que se
+muestran cuando la IA no está disponible (sin red / cuota 429 / timeout)
+produzcan resultados de calidad comparable a los análisis de Gemini.
+
+Este archivo es la guía paso a paso para ejecutar el trabajo en otra sesión
+(pensada para un modelo más barato: deepseek-v4-flash-0731). El PROMPT de
+arranque de esa sesión está al FINAL de este documento (Sección FINAL).
+
+--------------------------------------------------------------------------------
+SECCIÓN 0 — CONTEXTO DEL PROYECTO Y REGLAS OBLIGATORIAS
+--------------------------------------------------------------------------------
+
+## 0.1 Qué es la app
+App Android híbrida (Capacitor 8 + WebView), sin framework JS: HTML5 + CSS3 +
+ES modules vanilla. Idiomas soportados: es, en, pt, fr, it, de (6).
+
+- applicationId: com.oraculounificado.app
+- Web root servido por Capacitor: android/app/src/main/assets/public/
+- `js/` es el SOURCE OF TRUTH. `www/js/` y `android/app/src/main/assets/public/js/`
+  son COPIAS que hay que sincronizar manualmente tras cada edición.
+
+## 0.2 Flujo de trabajo OBLIGATORIO (está en AGENTS.md, respétalo)
+1. Crear rama nueva desde main:
+     git checkout -b feat/mejora-fallbacks-locales
+   NUNCA trabajar directamente en main.
+2. Tras editar cualquier archivo en `js/`, sincronizarlo INMEDIATAMENTE:
+     cp js/<archivo> www/js/<archivo>
+     cp js/<archivo> android/app/src/main/assets/public/js/<archivo>
+   (Lo mismo para js/index.html -> www/js/index.html y raíz index.html si toca.)
+3. NUNCA hacer git commit ni git push sin confirmación explícita de Diego.
+   Al terminar, PROPONER el mensaje de commit y esperar su "sí".
+4. Al terminar la sesión, actualizar la sección "Estado actual" de AGENTS.md.
+
+## 0.3 Reglas de i18n (MUY IMPORTANTE — es la trampa nº1 del proyecto)
+- Nada de texto nuevo hardcodeado en español u otro idioma en la salida.
+  Cada frase nueva debe existir en los 6 locales.
+- Los textos de los análisis viven en:
+    js/i18n/locales/datos-maestros-{es,en,pt,fr,it,de}.json
+  dentro de los bloques `analisisTarot`, `analisisAstral`, y (para sinastría)
+  los strings sueltos en js/i18n/locales/{es,en,...}.json (bloque `sinastria`,
+  `ia`, `astrologia`, `astral`).
+- Cuando añadas una clave nueva, añádela en los 6 archivos y tradúcela de
+  verdad (tú puedes redactar los 6 idiomas; mantén el mismo placeholder set).
+- La INTERPOLACIÓN es manual: los templates usan placeholders tipo
+  `${sqSol}`, `${signo}`, `${area}` y el código los sustituye con
+  `replace(/\$\{x\}/g, valor)` (ver `_evalTpl` en astrologia-analisis.js:416 y
+  el "pase final" en líneas 379-409). NO hay sistema tipo t('clave', {var}).
+- Trampa conocida: las CLAVES del bloque `SQ` (signos) están en español en
+  TODOS los locales ("Aries", "Tauro"...) y sus VALORES traducidos. Los tipos
+  de aspecto del motor son nombres en INGLÉS (`Conjunction`, `Square`,
+  `Opposition`, `Trine`, `Sextile`, `Quincunx`) — astrologia.js:109-114.
+- Si i18n no cargó, los análisis usan diccionarios de reserva *_FB en español
+  (está bien, es última red). No es prioridad cambiar eso.
+
+## 0.4 Trampas conocidas concretas (te ahorran horas)
+1. En el fallback ASTRAL el código y el JSON de narrativa están DESAJUSTADOS
+   (detalle en FASE 1): la sección 4 sale vacía y aparecen literales `${signo}`
+   visibles al usuario. Reparar esto es lo primero.
+2. En TAROT la KB por carta tiene campos que el análisis NO usa aunque existen:
+   `arquetipo`, `derecho.kw`/`reves.kw` (solo se usan en tirada de 1 carta),
+   `numero` (numerología real). El hexagrama tiene `kw[]` que nunca se usa.
+3. En SINASTRÍA el fallback vive en js/main.js:404-496 (no en un módulo aparte)
+   y el motor ya calcula recursos que el fallblack no usa: `fraseAspecto`,
+   `frasePlanetaEnCasa`, `casasDestacadas`, carta compuesta completa,
+   `netoAspectos`, `amistadPlanetaria`.
+4. El badge de origen se inserta aparte (`ia.origenLocal`, `ia.origenLocalAstral`,
+   `ia.limiteIA`) — no lo dupliques dentro del texto del análisis.
+5. Los version tags `?v=` de los script/link en los index.html (raíz, js/,
+   www/js/) se bumpean al final (ahora están ~?v=69). Usa el siguiente número
+   uniforme en los 3 index.html.
+
+## 0.5 Cómo forzar el fallback para probarlo
+- La app SIEMPRE intenta primero la IA. El fallback salta cuando la llamada
+  al worker falla (timeout 45s, HTTP no-OK, sin red).
+- Para pruebas: instala el APK debug en el emulador OraculoTest, activa el
+  modo avión (o apaga la red del emulador) y genera el análisis. Verás el badge
+  "análisis local" (ia.origenLocal / ia.origenLocalAstral).
+- Alternativa rápida sin emulador: ejecuta el análisis local en Node importando
+  los módulos (son ES modules puros; analysis.js y astrologia-analisis.js no
+  dependen del DOM salvo para glosario). Puedes hacer un pequeño script Node
+  de humo que llame a `analizarTirada(tiradaFake)` / `analizarCartaAstral(cartaFake)`
+  y haga grep de '${' sobre el HTML resultante.
+- Datos de prueba conocidos (ya guardados en el emulador): carta "Diego"
+  (15/06/1990 Madrid), "Laura" (20/12/1989 Barcelona), "Ainoa", "Paula".
+
+## 0.6 Verificación mínima antes de dar por terminado
+1. Build: cd android && ./gradlew assembleDebug  (sin errores)
+2. Grep de placeholders sin sustituir en la salida generada: buscar '${' y
+   'undefined' en el HTML/texto del análisis (script Node o en emulador).
+3. Logcat limpio (sin errores JS):
+     adb -s <serial> logcat | grep -i "console\|error"
+4. Probar al menos en `es` y `en` (spot-check de `de` recomendado).
+5. deepseek-v4-flash NO soporta imágenes: si necesitas ver la pantalla,
+   delega en el subagente `vision` (Agent con subagent_type:"vision"). Para
+   comportamiento usa logcat + android_ui_describe/resolve (UI Automator).
+   OJO: la app es WebView, los elementos del DOM NO exponen bounds útiles en
+   UI Automator; para verificar contenido del análisis usa logcat/console o un
+   script Node (0.5), no pierdas tiempo con taps a ciegas.
+
+--------------------------------------------------------------------------------
+FASE 1 — CARTA ASTRAL (js/core/astrologia-analisis.js)
+--------------------------------------------------------------------------------
+Estado actual: ROTO en varias secciones por desajuste código<->JSON. Es la fase
+de más impacto: sin gastar traducciones nuevas ya mejora radicalmente.
+
+Archivos:
+- Motor:   js/core/astrologia-analisis.js (448 líneas)
+- Templates: js/i18n/locales/datos-maestros-{es,en,pt,fr,it,de}.json
+  bloque `analisisAstral` (en es.json: líneas 2600-2798)
+- Fallback en main.js: mostrarAnalisisAstral (main.js:127-166)
+
+La salida tiene 6 secciones: S1 Gran Trío (Sol/Luna/Asc), S2 Huella Energética
+(elementos/modalidad/stellium), S3 Escenarios (casas en 4 grupos), S4 Motor de
+Crecimiento (aspectos), S5 Brújula Kármica (nodos/Lilith/Fortuna), S6 Consejo.
+
+### PASO 1.1 — Reparar el desajuste código<->JSON (SIN tocar los JSON aún)
+El JSON de narrativa usa estos nombres de clave (verifica en datos-maestros-es.json
+antes de cada cambio — la lista exacta manda):
+  S1: s1_asc, s1_mascara, s1_sol, s1_solLuz, s1_luna, s1_lunaConj1..3,
+      s1_contrasteAscSol1/2, s1_coherencia, s1_lunaRefugio, s1_contrasteSolLuna,
+      s1_polaridad1, s1_triangulacion, s1_triangulacion2, s1_eje
+  S2: s2_predominio..., s2_concentrado, s2_tendencia, s2_debil..., s2_stellium...
+  S4: s4_conj1/2/3, s4_sq1/2/3, s4_opp1/2/3, s4_tri1/2/3, s4_sex1/2/3,
+      s4_sinAspectos
+  S5: s5_nodoN, s5_nodoS, s5_lilith, s5_fortuna
+  S6: s6_equil, s6_yang, s6_yin, s6_stellium, s6_cierre
+  Títulos: secciones.s1_titulo .. s6_titulo
+
+Acciones concretas en astrologia-analisis.js:
+a) S4 (líneas ~303-329): el código hace  buscar('s4_' + a.tipo)  con a.tipo en
+   inglés -> claves inexistentes. Crear un mapa:
+     const MAPA_S4 = { Conjunction:'s4_conj', Square:'s4_sq',
+       Opposition:'s4_opp', Trine:'s4_tri', Sextile:'s4_sex' };
+   y rotar variantes 1-3 por tipo con un contador (como ya hacen
+   aperturas/conectores con aIdx/cIdx). Si el tipo es Quincunx u otro sin
+   template, omitir ese aspecto (no emitir <p></p> vacío).
+b) S1 (líneas ~172-226): cambiar cada N.xyz por la clave real del JSON
+   (ej. s1_asc_intro -> s1_asc, s1_asc_mask -> s1_mascara, s1_sol_luz ->
+   s1_solLuz, s1_mismaLuz1/2/3 -> s1_lunaConj1/2/3, s1_mismaLuz_coherencia ->
+   s1_coherencia, s1_luna_refugio -> s1_lunaRefugio, s1_contraste_sol ->
+   s1_contrasteSolLuna, s1_contraste_doble -> s1_polaridad1,
+   s1_contrasteAscSol1/2 según rama, s1_triangulacion_cierre ->
+   s1_triangulacion2). Verifica clave a clave contra el JSON.
+c) S2 (líneas ~228-268): alinear s2_predominio_alto/bajo -> s2_concentrado /
+   s2_tendencia; s2_debil_medio -> s2_debil2; s2_stellium1 -> s2_stellium.
+   Añadir al PASE FINAL (líneas 379-409) la sustitución de los placeholders
+   que s2_stellium usa:  ${areaStellium}  -> CT[s0.casa] (área de la casa),
+   ${numPlanetas} -> s0.planetas.length, ${planetasLista} -> nombres
+   localizados separados por comas.
+d) S5 (líneas ~331-350): las claves existen pero el JSON usa ${signo} y
+   ${sqSigno} y el código nunca los reemplaza -> añadir en el pase final:
+   reemplazar ${signo} por el signo CONCRETO de cada punto KÁRMICO. OJO: S5
+   usa ${signo} 4 veces con valores distintos (nodoN, nodoS, lilith, fortuna);
+   como el pase final es global y no puede distinguir, cambia la estrategia:
+   sustituye los placeholders de S5 INLINE al construir cada frase (con
+   replace sobre el fragmento antes de concatenar), no en el pase final.
+   Define para ello una variable local por punto: signoNombre y su SQ[...].
+e) S6 (líneas ~352-365): s6_equilibrio -> s6_equil; para s6_stellium,
+   reemplaza ${areaStellium} inline (misma razón que en d).
+f) Títulos de sección (líneas ~371-376): leer D.secciones?.s1_titulo...
+   y solo caer al literal español si no existe.
+g) i18n real de nombres: la función arq() (línea ~112) usa siempre PA_FB y
+   pES() (~109) usa PES_FB -> cambiar a D.PA ?? PA_FB y a un mapa de nombres
+   de planetas localizado (usa t('astral.nombresPlanetarios') o como se
+   llamen en i18n.js — verifica el nombre exacto de la clave).
+h) Guard de entrada (línea ~133): hoy t('analisisAstral.sinDatos', null,)
+   siempre es truthy; sustituir por una clave que SÍ exista en los locales
+   o por un literal de reserva correctamente formateado (el texto debe ir
+   dentro del <p>).
+
+Verificación del paso 1.1 (ANTES de seguir):
+- Script Node o emulador: generar el análisis local de la carta de Diego.
+- Criterios: contiene las 6 secciones con texto real; grep '${' -> 0
+  resultados; grep 'undefined' -> 0; S4 lista los aspectos con su frase;
+  en idioma `en` los títulos salen en inglés.
+
+### PASO 1.2 — Enriquecer al nivel del PROMPT_ASTRAL de la IA
+El prompt IA (worker/oraculo-worker.js:65-91) hace cosas que el local no:
+configuraciones geométricas (Gran Trígono, T-Square), Nodo por casa, Quirón,
+etiquetar talentos vs motores. Añadir:
+
+a) Configuraciones (nuevo sub-bloque dentro de S2 o una S2-bis):
+   - Stellium por SIGNO: >=3 planetas personales (Sol..Saturno) en el mismo
+     signo -> nueva clave `s2b_stelliumSigno` con ${signo} y ${planetasLista}
+     y ${sqSigno}.
+   - T-Square: buscar en carta.aspectos dos Opposition? No: un planeta con
+     Square a otros dos que están en Opposition entre sí. Implementación:
+     para cada aspecto Opposition (p1,p2), buscar un tercer punto p3 con
+     Square a p1 Y a p2. Si existe -> clave `s2b_tsquare` con ${p1},${p2},${p3}.
+   - Gran Trígono: para cada elemento (fuego/tierra/aire/agua), buscar 3
+     planetas de ese elemento con Trine entre ellos dos a dos ->
+     `s2b_granTrigono` con ${elemento} y ${planetasLista}.
+   - Stellium por casa ya existe (S2); déjalo y añade estos dos detectores con
+     un máximo de 1 configuración de cada tipo (la primera encontrada,
+     ordenando por orbe medio menor).
+b) S4 ampliado: subir a orb < 8 y hasta 6 aspectos; prefijar cada aspecto con
+   etiqueta "don natural" (Trine/Sextile/Conjunction benéfica) o "motor de
+   crecimiento" (Square/Opposition) -> nuevas claves `s4_don` / `s4_motor`
+   (etiqueta + guion) en los 6 idiomas.
+c) S5 ampliada:
+   - Nodo Norte por CASA además de signo: nueva frase `s5_nodoNCasa` con
+     ${area} (usa CT[casaDelNodoN]) — "el escenario donde ocurre la evolución".
+   - Añadir Quirón si existe en carta.planetas (el PA ya tiene su arquetipo):
+     subsección "herida -> don" con nueva clave `s5_quiron` (${signo}, ${area}).
+d) S6 enriquecido: el consejo se compone de 3 partes rotadas:
+   (elementoDébil/ausente) + (aspecto más tenso = Square/Opposition de menor
+   orbe, reformulado como invitación) + (nodo norte por casa) + cierre fijo.
+   Mantén longitud razonable (4-6 frases).
+
+e) IMPORTANTE i18n: cada clave nueva (s2b_*, s4_don/motor, s5_nodoNCasa,
+   s5_quiron, s6_* nuevas) se añade a los 6 datos-maestros-{locale}.json,
+   traducida. Respeta la convención de placeholders existente.
+
+Verificación FASE 1 completa:
+- 3 cartas de prueba: Diego (15/06/1990 Madrid), otra con stellium, otra con
+  retrógrados. Cada una: 6 secciones pobladas, sin ${...}, sin 'undefined',
+  >=900 palabras en es, títulos y nombres de planetas en el idioma activo.
+- 0 errores JS en logcat. Build OK.
+
+--------------------------------------------------------------------------------
+FASE 2 — SINASTRÍA (fallback en js/main.js:404-496)
+--------------------------------------------------------------------------------
+Estado actual: es el mejor de los tres (réplica la estructura del prompt IA),
+pero usa ~30% de los datos que el motor ya calcula. Mejora barata y segura.
+
+Archivos:
+- Fallback: js/main.js:404-496 (función mostrarAnalisisSinastria, catch 423-494)
+  Helpers: _pnLocal 256, tAspectoLocal 260, _orbeLocal 264, _factorLabelLocal
+  269, _nivelLabelLocal 282, _consejoFactorLocal 296, _datosPersonaIA 313,
+  PRIO_FORTALEZA/PRIO_APRENDIZAJE 330, _fraseGlobalCorta 333,
+  _seleccionarAspectosLocal 345, _formatAspectoLocal 371, _bloqueAreaLocal 378,
+  _factorTop 396.
+- Diccionario: js/core/sinastria-dictionary.js — DICC_ASPECTOS (35-89),
+  DICC_CASAS (96-135), DICC_FACTOR_NIVEL (179-228), fraseAspecto (234),
+  frasePlanetaEnCasa (253), fraseCompatibilidad (288).
+- Motor: js/core/astrologia.js — calcularSinastria (1118-1345): resultado
+  incluye factores, factorAspectos (aspectos estructurados por sector con
+  delta/orb/armonico/friccion/tipo/dueños/signos), factorDetalle,
+  casasDestacadas (overlays con significado), cartaCompuesta (completa: todos
+  los planetas compuestos + ASC/MC), netoAspectos, amistadPlanetaria,
+  puntosFuerteTop/desafioTop.
+
+### PASO 2.1 — Interpretación por aspecto individual
+En _bloqueAreaLocal/_formatAspectoLocal, tras cada línea
+"- Venus (Leo) de Ana □ Plutón (Escorpio) de Luis — Cuadratura (orbe 2°14', +8)"
+añadir la interpretación de fraseAspecto(planetaA, planetaB, tipo) del
+diccionario (sinastria-dictionary.js:234). Si no hay frase específica para la
+pareja, usar una genérica por combinación de planetas (el diccionario ya tiene
+genéricas; verifica su cobertura y añade el fallback "no inventar": si no hay,
+simplemente no añadir frase).
+
+### PASO 2.2 — Casas de impacto
+Nueva subsección (dentro de "Radiografía" o tras la compuesta): tomar los 3
+primeros de resultado.casasDestacadas y redactar con frasePlanetaEnCasa
+(sinastria-dictionary.js:253) usando los nombres reales de las cartas.
+
+### PASO 2.3 — Carta compuesta completa
+El párrafo 🪐 actual solo menciona Sol y Luna compuestos. Extender a Venus y
+Marte compuestos (estilo de amor y deseo de la pareja) y al ASC compuesto
+(imagen externa del vínculo). Todo desde resultado.cartaCompuesta.
+
+### PASO 2.4 — "Qué aporta cada uno"
+Contar en resultado.factorAspectos los deltas positivos por dueño
+(los aspectos estructurados tienen planetaA/planetaB con su dueño: carta A o
+carta B — verifica el nombre del campo en _structAspecto, astrologia.js:1245).
+Sumar puntos positivos aportados por cada persona por sector; redactar una
+frase por persona: "X aporta sobre todo: pasión, estabilidad..." (sectores con
+mayor aporte). Nueva clave i18n `sinastria.aporta`.
+
+### PASO 2.5 — Pautas siempre
+Hoy "Pautas para el día a día" solo aparece si hay sectores en nivel desafio.
+Cambiar a: SIEMPRE 2 pautas — si hay desafío, _consejoFactorLocal de los 2
+peores; si no, consejo de cultivo de los 2 sectores con menor score (usa las
+claves sinastria.consejo_{key} que ya existen en los 6 idiomas).
+
+### PASO 2.6 — Balance neto de aspectos
+Añadir una línea con resultado.netoAspectos (armónicos X / tensos Y / neto Z),
+estilo CafeAstrology, con disclaimer breve ("el número no lo es todo; la
+calidad de los aspectos definitorios pesa más"). Nueva clave i18n.
+
+### PASO 2.7 — i18n completo del fallback
+Hoy salen en español aunque la UI esté en inglés: encabezados de sección
+("=== ANÁLISIS INTEGRAL...===", "🌟 1. La Alquimia...", "💫 2...", "🔑 3..."),
+titulares de áreas, la frase de la compuesta, _fraseGlobalCorta (5 tramos) y
+los literales de _consejoFactorLocal. Cambios:
+- Mover TODO a claves i18n nuevas (bloque `sinastria` de {locale}.json):
+  sinastria.fb_titulo, fb_s1, fb_s2, fb_s3, fb_areaEmocional, fb_areaComunicacion,
+  fb_areaPasion, fb_areaProposito, fb_fraseGlobal_85/70/55/40/0, fb_compuesta,
+  fb_neto, fb_aporta, fb_pautas...
+- DICC_FACTOR_NIVEL (sinastria-dictionary.js:179-228) está solo en español:
+  añadir traducción. Opción práctica: crear bloque `sinastria.diccionario.factor.*`
+  en los 6 {locale}.json siguiendo el patrón ya usado por fraseCompatibilidad
+  (que lee sinastria.diccionario.compat.*). Misma jugada para DICC_ASPECTOS
+  y DICC_CASAS si el tiempo lo permite (son ~60 frases; si no, documentar como
+  pendiente y dejar español SOLO como última red).
+- Unificar tratamiento en español: usar "vosotros" en todas partes (el
+  diccionario usa "ustedes" y main.js "vosotros" — elegir vosotros y hacer
+  pasada de coherencia en es.json y en las frases nuevas).
+
+### PASO 2.8 (opcional, recomendado) — Extraer el fallback a módulo propio
+js/main.js tiene 738 líneas. Extraer el fallback a
+js/core/sinastria-analisis.js (función generarAnalisisSinastriaLocal(resultado,
+cartaA, cartaB, nombres) que devuelve markdown) y dejar en main.js solo el
+wiring try/catch. Facilita el mantenimiento y los tests con Node.
+
+Verificación FASE 2:
+- Forzar fallback (sin red) con 2 sinastrías: una alta (Diego×Ainoa) y una baja
+  si la hay guardada; si no, créalas.
+- Criterios: >=450 palabras; cada área cita >=2 aspectos con interpretación
+  (no solo datos crudos); aparece la compuesta completa, los overlays y el
+  neto; SIEMPRE hay 2 pautas; todo el texto en el idioma de la UI (probar es+en);
+  sin ${...} ni undefined; 0 errores JS.
+
+--------------------------------------------------------------------------------
+FASE 2B — PRECISIÓN PROFESIONAL DE LA SINASTRÍA (auditoría 2026-08-28)
+--------------------------------------------------------------------------------
+DICTAMEN GLOBAL DE LA AUDITORÍA: la base astronómica está a nivel profesional
+(Swiss Ephemeris WASM / JPL DE440, Placidus nativo, Nodo Norte verdadero,
+Lilith media, orbes diferenciados por clase de cuerpo — más disciplinado que
+Cafe Astrology). Las debilidades NO son de cálculo sino de COBERTURA SEMÁNTICA
+y HONESTIDAD DE PRESENTACIÓN. Esta fase corrige eso, ordenado por impacto.
+
+Archivos: js/core/astrologia.js, js/ui/sinastria.js, js/core/sinastria-dictionary.js,
+js/i18n/locales/{locale}.json. Verifica siempre la línea real antes de editar.
+
+### PASO 2B.1 (ALTO) — Gestión de hora de nacimiento desconocida
+Hoy, con hora desconocida la app fija 12:00 (astrologia.js ~línea 325, campo
+`desconocida` en la carta) y calcula igualmente ASC/MC/casas → el factor
+Compromiso (Casa 7), los overlays de casas, los contactos con ángulos y la
+carta compuesta ASC/MC se puntúan sobre valores esencialmente aleatorios y se
+presentan SIN AVISO. Es el defecto más grave de fiabilidad.
+- En calcularSinastria: si cartaA.desconocida o cartaB.desconocida, excluir del
+  scoring los datos que dependen de casas/ángulos (factor Compromiso, overlays,
+  contactos con ASC/MC) y REDISTRIBUIR su peso al resto de factores
+  (normalización: pesos vigentes / (1 - pesosExcluidos)).
+- Carta compuesta en ese caso: solo planetas (sin ASC/MC ni casas).
+- UI (sinastria.js): disclaimer prominente sobre el resultado
+  (nueva clave i18n sinastria.horaDesconocida en los 6 idiomas), y ocultar o
+  atenuar la barra Compromiso y la sección de casas de impacto.
+- Criterio: sinastría con una carta de hora desconocida muestra el aviso y su
+  % difiere del calculado con hora falsa (porque los factores cambian).
+
+### PASO 2B.2 (ALTO) — Pares clásicos que no puntúan en ningún factor
+El motor DETECTA todos los aspectos cruzados y los cuenta en netoAspectos y en
+las tablas, pero solo los pares listados en PARES_FACTOR (astrologia.js ~646-742,
+102 pares) alimentan los 8 sectores. Huecos clásicos (Hand / Cafe Astrology):
+- Marte-Saturno (frustración/bloqueo) -> Estabilidad (base negativa).
+- Luna-Mercurio (entender las emociones del otro) -> Emocional + Mental.
+- Sol-Sol (afinidad de propósito; existe en PESOS_PARES para el radar ~609 pero
+  NO en PARES_FACTOR) -> Valores o Espiritual.
+- Marte-Júpiter (entusiasmo compartido) -> Química/Espiritual.
+- Mercurio-Urano, Mercurio-Neptuno, Luna-Urano, Júpiter-Júpiter, Júpiter-Saturno.
+Sin esto, el % global y el "neto de aspectos" pueden contradecirse entre sí.
+Añadir cada par con base, mult tenso y sector coherentes con el estilo del
+archivo. Criterio: una sinastría de prueba donde exista Marte□Saturno hace
+bajar Estabilidad respecto a antes del cambio.
+
+### PASO 2B.3 (ALTO producto / BAJO coste) — Código muerto de UI
+En js/ui/sinastria.js existen implementadas pero NO se llaman desde render()
+(grep confirmado): renderAspectos (tabla "Aspectos clave" con interpretación
+por fila, líneas ~681-733), renderCasas (tarjetas de casas de impacto 583-621),
+renderDesglose (538-562), _perfilHTML (526-536). OJO: el historial del proyecto
+indica que esas piezas se ELIMINARON DEL RESULTADO a propósito (rework UI
+simplificada) — decidir una de dos: (a) borrar el código muerto, o
+(b) rescatar su contenido DENTRO del desplegable "Detalles técnicos" (la tabla
+interpretada de aspectos es exactamente lo que piden los usuarios curiosos).
+Recomendación: (b). Si se rescatan: crear las claves i18n sinastria.asp_* y
+sinastria.desc_* que esas funciones esperan (hoy 0 claves -> caen a genéricos).
+Pregunta rápida a Diego si hay duda sobre cuál opción quiere.
+
+### PASO 2B.4 (MEDIO-ALTO) — Disclaimers de honestidad
+- El % global 0-100 se muestra como cifra protagonista SIN contexto. Añadir
+  micro-disclaimer bajo el círculo/radar (nueva clave sinastria.disclaimerScore:
+  "Índice orientativo calculado sobre las posiciones; la relación real depende
+  de vosotros"), en los 6 idiomas.
+- Tarot y Carta Astral incluyen el aviso "interpretación simbólica, no
+  pronóstico determinista" pero el ANÁLISIS DE SINASTRÍA es el único módulo que
+  NO lo añade (ni IA ni fallback). Añadirlo al final del resultado/análisis,
+  reutilizando la clave existente si la hay (revisar el bloque `aviso` de
+  analisisTarot/analisisAstral para copiar el patrón).
+
+### PASO 2B.5 (MEDIO) — Carta compuesta: presentación y coherencia
+- Los ASC/MC compuestos se muestran en longitud absoluta ("233.42°") en tablas
+  y en el prompt IA -> formatear siempre como signo+grado (reusar el helper de
+  formato que ya exista; verificar en sinastria.js y astrologia.js ~1058/1532).
+- Inconsistencia interna: las casas compuestas son Equal desde el ASC compuesto
+  (por tanto la cúspide 10 = ASC+270°) pero se etiqueta esa casa 10 como 'X MC'
+  mientras el MC compuesto verdadero (punto medio de los MC) difiere y también
+  se muestra. Resolver: etiquetar la casa 10 Equal como "Casa 10" a secas, o
+  derivar las casas compuestas del MC por punto medio (método de referencia
+  Hand/Astrodienst). Recomendación pragmática: corregir solo la etiqueta.
+- Opcional (si sobra tiempo, mejora de precisión real): método compuesto con
+  MC por punto medio y ASC derivado del MC a la latitud media de las dos
+  personas (método Astrodienst). Documentar en AGENTS.md cuál se usa.
+
+### PASO 2B.6 (MEDIO) — Quirón y Plutón declarados pero inertes
+- PARES_FACTOR tiene entradas Venus/Sun/Moon-Chiron (~734-739) y el loop tiene
+  la rama `par.chiron` (~1175), pero Quirón NUNCA se calcula en la carta -> es
+  código muerto. Dos opciones: (a) calcular Quirón con Swiss Ephemeris (lo
+  soporta; añadir a planetasData) y entonces esas ramas cobran vida (la tensión
+  Venus-Quirón suma como enganche kármico, ya diseñado); o (b) eliminar las
+  entradas. Recomendación: (a), alto valor interpretativo por bajo coste.
+  Si se calcula Quirón: añadirlo también a la UI de carta astral/natal, glosario
+  (data-term) y datos-maestros PA si falta — revisar qué consumidores tocar.
+- Plutón tampoco está en CASAS_PRIORITARIAS (~746), así que el refuerzo de
+  Transformación por overlay (~1201) jamás se dispara. Añadir Plutón (y opcional
+  Urano/Neptuno) a CASAS_PRIORITARIAS o eliminar la rama muerta.
+
+### PASO 2B.7 (BAJO) — Menores de precisión
+- Regla tradicional de cúspide: un planeta a <5° de la siguiente cúspide se lee
+  en la casa siguiente (casaDelPlaneta, astrologia.js ~146-156, hoy rango puro).
+- Quincuncio ausente del glosario de aspectos (glossary.js ~294 lista 5 tipos).
+- aspectosTop se calcula (~1309) pero _generarPromptData (~1503) no lo incluye
+  en el prompt de la IA -> pasarlo (top 8 aspectos más exactos ordenados por orbe).
+- Nodo Sur se calcula por carta pero no participa en cruces: opcionalmente
+  incluir conjunciones/oposiciones al eje nodal (muy valoradas en sinastría
+  kármica: clásico "Nodo Sur conjunción a planeta del otro = familiaridad").
+- Lilith entra en neto/tablas sin peso propio ni frases; documentar la decisión.
+
+Verificación FASE 2B:
+- Misma pareja con hora conocida vs desconocida: aviso visible + % coherente.
+- Pareja con Marte-Saturno: el sector Estabilidad baja (antes no se movía).
+- Con Quirón calculado (si se elige a): aparece en tabla de aspectos y alimenta
+  Emocional; Venus□Quirón añade "enganche de sanación" en el detalle del sector.
+- Tabla/detalles muestran ASC/MC compuestos como signo+grado.
+- Spot-check: los % y niveles de las parejas de referencia (Diego×Ainoa ~60,
+  Diego×Paula ~63-64) no deben moverse más de unos pocos puntos salvo causa
+  identificable (nuevos pares) — anotar los nuevos valores en AGENTS.md.
+
+--------------------------------------------------------------------------------
+FASE 3 — TAROT (js/core/analysis.js, 494 líneas)
+--------------------------------------------------------------------------------
+Estado actual: correcto y con buena arquitectura de secciones, pero es una
+concatenación de listas por carta + ~15 reglas if/else. La IA aporta síntesis
+narrativa real. Esta es la fase más grande: reconstruir las secciones 8-11
+(posicional, narrativa, holístico, recomendación) y aprovechar campos sin usar.
+
+- KB: js/data/tarot-kb.js (78 cartas; campos: tipo, numero, elemento, palo,
+  arquetipo, derecho{kw[],sig}, reves{kw[],sig}).
+- I Ching KB: js/data/iching-kb.js (64 hexagramas; nombre, trigSup/Inf,
+  elemento, kw[], sig, consejo). kw[] nunca se usa en el análisis.
+- Plantillas: bloque `analisisTarot` en datos-maestros-{locale}.json; acceso
+  vía getAnalisisTarot() (i18n.js:204) y _D() (analysis.js:42).
+- Núcleo: analizarTirada (analysis.js:128-464) -> objeto de 12 campos;
+  generarAnalisis (466-495) lo maqueta en HTML.
+- Estadísticos ya calculados: mayores/menores, invertidas%, palos, figuras,
+  ases, números (regex), elementosTarot (163-171, 300-318, 153-162).
+
+### PASO 3.1 — Lectura posicional enriquecida (líneas ~320-349)
+Cada carta pasa de "sig solo" a: arquetipo cursivo + keywords ("Energías:
+comienzo, fe, aventura") + significado según orientación + frase de contexto
+posicional (ya existe). En tiradas de 3 y cruz, las kw vienen de
+tKB(nombre).kw / revesKw con el idioma activo (i18n.js:141).
+
+### PASO 3.2 — Cruce pregunta<->keywords por solapamiento léxico
+El cruce actual (palos esperados por categoría, líneas 237-253) es débil.
+Añadir encima: normalizar la pregunta (minúsculas, sin acentos, split por
+palabras >=4 letras), y para cada carta contar coincidencias con sus
+derecho.kw/reves.kw (según orientación). Marcar las cartas con >=1
+coincidencia fuerte en un nuevo bullet de la sección Visión General:
+"Estas cartas hablan directamente de tu pregunta: X, Y". Nueva clave
+analisisTarot.cruceKw en los 6 locales. Mantener el cruce por palo como apoyo.
+
+### PASO 3.3 — Síntesis narrativa real (sustituir líneas 351-368)
+Hoy es UNA frase con nombres interpolados. Reemplazar por un compositor por
+arcos usando la primera frase de cada sig (corta con regex hasta el primer
+'. '):
+- Tirada de 1: arquetipo + primera frase + kw dominante.
+- Tirada de 3: "arco temporal": conecta pasado->presente->futuro con
+  conectores nuevos del locale (analisisTarot.narrativa.conector1/2/3),
+  integrando primera frase de cada sig. 2-3 frases reales, no solo nombres.
+- Cruz Celta: 3 mini-párrafos: (a) "el núcleo": carta 1+carta 2 (corazón +
+  desafío) uniendo sus primeras frases; (b) "de dónde vienes": carta 4 (raíz)
+  -> carta 6 (lo que llega); (c) "hacia dónde vas": carta 5 (meta consciente)
+  + carta 10 (resultado), con matiz si la 10 está invertida.
+Determinista (misma tirada -> mismo texto). Nuevas claves narrativa_*.
+
+### PASO 3.4 — Dignidades posicionales (extender líneas 300-318)
+Además de adyacentes, en cruz celta evaluar los pares simbólicos: 1-2
+(corazón vs desafío), 1-10 (corazón vs resultado), 4-6 (pasado vs futuro
+inmediato), 5-10 (meta vs resultado). Etiquetar el par con el nombre de la
+posición ("Tu raíz y tu resultado están en tensión elemental...").
+Si una de las dos está invertida, añadir matiz ("y la inversión de X sugiere
+que esa tensión se vive por dentro"). Nuevas claves dignidades_*.
+
+### PASO 3.5 — Secuencias arquetípicas notables
+Tabla hardcodeada de pares POSICIONALES notables (por número de orden), p.ej.:
+Torre->Estrella ("tras la ruina, la esperanza se reconstruye"),
+Diablo->Templanza ("de la atadura al equilibrio"), Luna->Sol,
+Muerte->Sol/Estrella, 10 Espadas->As de Copas... Detectar si el par aparece
+en posiciones consecutivas o en (pasado->futuro)/(corazón->resultado) y
+emitir un bullet especial en Dinámicas. Guardar la frase por par en los 6
+locales (analisisTarot.secuencias). Empieza con 8-12 pares, no más.
+
+### PASO 3.6 — Numerología interpretativa
+El conteo de números ya existe (regex en línea ~296). Añadir: si un número se
+repite >=2 veces, frase interpretativa por número (1=inicios, 2=dualidad,
+3=expansión, 4=estructura, 5=crisis/cambio, 6=armonía, 7=introspección,
+8=poder, 9=cierre, 10=completitud) y para figuras (Sota=mensaje,
+Caballo=acción, Reina=maestría interna, Rey=maestría externa). Nuevas claves
+analisisTarot.numerologia.<n>.
+
+### PASO 3.7 — Balance elemental fino
+estadisticas.elementosTarot ya se calcula y no se usa. Añadir en Visión
+General: si un elemento >=40% de las cartas -> frase de dominio; si un
+elemento falta del todo -> frase de carencia ("lo que la tirada te pide
+cultivar"). Nuevas claves analisisTarot.elementoDominante/carencia.
+
+### PASO 3.8 — Recomendación compuesta (sustituir líneas 439-456)
+Las 8 ramas fijas -> constructor de 3 frases:
+(base por categoría de la pregunta: 8 textos) + (matiz por %invertidas: 3
+tramos) + (acción por kw de la carta de resultado: "la energía que te pide:
+<kw1>, <kw2>"). Si hay hexagrama futuro, añadir 1 frase usando su consejo
+(tHexagrama(numFuturo).consejo). Nuevas claves recomendacion_base.<categoria>,
+matiz_{alta|media|ninguna}, accion.
+
+### PASO 3.9 — I Ching: usar kw[] del hexagrama
+En la lectura del I Ching (líneas 255-287) añadir las keywords del hexagrama
+principal (tHexagrama().kw) como línea "Temas del hexagrama: ...".
+
+### PASO 3.10 — i18n de todo lo nuevo
+Todas las claves nuevas al bloque analisisTarot de los 6 datos-maestros.
+Son ~40-60 frases nuevas por idioma; hazlo en tandas por sección
+(secuencias / narrativa / dignidades / numerologia / recomendacion) y verifica
+JSON válido tras cada archivo (node -e "JSON.parse(...)"  o jq).
+
+Verificación FASE 3:
+- Tirada de 1 (sin pregunta), de 3 (con pregunta de amor) y Cruz Celta (con
+  pregunta de trabajo), forzando fallback (sin red), en es y en.
+- Criterios: 1 carta >=200 palabras; 3 cartas >=350; cruz >=800; >=3 momentos
+  de síntesis entre cartas (no lista seca); sin ${...}/undefined; determinismo
+  (repetir la misma tirada produce el mismo texto); 0 errores JS.
+
+--------------------------------------------------------------------------------
+FASE 4 — VERIFICACIÓN INTEGRAL Y CIERRE
+--------------------------------------------------------------------------------
+1. Bump de version tags: siguiente ?v= uniforme en los 3 index.html
+   (raíz, js/, www/js/) — hoy están en ?v=69, usar ?v=70.
+2. Sync final COMPLETO js/ -> www/js/ y -> android/app/src/main/assets/public/js/
+   (incluyendo i18n/locales y los index.html).
+3. Build: cd android && ./gradlew assembleDebug  (sin errores).
+4. Instalar en emulador OraculoTest:
+     adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+5. Forzar fallback (modo avión) y probar las 3 secciones según los criterios
+   de cada fase. Verificar badge de origen local visible.
+6. Logcat limpio; grep '${' y 'undefined' en salidas -> 0.
+7. Actualizar AGENTS.md: sección "Estado actual" con lo hecho (fecha, rama,
+   rango ?v=) y, si cambió la estructura (p.ej. nuevo módulo
+   js/core/sinastria-analisis.js), actualizar el árbol del proyecto.
+8. NO hacer commit. Proponer a Diego:
+   - Mensaje sugerido: "feat: elevar fallbacks locales al nivel de los análisis IA"
+   - Preguntar si quiere push a la rama.
+   Esperar su confirmación explícita.
+
+Si te atascas en algo no trivial durante la ejecución, al finalizar añade una
+entrada concisa a commonerrors.md (síntoma / causa / solución). El proyecto ya
+tiene uno en la raíz — léelo al inicio por si aplica.
+
+--------------------------------------------------------------------------------
+SECCIÓN FINAL — PROMPTS PARA LA EJECUCIÓN EN 2 SESIONES (deepseek-v4-flash-0731)
+--------------------------------------------------------------------------------
+El trabajo es grande (5 fases con traducciones a 6 idiomas). Ejecutarlo en DOS
+sesiones: la sesión 1 hace FASE 1 + FASE 2B (con su propio commit tras tu
+aprobación), y la sesión 2 parte de esa rama y hace FASE 2 + FASE 3 + FASE 4.
+
+================= PROMPT 1 (sesión 1: Carta Astral + precisión sinastría) =================
+---
+Estamos en C:\Users\Diego\Desktop\OraculoUnificado. Lee primero AGENTS.md del
+proyecto y commonerrors.md de la raíz (si existe), y después el plan detallado
+en PLAN_MEJORA_FALLBACKS.txt (raíz del proyecto). Tu misión es ejecutar SOLO
+la FASE 1 (Carta Astral: reparar desajuste código<->JSON y enriquecer) y la
+FASE 2B (precisión profesional de la sinastría), siguiendo las reglas de la
+Sección 0 del plan. Las fases 2, 3 y 4 se harán en otra sesión: NO las toques.
+
+1. Empieza creando la rama: git checkout -b feat/mejora-fallbacks-locales
+2. El source of truth es js/ — tras CADA edición sincroniza con cp a www/js/ y
+   android/app/src/main/assets/public/js/.
+3. Todo texto nuevo debe existir traducido en los 6 locales
+   (es, en, pt, fr, it, de) — nada de español hardcodeado en salidas. Respeta
+   la interpolación manual por ${placeholders} que ya usa el proyecto.
+4. Trabaja paso a paso: primero completa la FASE 1 (1.1 reparación, luego 1.2
+   enriquecimiento), verifica sus criterios de aceptación, y solo después pasa
+   a la FASE 2B (2B.1 -> 2B.7). No declares nada terminado sin verificar:
+   grep de '${' y 'undefined' en la salida generada, 0 errores JS en logcat,
+   build con: cd android && ./gradlew assembleDebug.
+5. OJO: este modelo no soporta imágenes — si necesitas ver la pantalla del
+   emulador delega al subagente `vision`; para verificar comportamiento usa
+   logcat y UI Automator, y recuerda que la app es WebView (los elementos del
+   DOM no exponen bounds útiles; para comprobar el contenido de los análisis
+   usa un script Node de humo o logcat, no taps a ciegas).
+6. Cuando algo no coincida con el plan (claves JSON distintas, líneas
+   movidas), verifica el estado real del archivo antes de editar y adapta el
+   paso sin inventar.
+7. En el paso 2B.6 (Quirón): aplica la opción recomendada (a), calcular Quirón
+   con Swiss Ephemeris. En el paso 2B.3 (código muerto de UI): aplica la
+   opción recomendada (b), rescatar la tabla interpretada y las casas dentro
+   del desplegable "Detalles técnicos". Si alguna te resulta inviable, deja la
+   rama muerta eliminada y documéntalo.
+8. Al terminar las 2 fases: bump uniforme de los ?v= (siguiente número sobre
+   el actual, ~?v=70) en los 3 index.html, sync completo, build, pruebas en
+   emulador (es + en) con cartas reales guardadas y hora desconocida, y
+   actualiza la sección "Estado actual" de AGENTS.md dejando claro qué fases
+   quedan pendientes (2, 3, 4) y los nuevos % de las parejas de referencia.
+9. NO hagas commit ni push: PROPÓN el commit "feat: fallback astral reparado y
+   sinastría alineada a práctica profesional" y espera mi confirmación.
+
+Empieza por el PASO 1.1 y ve informando brevemente al cerrar cada fase.
+---
+
+================= PROMPT 2 (sesión 2: fallback sinastría + tarot + cierre) =================
+---
+Estamos en C:\Users\Diego\Desktop\OraculoUnificado. Lee primero AGENTS.md del
+proyecto y commonerrors.md de la raíz (si existe), y después el plan detallado
+en PLAN_MEJORA_FALLBACKS.txt (raíz del proyecto). La sesión anterior ya ejecutó
+las fases 1 (Carta Astral) y 2B (precisión profesional de sinastría):
+compruébalo con `git log --oneline -5` y leyendo la sección "Estado actual" de
+AGENTS.md. Tu misión es ejecutar SOLO las fases restantes: FASE 2 (fallback de
+sinastría), FASE 3 (fallback de tarot) y FASE 4 (verificación integral y
+cierre), siguiendo las reglas de la Sección 0 del plan.
+
+1. Sitúate en la rama de la sesión anterior: git checkout
+   feat/mejora-fallbacks-locales (si no existiera, créala desde main con
+   git checkout -b feat/mejora-fallbacks-locales).
+2. El source of truth es js/ — tras CADA edición sincroniza con cp a www/js/ y
+   android/app/src/main/assets/public/js/.
+3. Todo texto nuevo debe existir traducido en los 6 locales
+   (es, en, pt, fr, it, de) — nada de español hardcodeado en salidas. Respeta
+   la interpolación manual por ${placeholders} que ya usa el proyecto.
+4. Trabaja fase a fase (2 -> 3 -> 4) y verifica los criterios de aceptación al
+   final de cada una antes de seguir. No declares nada terminado sin
+   verificar: grep de '${' y 'undefined' en la salida generada, 0 errores JS
+   en logcat, build con: cd android && ./gradlew assembleDebug. Para probar
+   los fallbacks fuerza la ausencia de red en el emulador (modo avión) y
+   comprueba que aparece el badge de origen local.
+5. OJO: este modelo no soporta imágenes — si necesitas ver la pantalla del
+   emulador delega al subagente `vision`; para verificar comportamiento usa
+   logcat y UI Automator, y recuerda que la app es WebView (los elementos del
+   DOM no exponen bounds útiles; para comprobar el contenido de los análisis
+   usa un script Node de humo o logcat, no taps a ciegas).
+6. Cuando algo no coincida con el plan (líneas movidas por la sesión anterior,
+   claves JSON distintas), verifica el estado real del archivo antes de editar
+   y adapta el paso sin inventar. Cuidado especial: en la FASE 2 el fallback de
+   sinastría se alimenta de lo que calcula calcularSinastria, que la sesión
+   anterior pudo haber cambiado (horas desconocidas, Quirón, pares nuevos).
+7. FASE 4 incluye: bump uniforme de los ?v= en los 3 index.html, sync completo
+   js/ -> www/ -> assets, build, pruebas en emulador de las 3 secciones (tarot
+   1/3/cruz, 2 cartas astrales, 2 sinastrías) en es + en, y actualización de
+   AGENTS.md.
+8. NO hagas commit ni push: PROPÓN el commit "feat: elevar fallbacks locales al
+   nivel de los análisis IA" y espera mi confirmación.
+
+Empieza por el PASO 2.1 y ve informando brevemente al cerrar cada fase.
+---
+================================================================================
+================================================================================
+FIN DEL PLAN
+================================================================================

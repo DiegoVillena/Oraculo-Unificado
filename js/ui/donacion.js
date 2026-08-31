@@ -4,7 +4,7 @@
 // No intrusivo: respeta "No, gracias" y nunca se muestra al primer arranque.
 // Toda la UI se construye con t() para soportar los 6 idiomas (es/en/pt/fr/de/it).
 
-import { t } from '../i18n/i18n.js?v=69';
+import { t } from '../i18n/i18n.js?v=72';
 
 const KOFI_URL = 'https://ko-fi.com/diegovill';
 const STORAGE_KEY = 'oraculo_donacion_ultima_vez';

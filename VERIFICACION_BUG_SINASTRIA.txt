@@ -1,0 +1,200 @@
+================================================================================
+VERIFICACIÓN INDEPENDIENTE — Posible bug en el cálculo de la Sinastría
+================================================================================
+Fecha: 2026-08-31
+Proyecto: C:\Users\Diego\Desktop\OraculoUnificado
+Rama: feat/mejora-fallbacks-locales (todo sin commitear; trabajada en 2 sesiones)
+Para: tarea nueva con modelo grande — auditoría CIEGA del motor de sinastría.
+
+--------------------------------------------------------------------------------
+0. REGLA DE ORO PARA ESTA TAREA
+--------------------------------------------------------------------------------
+Este handoff describe SOLO el síntoma tal como lo reportó Diego y datos de
+contexto técnico neutros. NO contiene diagnóstico, hipótesis ni conclusión de
+la sesión anterior: se pide que el auditor llegue por su cuenta a un veredicto
+(bug vs diseño), sin dejarse condicionar por ningún número que aparezca aquí
+comentado como "correcto". Todo dato debe re-verificarse por ti mismo.
+
+IMPORTANTE: la verificación que se hizo en la sesión anterior (documentada en
+AGENTS.md, entrada "2026-08-31, sesión de cierre") validó el RENDER/estructura
+del fallback y la UI sobre este mismo código (badges, secciones, i18n). Los
+porcentajes concretos que allí se citan (p. ej. "Sinastría DiegoVO×Ainoa → 54%")
+NO constituyen una validación aritmética del scoring: si existe un bug en el
+motor, esos números heredarían el bug. No los uses como referencia de corrección.
+
+--------------------------------------------------------------------------------
+1. EL SÍNTOMA (reporte de Diego, literal)
+--------------------------------------------------------------------------------
+"¿Cuáles son los cambios hechos a nivel general en toda esta rama para el
+cálculo de la sinastria? ¿Por qué ahora la sinastria de, por ejemplo, Diego ×
+Fran ha cambiado tanto y puntúa tan bajo en Emocional y Mental, cuando en
+Emocional por ejemplo tiene todo positivo y en Mental casi todo? ¿Es un bug el
+sistema o está bien?"
+
+Es decir, Diego percibe:
+  a) La sinastria Diego×Fran cambió sustancialmente respecto a lo que él
+     recordaba de versiones anteriores de la app.
+  b) Emocional y Mental puntuación MUY BAJA.
+  c) El desglose visible en la app muestra esos dos sectores con aspectos
+     aparentemente positivos ("todo positivo" / "casi todo").
+  d) No sabe si el motor está roto o si es consecuencia de diseño de la rama.
+
+La tarea: reproducir, medir, comparar con el motor de main, y dar un veredicto
+con evidencia: BUG (con localización exacta y fix mínimo propuesto) o BEHAVIOR
+DE DISEÑO (con justificación técnica).
+
+--------------------------------------------------------------------------------
+2. ESTADO DEL REPO Y DE LA RAMA
+--------------------------------------------------------------------------------
+- Rama activa: feat/mejora-fallbacks-locales (fue mergeada feat/sinastria a main
+  en 9de75a0; esta rama salió después de main = dfe3f21).
+- NADA está commiteado: 63 archivos modificados + test/ y otros sin trackear.
+  El commit está PENDIENTE de la confirmación explícita de Diego (NUNCA hacer
+  git commit / push sin permiso).
+- La rama incluye la mejora de fallbacks (FASES 1/2/2B/3) + restos de preparación
+  Play Store. El motor de sinastría tocado es js/core/astrologia.js (diff vs
+  main: ~177 líneas insertadas / 51 borradas).
+- Version tags actuales: ?v=71 uniforme en js/, index.html raíz, www/ y assets.
+  Si se edita js/, OBLIGATORIO sincronizar a www/ y a
+  android/app/src/main/assets/public/ (regla del AGENTS.md) y bumpear ?v=
+  (convention: bump uniforme + actualizar imports de los tests → hoy son ?v=71).
+- 3 smokes en verde con la versión actual: node test/smoke-astral.mjs,
+  node test/smoke-sinastria.mjs, node test/smoke-tarot.mjs (corren con Node 22,
+  sin navegador, con stubs de DOM/i18n; su patrón de stubs sirve como plantilla
+  para scripts propios de análisis del motor). Nótese: los smokes usan cartas
+  SINTÉTICAS y checks dirigidos — que pasen NO descarta un bug con datos reales.
+
+--------------------------------------------------------------------------------
+3. DÓNDE ESTÁ EL MOTOR Y DÓNDE SE PUEDE INVESTIGAR SIN EL NAVEGADOR
+--------------------------------------------------------------------------------
+- Motor: js/core/astrologia.js. Puntos de entrada (todos export):
+    calcularSinastria(cartaA, cartaB)         → scored 8 factores + label + neto
+    calcularAspectosSinastria(puntosA, puntosB) → aspectos cruzados A×B
+    calcularCartaCompuesta(cartaA, cartaB)
+  Estructura de salida relevante: factores[] (key/score/nivel/peso/contribucion),
+  factorDetalle (strings legibles por sector), factorAspectos (estructurado por
+  sector: p1/p2/tipo/orb/delta/armonico/friccion), overlays[], casasDestacadas,
+  compatibilidadLabel, globalScore.
+- El archivo importa '../i18n/i18n.js?v=71' (para t/tSigno/tAspecto). Para
+  ejecutarlo en Node hay que cargar antes initI18n: ver el bloque de stubs de
+  test/smoke-sinastria.mjs (window/document/localStorage/fetch falsos + initI18n)
+  — copy-paste de ese header sirve para cualquier script de análisis propio.
+- Carta inputs válidos: los que devuelve calcularCartaAstral({nombre, dia, mes,
+  ano, hora, min, desconocida, ciudad:{nombre,lat,lon}, offsetReal}) o los datos
+  guardados storage.obtenerCartas()[i].datos.
+- Comparar con el motor PREVIO (main): git show main:js/core/astrologia.js >
+  test/_astr-main.mjs y ajustar su import de i18n a la ruta relativa correcta
+  ('../js/i18n/i18n.js?v=71'). OJO al guardar cualquier copia temporal en test/:
+  si está en test/, las rutas relativas cambian.
+
+--------------------------------------------------------------------------------
+4. DATOS REALES DISPONIBLES (para reproducir el síntoma)
+--------------------------------------------------------------------------------
+- El emulador OraculoTest ESTÁ CORRIENDO normalmente (si cayó: relánzalo con el
+  AVD OraculoTest; los datos persisten). La app (debug, ?v=71) está instalada
+  también en el MÓVIL físico de Diego, conectado por USB (serial
+  t4finninso5xay49, Android 16). En ambos, el localStorage del WebView contiene
+  las cartas reales de Diego.
+- Claves: 'cartas_astrales_guardadas' (13 cartas), 'sinastrias_guardadas' (12),
+  'oraculo_idioma' ('es'), flags onboarding. Índices 0..: [0]=Eva, [10]=Fran
+  (06:00, hora conocida), [11]=Ainoa (13:00), [12]=DiegoVO (21:35).
+- DUMP YA EXTRAÍDO: test/_tmp-fran-data.json contiene
+  { fran: c[10].datos, diego: c[12].datos } completos (planetas con longitud/
+  signo/casa, casasInfo con cúspides Placidus, asc/mc). Se puede regenerar vía
+  CDP (ver apartado 5) y conviene verificarlo antes de usarlo.
+- Nota técnica: las 13 cartas guardadas fueron calculadas con el motor antiguo:
+  NO incluyen Chiron en planetas, y su casasInfo tiene cúspides Placidus reales.
+  Las casas (Equal o el sistema que use la app) y la presencia/ausencia de
+  planetas en los datos guardados son factores a tener en cuenta al comparar.
+- Extraer/inyectar datos se hace con el toolkit CDP (apto 5). El WebView expone
+  debug REMOTO SOLO EN BUILD DEBUG (if (BuildConfig.DEBUG) en MainActivity.java).
+
+--------------------------------------------------------------------------------
+5. TOOLKIT DE VERIFICACIÓN EN LA APP (sin visión, texto puro)
+--------------------------------------------------------------------------------
+- MainActivity tiene setWebContentsDebuggingEnabled(true) en build debug.
+- Toolkit: test/cdp-eval.mjs (Node ≥22, WebSocket nativo). Uso:
+    adb forward tcp:<PUERTO> localabstract:webview_devtools_remote_<PID>
+    node test/cdp-eval.mjs <script.js>
+  El script JS se evalúa en la página (await ok, returnByValue). Ya existen
+  probes reutilizables en test/probe-*.js (estado, astral, sinastria, sinHora,
+  tarot) que muestran cómo abrir pestañas y leer contenedores
+  (#sinastria-factores, #sinastria-interpretacion, tabla "Detalles técnicos").
+- Emulador: adb -s emulator-5554 (forward tcp:9222). Móvil: -s
+  t4finninso5xay49 (forward tcp:9223 NO usar para esta auditoría salvo que Diego
+  lo pida).
+- TRAMPAS DE ENTORNO (doc en commonerrors.md de la raíz, léelo):
+    * adb install -r puede fallar EN SILENCIO → verificar SIEMPRE tamaño con
+      pm path + stat. am force-stop antes de reinstalar.
+    * El emulador OraculoTest ya se murió 2 veces a mitad de sesión: si adb
+      dice device not found, relanzarlo (airplane-mode persiste).
+    * Si se cambian js/: sync js/ → www/ → assets y bump ?v= (→72), y rebuild
+      (cd android && ./gradlew assembleDebug). Sin rebuild+reinstall, el WebView
+      sigue sirviendo el código viejo.
+
+--------------------------------------------------------------------------------
+6. CÓMO SE MANIFIESTA EN LA APP (para reproducir el síntoma visible)
+--------------------------------------------------------------------------------
+- Pestaña 💞 → selects #sinastria-personaA/#sinastria-personaB (value = índice
+  de la carta guardada; DiegoVO=12, Fran=10) → botón #btn-calcular-sinastria.
+- Resultado: panel #sinastria-factores (8 barras con score/nivel + radar
+  octogonal con % global), #sinastria-neto (balance armónicos/tensos), y
+  desplegable "Detalles técnicos" (#sinastria-aspectos) con, por sector, los
+  aspectos que lo alimentan (planetas, signos, persona, tipo, orbe) y un
+  bloque "Datos completos". Botón #btn-analisis-sinastria lanza el análisis
+  (IA con red / fallback local sin red; el fallback lee del MISMO resultado
+  del motor, no recalcula).
+- Con red activa la IA da otro texto (worker Gemini); para auditoría del MOTOR
+  da igual la red. Para ver el fallback local sin ambigüedad: modo avión
+  (cmd connectivity airplane-mode enable) y restaurar al final.
+
+--------------------------------------------------------------------------------
+7. CAMBIOS CONOCIDOS DE LA RAMA EN EL MOTOR (según AGENTS.md — neutral:
+   son las áreas tocadas; el auditor debe evaluar cada una sin asumir cuál falla)
+--------------------------------------------------------------------------------
+- Quirón real calculado (Swiss Ephemeris, Asteroid.Chiron) añadido a PLANETAS_UI
+  (OJO: los datos guardados antiguos no lo llevan; solo cartas nuevas).
+- Pares clásicos ampliados en PARES_FACTOR y PESOS_PARES (Luna-Mercurio,
+  Sol-Sol, Marte-Júpiter, Luna-Urano, Mercurio-Urano/Neptuno, Júpiter-Saturno,
+  eje Nodo Sur…).
+- Regla tradicional de la cúspide 5° en overlays (_casaOverlay) y Plutón añadido
+  a CASAS_PRIORITARIAS.
+- Exclusiones + renormalización de pesos para hora desconocida (sinHora).
+- Contexto PREVIO (ya en main): media ponderada por orbe × planeta (escala 2.3),
+  orbes dinámicos por cuerpo, amistad planetaria (Graha Maitri ±3), sensibilidad
+  del radar. Estos NO son de la rama.
+- El % global = suma ponderada de los 8 factores (pesos en FACTORES).
+- UI: render() en js/ui/sinastria.js — barras (top 3 por sector), radar, neto,
+  Detalles técnicos (ALL aspectos por sector), fallback local en main.js.
+
+--------------------------------------------------------------------------------
+8. QUÉ SE ESPERA COMO ENTREGABLE DE ESTA TAREA
+--------------------------------------------------------------------------------
+1. Veredicto: ¿BUG o DISEÑO? Con evidencia reproducible (script guardado en
+   test/, ejecutable con node, que regenere los cálculos y muestre los números).
+2. Si es DESIGN: explicación cuantificada de por qué Emocional/Mental bajan,
+   y valoración de si conviene retocar (opcional, solo proponiendo).
+3. Si es BUG: localización exacta (archivo:línea), mecanismo, magnitud del
+   impacto y fix mínimo propuesto (diff). Estimar cuántas sinastrías reales
+   se ven afectadas (sample: las 13×13 combinaciones de cartas guardadas, o
+   las 12 guardadas ya calculadas) y antes/después del fix propuesto.
+4. NO hacer commit ni push. NO tocar worker/. Los cambios de código se aplican
+   solo si Diego los aprueba tras leer el veredicto.
+5. Actualizar commonerrors.md si se atasca en algo no trivial (regla del repo).
+
+--------------------------------------------------------------------------------
+9. PREGUNTAS ABIERTAS QUE DEBE RESPONDER EL VEREDICTO
+--------------------------------------------------------------------------------
+- ¿El comportamiento de Diego×Fran (síntoma del apartado 1) es defecto o
+  consecuencia correcta de los cambios de la rama?
+- ¿Qué partes distintas del motor (aspectos, pares, overlays, compuesta,
+  amistad planetaria, renormalizaciones) contribuyen y en qué magnitud?
+- ¿Las pistas visibles al usuario (barras/detalles) representan fielmente lo
+  que puntúa el motor, o hay desincronización entre lo que se muestra y lo que
+  se puntúa?
+- ¿Hay casos extremos relevantes (hora desconocida, cartas guardadas antiguas
+  sin Quirón, cúspides por sistemas de casas) que disparen anomalías puntuales?
+
+================================================================================
+FIN
+================================================================================

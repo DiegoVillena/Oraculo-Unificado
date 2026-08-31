@@ -3,8 +3,8 @@
 // Si fallan (timeout, sin red, error), lanzan excepción para que el caller
 // haga fallback al algoritmo local.
 
-import { getIdioma } from '../i18n/i18n.js?v=69';
-import { envolverTerminos } from '../ui/glossary.js?v=69';
+import { getIdioma } from '../i18n/i18n.js?v=72';
+import { envolverTerminos } from '../ui/glossary.js?v=72';
 
 const WORKER_URL = 'https://oraculo-worker.diegovillens.workers.dev';
 const TIMEOUT_MS = 45000;

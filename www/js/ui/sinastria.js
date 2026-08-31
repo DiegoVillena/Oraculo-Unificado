@@ -1,8 +1,8 @@
 // ui/sinastria.js — Sinastria: compatibilidad entre 2 cartas astrales
-import { calcularSinastria, generarRuedaSinastriaSVG, SIGNOS, PLANETAS_UI, gradosASigno } from '../core/astrologia.js?v=69';
-import { mostrarAnimacionConstelaciones, ocultarAnimacionConstelaciones } from './astral.js?v=69';
-import { t, tAspecto } from '../i18n/i18n.js?v=69';
-import * as storage from '../storage.js?v=69';
+import { calcularSinastria, generarRuedaSinastriaSVG, SIGNOS, PLANETAS_UI, gradosASigno } from '../core/astrologia.js?v=72';
+import { mostrarAnimacionConstelaciones, ocultarAnimacionConstelaciones } from './astral.js?v=72';
+import { t, tAspecto } from '../i18n/i18n.js?v=72';
+import * as storage from '../storage.js?v=72';
 
 // Última sinastria calculada (en memoria para análisis/copiar/compartir)
 let ultimaSinastria = null;
@@ -146,6 +146,19 @@ export function render(resultado, cartaA, cartaB) {
   document.getElementById('sinastria-titulo').textContent =
     `${t('sinastria.tituloResultado') || 'Sinastria'}: ${nombreA} 💞 ${nombreB}`;
 
+  // Aviso de hora desconocida: sin hora exacta no hay casas ni eje Casa 7.
+  // El motor ya excluye esos datos; aquí se informa al usuario.
+  const bannerHora = document.getElementById('sinastria-hora-aviso');
+  if (bannerHora) {
+    if (resultado.sinHora) {
+      bannerHora.textContent = t('sinastria.horaDesconocida') || '';
+      bannerHora.style.display = 'block';
+    } else {
+      bannerHora.style.display = 'none';
+      bannerHora.textContent = '';
+    }
+  }
+
   // Rueda bicarta
   const wheel = document.getElementById('sinastria-rueda');
   if (wheel) wheel.innerHTML = generarRuedaSinastriaSVG(cartaA, cartaB, resultado.aspectosCruzados);
@@ -208,6 +221,7 @@ function renderPanelFactores(factores, globalScore, label, detalle) {
   h += `  <span class="fg-pct">${globalScore}%</span>`;
   h += `  <div class="fg-texto"><span class="fg-label">${t('sinastria.globalScore') || 'Compatibilidad global'}</span><span class="fg-frase">${label}</span></div>`;
   h += `</div>`;
+  h += `<div class="sinastria-score-disclaimer">${t('sinastria.disclaimerScore') || ''}</div>`;
   // Leyenda con puntos de color (como el radar clásico): qué significa cada color.
   h += `<div class="sinastria-factores-leyenda">`;
   h += `  <span class="leyenda-item"><i class="leyenda-dot" style="background:#4ade80"></i>${t('sinastria.leyendaFluye') || 'Fluye'}</span>`;
@@ -394,10 +408,13 @@ function _tablaCompuesta(cc) {
   let h = `<h5 class="detalles-sub">${t('sinastria.cartaCompuesta') || 'Carta compuesta'}</h5>`;
   h += `<table class="tabla-detalles"><thead><tr><th>Planeta</th><th>${pos}</th><th>${casa}</th></tr></thead><tbody>`;
   for (const p of cc.planetas) {
-    h += `<tr><td>${_nombrePlaneta(p.nombre)}</td><td>${p.grados}°${String(p.minutos).padStart(2,'0')}' ${p.signo.nombre}</td><td>${p.casa}</td></tr>`;
+    h += `<tr><td>${_nombrePlaneta(p.nombre)}</td><td>${p.grados}°${String(p.minutos).padStart(2,'0')}' ${p.signo.nombre}</td><td>${p.casa ?? '—'}</td></tr>`;
   }
-  h += `<tr><td>${_nombrePlaneta('I ASC')}</td><td>${cc.asc.toFixed(2)}°</td><td>1</td></tr>`;
-  h += `<tr><td>${_nombrePlaneta('X MC')}</td><td>${cc.mc.toFixed(2)}°</td><td>10</td></tr>`;
+  // Con hora desconocida el motor no calcula ASC/MC compuestos (sinHora) → sin filas de ángulos.
+  if (cc.asc != null && cc.mc != null) {
+    h += `<tr><td>${_nombrePlaneta('I ASC')}</td><td>${cc.asc.toFixed(2)}°</td><td>1</td></tr>`;
+    h += `<tr><td>${_nombrePlaneta('X MC')}</td><td>${cc.mc.toFixed(2)}°</td><td>10</td></tr>`;
+  }
   h += `</tbody></table>`;
   return h;
 }
@@ -521,45 +538,9 @@ function _netoHTML(neto) {
   </div>`;
 }
 
-// Perfil de la pareja: puntos fuertes (top 2) y área más débil, para que
-// cada resultado se distinga y sea accionable.
-function _perfilHTML(factores) {
-  if (!factores || !factores.length) return '';
-  const ordenados = factores.slice().sort((a, b) => b.score - a.score);
-  const fuertes = ordenados.slice(0, 2).map(f => _factorLabel(f.key));
-  const debil = ordenados[ordenados.length - 1];
-  return `<div class="sinastria-global-perfil">
-    <span class="perfil-fuertes">✦ ${t('sinastria.perfilFuerte') || 'Fuerte en'}: ${fuertes.join(' y ')}</span>
-    <span class="perfil-sep">·</span>
-    <span class="perfil-debil">⚡ ${t('sinastria.perfilDebil') || 'A trabajar'}: ${_factorLabel(debil.key)}</span>
-  </div>`;
-}
 
-function renderDesglose(factores, globalScore, factorDetalle) {
-  if (!factores || !factores.length) return '';
-  let h = `<div class="sinastria-desglose">
-    <h4 class="sinastria-seccion-titulo">${t('sinastria.desgloseTitulo') || 'Desglose de la puntuación'}</h4>
-    <p class="sinastria-desglose-nota">${t('sinastria.desgloseNota') || 'El % global es la suma ponderada de 8 factores (peso × puntuación).'}</p>`;
-  for (const f of factores) {
-    const pct = Math.round(f.peso * 100);
-    const color = f.score >= 70 ? '#4ade80' : f.score >= 50 ? '#f5d76e' : '#f87171';
-    const detalle = (factorDetalle && factorDetalle[f.key]) ? factorDetalle[f.key] : [];
-    h += `<div class="desglose-fila">
-      <div class="desglose-cab">
-        <span class="desglose-nombre">${_factorLabel(f.key)}</span>
-        <span class="desglose-peso">${pct}%</span>
-        <span class="desglose-score" style="color:${color}">${f.score}</span>
-      </div>
-      <div class="desglose-bar"><div class="desglose-bar-fill" style="width:${f.score}%;background:${color}"></div></div>
-      <div class="desglose-desc">${_factorDesc(f.key)}</div>
-      ${detalle.length ? `<div class="desglose-detalle"><ul>${detalle.map(d => `<li>${d}</li>`).join('')}</ul></div>` : ''}
-      <div class="desglose-contrib">${t('sinastria.desgloseContrib') || 'Aporta'} +${f.contribucion}%</div>
-    </div>`;
-  }
-  h += `<div class="desglose-total">${t('sinastria.globalScore') || '% global'}: <strong>${globalScore}%</strong></div>`;
-  h += `</div>`;
-  return h;
-}
+
+
 
 // --- Tarjetas de casas destacadas ---
 // Mapa casa → dimensión del radar (mismo que DIM_CASA en el motor)
@@ -580,63 +561,9 @@ function _dimensionLabel(dim) {
   return map[dim] || '';
 }
 
-function renderCasas(casas, cartaA, cartaB) {
-  if (!casas || !casas.length) return `<p class="sinastria-vacio">${t('sinastria.sinCasas') || 'Sin casas destacadas.'}</p>`;
-  const nombreA = cartaA?.nombre || t('sinastria.personaA') || 'Persona A';
-  const nombreB = cartaB?.nombre || t('sinastria.personaB') || 'Persona B';
-  let h = `<h4 class="sinastria-seccion-titulo">${t('sinastria.casasImpacto') || 'Casas de Impacto'}</h4>`;
-  h += '<div class="sinastria-casas-grid">';
-  for (const c of casas) {
-    const planetaT = _nombrePlaneta(c.planeta);
-    const origenNombre = c.origen === 'B' ? nombreB : nombreA;
-    const receptorNombre = c.origen === 'B' ? nombreA : nombreB; // la casa es del OTRO
-    const descCasa = _frasePlanetaEnCasa(c.planeta, c.casaEn);
-    const dim = _DIM_CASA[c.casaEn];
-    const dimLabel = dim ? _dimensionLabel(dim) : '';
-    // Signo del planeta (pertenece a la persona de origen)
-    const cartaOrigen = c.origen === 'B' ? cartaB : cartaA;
-    const pObj = cartaOrigen?.planetas?.find(x => x.nombre === c.planeta);
-    const signo = pObj ? pObj.signo.nombre : '';
-    const planetaConSigno = signo ? `${planetaT} (${signo})` : planetaT;
-    // Formato humano: "El Sol de Laura cae en la Casa 4 de Diego (Hogar y raíces emocionales)" + frase
-    // El planeta de una persona cae en una casa de la OTRA persona (overlay de sinastría).
-    const plantilla = t('sinastria.casaOverlay') || '{planeta} de {origen} cae en la Casa {casa} de {receptor} ({significado})';
-    let tituloHumano = plantilla
-      .replace('{planeta}', `<span class="term" data-term="planeta:${c.planeta}">${planetaConSigno}</span>`)
-      .replace('{origen}', `<strong>${origenNombre}</strong>`)
-      .replace('{casa}', c.casaEn)
-      .replace('{receptor}', `<strong>${receptorNombre}</strong>`)
-      .replace('{significado}', c.significado);
-    // Envolver "Casa N" como término del glosario
-    tituloHumano = tituloHumano.replace(`Casa ${c.casaEn}`, `<span class="term" data-term="casa:${c.casaEn}">${t('sinastria.casa') || 'Casa'} ${c.casaEn}</span>`);
-    h += `
-      <div class="casa-card">
-        <div class="casa-card-head">${tituloHumano}</div>
-        ${dimLabel ? `<div class="casa-card-dim">${t('sinastria.refuerza') || 'Refuerza'}: ${dimLabel}</div>` : ''}
-        ${descCasa ? `<div class="casa-card-desc">${descCasa}</div>` : ''}
-      </div>`;
-  }
-  h += '</div>';
-  return h;
-}
 
-// Frase descriptiva de un planeta cayendo en una casa ajena
-function _frasePlanetaEnCasa(planetaEN, casa) {
-  const planetaT = _nombrePlaneta(planetaEN);
-  const clave = `sinastria.desc_${planetaEN}_${casa}`;
-  const val = t(clave);
-  if (val && val !== clave) return val;
-  // Fallback genérico por planeta
-  const clavesPlaneta = {
-    Sun: 'sinastria.descSun', Moon: 'sinastria.descMoon', Mercury: 'sinastria.descMercury',
-    Venus: 'sinastria.descVenus', Mars: 'sinastria.descMars', Jupiter: 'sinastria.descJupiter',
-    Saturn: 'sinastria.descSaturn', Uranus: 'sinastria.descUranus', Neptune: 'sinastria.descNeptune',
-    Pluto: 'sinastria.descPluto',
-  };
-  const base = clavesPlaneta[planetaEN] ? t(clavesPlaneta[planetaEN]) : null;
-  if (base && base !== clavesPlaneta[planetaEN]) return `${planetaT}: ${base}`;
-  return '';
-}
+
+
 
 // Frase descriptiva para una dimensión del radar según su score
 function _fraseDimensionRadar(dimKey, score) {
@@ -651,86 +578,9 @@ function _fraseDimensionRadar(dimKey, score) {
   return _tf('sinastria.radarBaja', 'Conexión moderada que requiere atención');
 }
 
-// Frase descriptiva para un aspecto entre dos planetas
-function _fraseAspectoDesc(p1EN, p2EN, tipoEN, armonico) {
-  // Clave específica: sinastria.asp_<p1>_<p2>_<tipo>
-  const claveEsp = `sinastria.asp_${p1EN}_${p2EN}_${tipoEN}`;
-  const esp = t(claveEsp);
-  if (esp && esp !== claveEsp) return esp;
-  // Clave inversa (p2-p1)
-  const claveInv = `sinastria.asp_${p2EN}_${p1EN}_${tipoEN}`;
-  const inv = t(claveInv);
-  if (inv && inv !== claveInv) return inv;
-  // Fallback genérico por tipo de aspecto (texto hardcodeado, no i18n — t() no encuentra la clave)
-  const p1 = _nombrePlaneta(p1EN);
-  const p2 = _nombrePlaneta(p2EN);
-  if (armonico) {
-    if (tipoEN === 'Conjunction') return `Fusión de energías que potencia ambas partes: ${p1} + ${p2}`;
-    if (tipoEN === 'Trine') return `Fluir natural que facilita la comprensión mutua: ${p1} + ${p2}`;
-    if (tipoEN === 'Sextile') return `Sintonía sutil que invita a cultivar la conexión: ${p1} + ${p2}`;
-    return `${p1} y ${p2} en armonía`;
-  } else {
-    if (tipoEN === 'Square') return `Tensión creativa que requiere paciencia y consciencia: ${p1} vs ${p2}`;
-    if (tipoEN === 'Opposition') return `Polaridad que pide integrar y equilibrar: ${p1} vs ${p2}`;
-    if (tipoEN === 'Conjunction') return `Fusión intensa que puede generar dependencia o fricción: ${p1} + ${p2}`;
-    return `Desafío entre ${p1} y ${p2}`;
-  }
-}
 
-// --- Tabla de aspectos top (colapsable, filas expandibles) ---
-function renderAspectos(aspectos, cartaA, cartaB) {
-  if (!aspectos || !aspectos.length) return `<p class="sinastria-vacio">${t('sinastria.sinAspectos') || 'Sin aspectos destacados.'}</p>`;
-  const nombreA = cartaA?.nombre || t('sinastria.personaA') || 'Persona A';
-  const nombreB = cartaB?.nombre || t('sinastria.personaB') || 'Persona B';
-  let h = `<div class="aspectos-collapse-wrap sinastria-aspectos-wrap">`;
-  h += `<h4 class="aspectos-titulo">${t('sinastria.aspectosClave') || 'Aspectos Clave'} <button class="btn-aspectos-toggle" id="btn-sinastria-aspectos-toggle">▸</button></h4>`;
-  h += `<p class="aspectos-nota"><span class="term" data-term="concepto:orbe">Orbe</span>: ${t('sinastria.notaOrbe') || 'Un orbe menor a 2° significa que la conexión es excepcionalmente fuerte e ineludible.'}</p>`;
-  h += `<div class="aspectos-scroll" style="display:none"><table class="tabla-aspectos tabla-aspectos-sinastria"><thead><tr>
-    <th class="col-planeta">${nombreA}</th>
-    <th class="col-planeta">${nombreB}</th>
-    <th class="col-tipo">${t('sinastria.tipo') || 'Aspecto'}</th>
-    <th class="col-orbe"><span class="term" data-term="concepto:orbe">${t('sinastria.orbe') || 'Orbe'}</span></th>
-    <th class="col-dim">${t('sinastria.dimension') || 'Dimensión'}</th>
-    <th class="col-expand"></th>
-  </tr></thead><tbody>`;
-  for (const a of aspectos) {
-    const desc = _fraseAspectoDesc(a.p1EN, a.p2EN, a.tipoEN, a.armonico);
-    const dimLabel = _dimensionLabel(a.dim) || '—';
-    h += `<tr class="${a.clase} aspecto-row" data-desc="${desc ? '1' : '0'}">
-      <td>${a.planetaANombre}</td>
-      <td>${a.planetaBNombre}</td>
-      <td>${a.simbolo} <span class="term" data-term="aspecto:${a.tipoEN}">${a.tipoAspecto}</span></td>
-      <td>${a.orbe}</td>
-      <td>${dimLabel}</td>
-      <td class="col-expand">${desc ? '<button class="aspecto-expand" aria-label="Ver detalle">▾</button>' : ''}</td>
-    </tr>`;
-    if (desc) {
-      h += `<tr class="aspecto-desc-row" style="display:none;"><td colspan="6"><span class="aspecto-desc"><strong>${a.planetaA} ${a.simbolo} ${a.planetaB}</strong> — ${a.tipoAspecto} (orbe ${a.orbe})<br>${desc}</span></td></tr>`;
-    }
-  }
-  h += '</tbody></table></div></div>';
-  // Listener de toggle (colapsable) + expandir descripción por fila
-  setTimeout(() => {
-    const btn = document.getElementById('btn-sinastria-aspectos-toggle');
-    if (btn) btn.addEventListener('click', () => {
-      const table = btn.closest('.aspectos-collapse-wrap').querySelector('.aspectos-scroll');
-      if (table) table.style.display = (table.style.display === 'none' ? '' : 'none');
-      btn.textContent = (table && table.style.display === 'none') ? '▸' : '▾';
-    });
-    document.querySelectorAll('.aspecto-row').forEach(row => {
-      row.addEventListener('click', () => {
-        const descRow = row.nextElementSibling;
-        if (descRow && descRow.classList.contains('aspecto-desc-row')) {
-          const show = descRow.style.display !== 'table-row';
-          descRow.style.display = show ? 'table-row' : 'none';
-          const btn = row.querySelector('.aspecto-expand');
-          if (btn) btn.textContent = show ? '▸' : '▾';
-        }
-      });
-    });
-  }, 0);
-  return h;
-}
+
+
 
 function _nombrePlaneta(nombreEN) {
   const nombres = t('astral.nombresPlanetarios');

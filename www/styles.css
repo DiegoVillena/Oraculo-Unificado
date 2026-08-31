@@ -1901,3 +1901,7 @@ footer a { text-decoration: underline; text-decoration-color: rgba(232,196,106,0
   75%  { width: 240px; height: 240px; opacity: 1; }
   100% { width: 320px; height: 320px; opacity: 0; }
 }
+
+/* Aviso de hora desconocida en sinastría + disclaimer del % global */
+.sinastria-hora-aviso { font-size: 0.78rem; color: var(--text-dim); background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: var(--radius-sm); padding: 8px 12px; margin: 4px 0 12px; line-height: 1.5; }
+.sinastria-score-disclaimer { font-size: 0.68rem; color: var(--text-dim); text-align: center; margin: -2px 0 8px; font-style: italic; }

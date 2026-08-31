@@ -17,7 +17,7 @@ let _swe = null;
 let _sweReady = false;
 
 // Constantes exportadas desde @swisseph/browser
-let Planet, LunarPoint, HouseSystem, CalculationFlag, CalendarType;
+let Planet, LunarPoint, Asteroid, HouseSystem, CalculationFlag, CalendarType;
 
 async function initSwissEph() {
   if (_sweReady) return _swe;
@@ -47,6 +47,7 @@ async function initSwissEph() {
   const e = window.exports || {};
   Planet = e.Planet;
   LunarPoint = e.LunarPoint;
+  Asteroid = e.Asteroid;
   HouseSystem = e.HouseSystem;
   CalculationFlag = e.CalculationFlag;
   CalendarType = e.CalendarType;
@@ -57,6 +58,9 @@ async function initSwissEph() {
   }
   if (!LunarPoint) {
     LunarPoint = { MeanNode:10, TrueNode:11, MeanApogee:12, OsculatingApogee:13, InterpolatedApogee:21, InterpolatedPerigee:22 };
+  }
+  if (!Asteroid) {
+    Asteroid = { Chiron:15 };
   }
   if (!HouseSystem) {
     HouseSystem = { Placidus:'P', Koch:'K', Porphyrius:'O', Regiomontanus:'R', Campanus:'C', Equal:'A', VehlowEqual:'V', WholeSign:'W', Meridian:'X', Azimuthal:'H', PolichPage:'T', Alcabitus:'B', Morinus:'M' };
@@ -121,6 +125,7 @@ export const PLANETAS_UI = {
   Saturn:{simbolo:'♄',color:'#d4af37'}, Uranus:{simbolo:'♅',color:'#5ab8ff'},
   Neptune:{simbolo:'♆',color:'#4d8aff'}, Pluto:{simbolo:'♇',color:'#9c5fff'},
   Lilith:{simbolo:'☾',color:'#9a8cc0'}, 'N Node':{simbolo:'☊',color:'#d946ef'},
+  Chiron:{simbolo:'⚷',color:'#7dd6c4'},
 };
 
 // Estado mutable
@@ -166,7 +171,9 @@ function calcularAspectos(puntos) {
       if (diff > 180) diff = 360 - diff;
       for (const def of ASPECTOS_DEF) {
         const orb = Math.abs(diff - def.angulo);
-        if (orb <= def.orb) {
+        // Algunos puntos (Quirón) acotan su orbe para no generar ruido
+        const cap = Math.min(puntos[i].orbMax ?? 99, puntos[j].orbMax ?? 99);
+        if (orb <= Math.min(def.orb, cap)) {
           asp.push({
             p1: puntos[i].nombre, p2: puntos[j].nombre,
             tipo: def.nombre, simbolo: def.simbolo,
@@ -213,7 +220,7 @@ function calcularStats(planetas) {
 // ============================================================
 // TEXTO — Formato CafeAstrology
 // ============================================================
-import { t, tSigno, tAspecto, tPais } from '../i18n/i18n.js?v=69';
+import { t, tSigno, tAspecto, tPais } from '../i18n/i18n.js?v=72';
 
 // Helper: nombre del signo traducido
 function _sn(signoObj) {
@@ -382,6 +389,20 @@ export async function calcularCartaAstral(params) {
     grados: nodeInfo.grados, minutos: nodeInfo.minutos,
     retro: nodePos.longitudeSpeed < 0, color: '#d946ef'
   });
+
+  // === QUIRÓN (asteroide; Swiss Ephemeris id 15) ===
+  // Orbe acotado (5°) para no ensuciar la tabla de aspectos natales.
+  // Si la build WASM no lo soporta, la carta se calcula sin él.
+  try {
+    const chironPos = swe.calculatePosition(jd, Asteroid.Chiron, flags);
+    const chInfo = gradosASigno(chironPos.longitude);
+    planetas.push({
+      nombre: 'Chiron', simbolo: '⚷', orbMax: 5,
+      longitud: chironPos.longitude, signo: chInfo.signo,
+      grados: chInfo.grados, minutos: chInfo.minutos,
+      retro: chironPos.longitudeSpeed < 0, color: '#7dd6c4'
+    });
+  } catch (e) { console.warn('Quirón no disponible:', e.message || e); }
 
   // === CASAS PLACIDUS (nativo de Swiss Ephemeris) ===
   const houseData = swe.calculateHouses(jd, lat, lon, HouseSystem.Placidus);
@@ -631,6 +652,28 @@ const PESOS_PARES = {
   'Jupiter-Moon':  { dim:'sintoniaEspiritual',  puntosPos:10, puntosNeg:6  },
   'Venus-Jupiter': { dim:'sintoniaEspiritual',  puntosPos:10, puntosNeg:6  },
   'Jupiter-Venus': { dim:'sintoniaEspiritual',  puntosPos:10, puntosNeg:6  },
+  // Display de dimensión para los pares añadidos en PARES_FACTOR
+  'Mars-Saturn':     { dim:'estabilidadFuturo', puntosPos:10, puntosNeg:10 },
+  'Saturn-Mars':     { dim:'estabilidadFuturo', puntosPos:10, puntosNeg:10 },
+  'Moon-Mercury':    { dim:'conexionEmocional', puntosPos:11, puntosNeg:8  },
+  'Mercury-Moon':    { dim:'conexionEmocional', puntosPos:11, puntosNeg:8  },
+  'Mars-Jupiter':    { dim:'quimicaPasion',     puntosPos:9,  puntosNeg:6  },
+  'Jupiter-Mars':    { dim:'quimicaPasion',     puntosPos:9,  puntosNeg:6  },
+  'Jupiter-Jupiter': { dim:'sintoniaEspiritual',puntosPos:9,  puntosNeg:5  },
+  'Jupiter-Saturn':  { dim:'estabilidadFuturo', puntosPos:7,  puntosNeg:6  },
+  'Saturn-Jupiter':  { dim:'estabilidadFuturo', puntosPos:7,  puntosNeg:6  },
+  'Mercury-Uranus':  { dim:'afinidadMental',    puntosPos:7,  puntosNeg:5  },
+  'Uranus-Mercury':  { dim:'afinidadMental',    puntosPos:7,  puntosNeg:5  },
+  'Mercury-Neptune': { dim:'afinidadMental',    puntosPos:7,  puntosNeg:5  },
+  'Neptune-Mercury': { dim:'afinidadMental',    puntosPos:7,  puntosNeg:5  },
+  'Moon-Uranus':     { dim:'conexionEmocional', puntosPos:7,  puntosNeg:6  },
+  'Uranus-Moon':     { dim:'conexionEmocional', puntosPos:7,  puntosNeg:6  },
+  'Sun-S Node':      { dim:'sintoniaEspiritual',puntosPos:7,  puntosNeg:5  },
+  'S Node-Sun':      { dim:'sintoniaEspiritual',puntosPos:7,  puntosNeg:5  },
+  'Moon-S Node':     { dim:'sintoniaEspiritual',puntosPos:8,  puntosNeg:5  },
+  'S Node-Moon':     { dim:'sintoniaEspiritual',puntosPos:8,  puntosNeg:5  },
+  'Venus-S Node':    { dim:'sintoniaEspiritual',puntosPos:7,  puntosNeg:5  },
+  'S Node-Venus':    { dim:'sintoniaEspiritual',puntosPos:7,  puntosNeg:5  },
 };
 
 // ============================================================
@@ -739,11 +782,35 @@ const PARES_FACTOR = {
   'Chiron-Moon':    { f:'emocional', base:8, chiron:true },
   'Mercury-Jupiter':{ f:'mental',    base:8 },
   'Jupiter-Mercury':{ f:'mental',    base:8 },
+  // --- Cobertura ampliada a pares clásicos (Hand / Cafe Astrology) ---
+  'Mars-Saturn':     { f:'estabilidad', base:10 },              // fricción deseo↔límite
+  'Saturn-Mars':     { f:'estabilidad', base:10 },
+  'Moon-Mercury':    { f:'emocional', base:11, sec:'mental' },  // entender las emociones del otro
+  'Mercury-Moon':    { f:'emocional', base:11, sec:'mental' },
+  'Sun-Sun':         { f:'espiritual', base:10, sec:'valores' },// afinidad de propósito e identidad
+  'Mars-Jupiter':    { f:'quimica', base:9, sec:'espiritual' }, // entusiasmo y juego compartidos
+  'Jupiter-Mars':    { f:'quimica', base:9, sec:'espiritual' },
+  'Jupiter-Jupiter': { f:'espiritual', base:9 },                // visión y filosofía comunes
+  'Jupiter-Saturn':  { f:'estabilidad', base:7 },               // expansión vs. estructura
+  'Saturn-Jupiter':  { f:'estabilidad', base:7 },
+  'Mercury-Uranus':  { f:'mental', base:7 },                    // chispa y originalidad mental
+  'Uranus-Mercury':  { f:'mental', base:7 },
+  'Mercury-Neptune': { f:'mental', base:7 },                    // intuición vs. lógica
+  'Neptune-Mercury': { f:'mental', base:7 },
+  'Moon-Uranus':     { f:'emocional', base:7 },                 // necesidad de libertad afectiva
+  'Uranus-Moon':     { f:'emocional', base:7 },
+  // Eje nodal: contactos con el Nodo Sur = familiaridad kármica ("ya nos conocíamos")
+  'Sun-S Node':      { f:'espiritual', base:7 },
+  'S Node-Sun':      { f:'espiritual', base:7 },
+  'Moon-S Node':     { f:'espiritual', base:8 },
+  'S Node-Moon':     { f:'espiritual', base:8 },
+  'Venus-S Node':    { f:'espiritual', base:7 },
+  'S Node-Venus':    { f:'espiritual', base:7 },
 };
 
 // Significados de casas para overlays (texto breve, se traduce en UI via i18n
 // usando claves sinastria.casaSignificado.<n> en datos-maestros)
-const CASAS_PRIORITARIAS = ['Sun','Moon','Mercury','Venus','Mars','N Node','Jupiter','Saturn'];
+const CASAS_PRIORITARIAS = ['Sun','Moon','Mercury','Venus','Mars','N Node','Jupiter','Saturn','Pluto'];
 
 // Importancia astrológica de cada punto para ponderar overlays de casas y
 // elegir el "punto fuerte/desafío" (no solo por orbe). Luminarias y personales
@@ -761,7 +828,11 @@ function _fuerzaEnCasa(lon, cusps, casa) {
   let fin = ((cusps[casa % 12] % 360) + 360) % 360;
   if (fin <= ini) fin += 360;
   let ll = l; if (ll < ini) ll += 360;
-  const frac = (ll - ini) / (fin - ini); // 0..1 dentro de la casa
+  // La regla de la cúspide 5° (_casaOverlay) puede asignar un planeta a la casa
+  // siguiente aunque quede justo ANTES de ini: sin el clamp, frac ≈ 16 y la
+  // fuerza sale ≈ -14 → refuerzo ≈ -145 (colapsa el factor). Acotado a [0,1],
+  // el planeta movido cuenta con fuerza de cúspide (0.5), su valor real.
+  const frac = Math.max(0, Math.min(1, (ll - ini) / (fin - ini))); // 0..1 dentro de la casa
   const distCentro = Math.abs(frac - 0.5) * 2; // 0 centro, 1 cúspide
   return 1 - 0.5 * distCentro; // 1.0 centro, 0.5 cúspide
 }
@@ -800,6 +871,9 @@ function _puntoMedio(lon1, lon2) {
 }
 
 export function calcularCartaCompuesta(cartaA, cartaB) {
+  // Sin hora de nacimiento fiable, ASC/MC/casas de la compuesta serían
+  // aleatorios (las casas se fijan a las 12:00): solo se calculan planetas.
+  const sinHora = !!(cartaA.desconocida || cartaB.desconocida);
   const planetas = [];
   for (const pA of cartaA.planetas) {
     const pB = cartaB.planetas.find(p => p.nombre === pA.nombre);
@@ -812,25 +886,29 @@ export function calcularCartaCompuesta(cartaA, cartaB) {
       retro: false,
     });
   }
-  const asc = _puntoMedio(cartaA.asc, cartaB.asc);
-  const mc = _puntoMedio(cartaA.mc, cartaB.mc);
-  // Casas Equal derivadas del ASC compuesto
+  // Casas Equal derivadas del ASC compuesto. La cúspide 10 Equal NO es el MC
+  // real (el MC compuesto es el punto medio de los MC), así que no se etiqueta
+  // como 'X MC' para no presentar dos MC distintos.
+  const asc = sinHora ? null : _puntoMedio(cartaA.asc, cartaB.asc);
+  const mc = sinHora ? null : _puntoMedio(cartaA.mc, cartaB.mc);
   const casasInfo = [];
-  for (let i = 0; i < 12; i++) {
-    const lon = ((asc + i * 30) % 360 + 360) % 360;
-    const info = gradosASigno(lon);
-    casasInfo.push({
-      numero: i + 1, longitud: lon, signo: info.signo,
-      grados: info.grados, minutos: info.minutos,
-      esAngulo: (i === 0 || i === 9),
-      etiqueta: i === 0 ? 'I ASC' : (i === 9 ? 'X MC' : ''),
-    });
+  if (!sinHora) {
+    for (let i = 0; i < 12; i++) {
+      const lon = ((asc + i * 30) % 360 + 360) % 360;
+      const info = gradosASigno(lon);
+      casasInfo.push({
+        numero: i + 1, longitud: lon, signo: info.signo,
+        grados: info.grados, minutos: info.minutos,
+        esAngulo: (i === 0),
+        etiqueta: i === 0 ? 'I ASC' : '',
+      });
+    }
   }
   const cusps = casasInfo.map(c => c.longitud);
-  planetas.forEach(p => { p.casa = casaDelPlaneta(p.longitud, cusps); });
+  planetas.forEach(p => { p.casa = sinHora ? null : casaDelPlaneta(p.longitud, cusps); });
   const puntos = planetas.map(p => ({ nombre: p.nombre, longitud: p.longitud }));
   const aspectos = calcularAspectos(puntos);
-  return { planetas, casasInfo, asc, mc, aspectos };
+  return { planetas, casasInfo, asc, mc, aspectos, sinHora };
 }
 
 // ============================================================
@@ -1053,9 +1131,12 @@ function _detalleCompuesta(cartaCompuesta) {
   const res = [];
   for (const n of claves) {
     const p = cartaCompuesta.planetas.find(x => x.nombre === n);
-    if (p) res.push(`${_pn(n)} compuesto en ${_sn(p.signo)} (Casa ${p.casa})`);
+    if (p) res.push(`${_pn(n)} compuesto en ${_sn(p.signo)}${p.casa != null ? ` (Casa ${p.casa})` : ''}`);
   }
-  res.push(`ASC compuesto: ${cartaCompuesta.asc.toFixed(1)}° · MC compuesto: ${cartaCompuesta.mc.toFixed(1)}°`);
+  // Signo + grado (no longitud absoluta), legible para cualquier usuario
+  const fmt = (lon) => { const g = gradosASigno(lon); return `${g.grados}°${String(g.minutos).padStart(2,'0')}' ${_sn(g.signo)}`; };
+  if (cartaCompuesta.asc != null) res.push(`ASC compuesto: ${fmt(cartaCompuesta.asc)}`);
+  if (cartaCompuesta.mc != null) res.push(`MC compuesto: ${fmt(cartaCompuesta.mc)}`);
   return res;
 }
 
@@ -1116,15 +1197,24 @@ function _dimensionDePar(p1, p2) {
 // Recibe dos cartas completas (devueltas por calcularCartaAstral o leídas de
 // storage.obtenerCartas()[i].datos) y devuelve el objeto sinastriaLocalOutput.
 export function calcularSinastria(cartaA, cartaB) {
-  // Puntos de cada carta: planetas + ASC + MC
-  const puntosA = _extraerPuntos(cartaA);
-  const puntosB = _extraerPuntos(cartaB);
+  // Sin hora de nacimiento fiable, ASC/MC/casas son aleatorios (se fijan a las
+  // 12:00). Se excluyen todos los cálculos que dependen de ellos: contactos con
+  // ángulos, overlays, factor Compromiso (Casa 7) y ASC/MC de la compuesta.
+  const sinHora = !!(cartaA.desconocida || cartaB.desconocida);
+
+  // Puntos de cada carta: planetas + ASC + MC (+ Nodo Sur).
+  // Sin hora: no se cruzan los ángulos (serían ruido).
+  const _puntos = (c) => sinHora
+    ? _extraerPuntos(c).filter(p => p.nombre !== 'I ASC' && p.nombre !== 'X MC')
+    : _extraerPuntos(c);
+  const puntosA = _puntos(cartaA);
+  const puntosB = _puntos(cartaB);
 
   // Aspectos cruzados A×B
   const aspectosCruzados = calcularAspectosSinastria(puntosA, puntosB);
 
-  // --- 1. Overlays de casas (planetas de un@ en casas del otr@) ---
-  const overlays = _calcularOverlays(cartaA, cartaB);
+  // --- 1. Overlays de casas (planetas de un@ en casas del otr@); sin hora: vacíos ---
+  const overlays = sinHora ? [] : _calcularOverlays(cartaA, cartaB);
 
   // --- 2. Puntuación por sector (8 factores) ---
   // Cada aspecto cruzado alimenta su factor (PARES_FACTOR) con una contribución
@@ -1176,9 +1266,12 @@ export function calcularSinastria(cartaA, cartaB) {
       // Transformación y Quirón: el contacto tenso no resta — es "intenso"
       // (poder) o un enganche kármico de sanación (Quirón).
       _sumar(par.f, par.base, armonico ? 1 : 0.5, !armonico);
+      if (par.sec) _sumar(par.sec, par.base, armonico ? 0.6 : 0.3, !armonico);
     } else {
       // Resto de sectores: la tensión resta (requiere trabajo).
       _sumar(par.f, par.base, armonico ? 1 : -1, false);
+      // Sector secundario (ej. Luna-Mercurio también alimenta Mental).
+      if (par.sec) _sumar(par.sec, par.base, armonico ? 0.6 : -0.6, false);
     }
   }
 
@@ -1193,22 +1286,27 @@ export function calcularSinastria(cartaA, cartaB) {
 
   // Refuerzos por overlays de casas (activación de áreas de vida).
   // Venus en 5ª/7ª refuerza Valores; Plutón refuerza Transformación.
-  const CASA_A_FACTOR = { 1:'emocional',4:'emocional',3:'mental',5:'quimica',7:'compromiso',8:'quimica',9:'espiritual',10:'estabilidad',12:'espiritual' };
-  for (const ov of overlays) {
-    if (!ov.planetaPersonal) continue;
-    if (ov.planeta === 'Venus' && (ov.casaEnA === 5 || ov.casaEnA === 7)) {
-      factorScores['valores'] += ov.refuerzo * 0.5;
-    } else if (ov.planeta === 'Pluto') {
-      factorScores['transformacion'] += ov.refuerzo * 0.5;
-    } else {
-      const fac = CASA_A_FACTOR[ov.casaEnA];
-      if (fac && fac !== 'compromiso') factorScores[fac] += ov.refuerzo * 0.35;
+  // Sin hora: no hay casas fiables, así que no hay refuerzos.
+  if (!sinHora) {
+    const CASA_A_FACTOR = { 1:'emocional',4:'emocional',3:'mental',5:'quimica',7:'compromiso',8:'quimica',9:'espiritual',10:'estabilidad',12:'espiritual' };
+    for (const ov of overlays) {
+      if (!ov.planetaPersonal) continue;
+      if (ov.planeta === 'Venus' && (ov.casaEnA === 5 || ov.casaEnA === 7)) {
+        factorScores['valores'] += ov.refuerzo * 0.5;
+      } else if (ov.planeta === 'Pluto') {
+        factorScores['transformacion'] += ov.refuerzo * 0.5;
+      } else {
+        const fac = CASA_A_FACTOR[ov.casaEnA];
+        if (fac && fac !== 'compromiso') factorScores[fac] += ov.refuerzo * 0.35;
+      }
     }
   }
 
-  // El factor Compromiso (eje Casa 7 / Descendente) se calcula con su lógica propia.
-  const factorCasa7 = _factorCasa7(cartaA, cartaB);
-  factorScores['compromiso'] = factorCasa7;
+  // El factor Compromiso (eje Casa 7 / Descendente) se calcula con su lógica
+  // propia. Sin hora exacta el eje no existe: se excluye y su peso (8%) se
+  // redistribuye proporcionalmente entre los demás factores.
+  const factorCasa7 = sinHora ? null : _factorCasa7(cartaA, cartaB);
+  if (!sinHora) factorScores['compromiso'] = factorCasa7;
 
   // Factores complementarios de visualización (carta compuesta + elementos).
   const factorElementos = _factorElementos(cartaA, cartaB);
@@ -1262,12 +1360,18 @@ export function calcularSinastria(cartaA, cartaB) {
   const factorDetalle = {};
   const factorAspectos = {};
   for (const k of factorKeys) {
-    factorDetalle[k] = k === 'compromiso' ? _detalleCasa7(cartaA, cartaB) : _detalleFactor(k);
+    factorDetalle[k] = k === 'compromiso' ? (sinHora ? [] : _detalleCasa7(cartaA, cartaB)) : _detalleFactor(k);
     factorAspectos[k] = k === 'compromiso' ? [] : _detalleFactorStruct(k);
   }
 
-  // Factores jerarquizados con su nivel cualitativo (Facilidad/Matiz/Intenso/Desafío)
-  const factores = FACTORES.map(f => {
+  // Factores jerarquizados con su nivel cualitativo (Facilidad/Matiz/Intenso/Desafío).
+  // Sin hora: se excluye Compromiso y su peso se redistribuye proporcionalmente.
+  let factoresEf = FACTORES.filter(f => !sinHora || f.key !== 'compromiso');
+  if (sinHora) {
+    const tot = factoresEf.reduce((acc, f) => acc + f.peso, 0);
+    factoresEf = factoresEf.map(f => ({ ...f, peso: f.peso / tot }));
+  }
+  const factores = factoresEf.map(f => {
     const score = factorScores[f.key];
     const friccion = fricciones[f.key];
     return {
@@ -1339,17 +1443,29 @@ export function calcularSinastria(cartaA, cartaB) {
     casasDestacadas,
     aspectosTop,
     aspectosCruzados,
+    sinHora,
     overlays,
     promptDataText,
   };
 }
 
-// Extrae planetas + ASC + MC de una carta como puntos con longitud
+// Extrae planetas + ASC + MC (+ Nodo Sur) de una carta como puntos con longitud
 function _extraerPuntos(carta) {
   const pts = carta.planetas.map(p => ({ nombre:p.nombre, longitud:p.longitud }));
   pts.push({ nombre:'I ASC', longitud:carta.asc });
   pts.push({ nombre:'X MC', longitud:carta.mc });
+  if (carta.southNode) pts.push({ nombre:'S Node', longitud: carta.southNode.longitud });
   return pts;
+}
+
+// Regla tradicional de la cúspide en overlays: un planeta a menos de 5° de la
+// cúspide de la casa SIGUIENTE se lee en esa casa siguiente, no en la actual.
+function _casaOverlay(lon, cusps) {
+  const casa = casaDelPlaneta(lon, cusps);
+  const cuspNext = ((cusps[casa % 12] % 360) + 360) % 360;
+  let d = ((cuspNext - lon) % 360 + 360) % 360;
+  if (d > 180) d = 360 - d;
+  return d <= 5 ? (casa % 12) + 1 : casa;
 }
 
 // Calcula overlays: para cada planeta personal de B, en qué casa de A cae
@@ -1362,7 +1478,7 @@ function _calcularOverlays(cartaA, cartaB) {
   // Planetas de B en casas de A
   for (const p of cartaB.planetas) {
     if (!CASAS_PRIORITARIAS.includes(p.nombre)) continue;
-    const casa = casaDelPlaneta(p.longitud, cuspsA);
+    const casa = _casaOverlay(p.longitud, cuspsA);
     const refuerzo = Math.round((IMPORTANCIA_PLANETA[p.nombre] || 3) * _fuerzaEnCasa(p.longitud, cuspsA, casa));
     overlays.push({
       planeta: p.nombre, origen:'B', casaEnA: casa,
@@ -1374,7 +1490,7 @@ function _calcularOverlays(cartaA, cartaB) {
   // Planetas de A en casas de B
   for (const p of cartaA.planetas) {
     if (!CASAS_PRIORITARIAS.includes(p.nombre)) continue;
-    const casa = casaDelPlaneta(p.longitud, cuspsB);
+    const casa = _casaOverlay(p.longitud, cuspsB);
     const refuerzo = Math.round((IMPORTANCIA_PLANETA[p.nombre] || 3) * _fuerzaEnCasa(p.longitud, cuspsB, casa));
     overlays.push({
       planeta: p.nombre, origen:'A', casaEnA: casa,
@@ -1524,20 +1640,34 @@ function _generarPromptData(radar, global, aspectosTop, casasDestacadas, factore
   s += `- Facilidades (áreas que fluyen): ${facilidades.length ? facilidades.join(', ') : 'ninguna destacada'}\n`;
   s += `- Con matices (bien con trabajo): ${matices.length ? matices.join(', ') : 'ninguna'}\n`;
   s += `- Desafíos / requieren trabajo: ${desafios.length ? desafios.join(', ') : 'ninguno destacado'}\n`;
-  s += `Nota: en Química y Transformación, la tensión (cuadratura/oposición) no resta: suma intensidad/atracción, solo añade "fricción".\n\n`;
-  s += `CARTA COMPUESTA (punto medio de cada par de planetas — la relación de ${nombreA} × ${nombreB}):\n`;
-  if (cartaCompuesta && cartaCompuesta.planetas) {
-    const claves = ['Sun','Moon','Venus','Mars','Mercury','Saturn','ASC','MC'];
-    for (const n of claves) {
-      if (n === 'ASC') { s += `- ASC compuesto: ${cartaCompuesta.asc.toFixed(2)}°\n`; continue; }
-      if (n === 'MC') { s += `- MC compuesto: ${cartaCompuesta.mc.toFixed(2)}°\n`; continue; }
-      const p = cartaCompuesta.planetas.find(x => x.nombre === n);
-      if (p) s += `- ${_pn(n)} compuesto: ${p.grados}°${String(p.minutos).padStart(2,'0')}' ${p.signo.nombre} (Casa ${p.casa})\n`;
+  s += `Nota: en Química y Transformación, la tensión (cuadratura/oposición) no resta: suma intensidad/atracción, solo añade "fricción".\n`;
+  if (cartaA.desconocida || cartaB.desconocida) {
+    s += `NOTA IMPORTANTE: al menos una persona no tiene hora de nacimiento exacta. NO interpretes casas, Ascendente ni Descendente: céntrate solo en aspectos entre planetas y en la carta compuesta planetaria.\n`;
+  }
+  // Aspectos más exactos (top por orbe): los contactos definitorios de la pareja.
+  if (aspectosTop && aspectosTop.length) {
+    s += `\nASPECTOS MÁS EXACTOS (top por orbe):\n`;
+    for (const a of aspectosTop.slice(0, 8)) {
+      s += `- ${a.planetaA} ${a.simbolo} ${a.planetaB} — ${a.tipoAspecto} (orbe ${a.orbe}, ${a.impacto})\n`;
     }
   }
-  s += `\nCASAS DESTACADAS (overlays):\n`;
-  for (const c of casasDestacadas) {
-    s += `- ${_pn(c.planeta)} de ${c.origen === 'B' ? nombreB : nombreA} cae en la CASA ${c.casaEn} de ${c.origen === 'B' ? nombreA : nombreB}. ${c.significado}.\n`;
+  s += `\n`;
+  s += `CARTA COMPUESTA (punto medio de cada par de planetas — la relación de ${nombreA} × ${nombreB}):\n`;
+  if (cartaCompuesta && cartaCompuesta.planetas) {
+    const fmtAng = (lon) => { const g = gradosASigno(lon); return `${g.grados}°${String(g.minutos).padStart(2,'0')}' ${g.signo.nombre}`; };
+    const claves = ['Sun','Moon','Venus','Mars','Mercury','Saturn','ASC','MC'];
+    for (const n of claves) {
+      if (n === 'ASC') { if (cartaCompuesta.asc != null) s += `- ASC compuesto: ${fmtAng(cartaCompuesta.asc)}\n`; continue; }
+      if (n === 'MC') { if (cartaCompuesta.mc != null) s += `- MC compuesto: ${fmtAng(cartaCompuesta.mc)}\n`; continue; }
+      const p = cartaCompuesta.planetas.find(x => x.nombre === n);
+      if (p) s += `- ${_pn(n)} compuesto: ${p.grados}°${String(p.minutos).padStart(2,'0')}' ${p.signo.nombre}${p.casa != null ? ` (Casa ${p.casa})` : ''}\n`;
+    }
+  }
+  if (casasDestacadas && casasDestacadas.length) {
+    s += `\nCASAS DESTACADAS (overlays):\n`;
+    for (const c of casasDestacadas) {
+      s += `- ${_pn(c.planeta)} de ${c.origen === 'B' ? nombreB : nombreA} cae en la CASA ${c.casaEn} de ${c.origen === 'B' ? nombreA : nombreB}. ${c.significado}.\n`;
+    }
   }
   return s;
 }

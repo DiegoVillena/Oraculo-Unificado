@@ -2,7 +2,7 @@
 // Mapeos de textos descriptivos para aspectos clave, planetas en casas, y dimensiones del radar.
 // Las claves son nombres canónicos en inglés (Sun, Moon, Conjunction, etc.) y se traducen al idioma activo.
 
-import { t, tAspecto } from '../i18n/i18n.js?v=69';
+import { t, tAspecto } from '../i18n/i18n.js?v=72';
 
 // Helper: nombre de planeta traducido
 function _pn(nombreEN) {
@@ -274,7 +274,12 @@ export function fraseDimensionRadar(dimKey, score) {
 
 // Frase por sector (8 factores) según su nivel cualitativo.
 // nivel ∈ facilidad | matiz | intenso | desafio (lo que produce el motor).
+// Primero intenta la traducción del locale (sinastria.factorFase_<k>_<nivel>);
+// si no existe, cae al diccionario español.
 export function fraseFactor(key, score, nivel) {
+  const clave = `sinastria.factorFase_${key}_${nivel}`;
+  const loc = t(clave);
+  if (loc && typeof loc === 'string' && loc !== clave) return _localizarPlanetas(loc);
   const d = DICC_FACTOR_NIVEL[key];
   const nv = d && (d[nivel] || d.matiz);
   if (nv) return _localizarPlanetas(nv);

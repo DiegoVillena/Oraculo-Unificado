@@ -2,7 +2,7 @@
 // Se muestra solo la primera vez que el usuario abre la app.
 // Persistencia: localStorage clave "oraculo_onboarding_visto".
 
-import { t } from '../i18n/i18n.js?v=69';
+import { t } from '../i18n/i18n.js?v=72';
 
 const ONBOARDING_KEY = 'oraculo_onboarding_visto_v2';
 

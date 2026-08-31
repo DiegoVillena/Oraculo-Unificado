@@ -75,3 +75,6 @@ CONTINUAR_*.txt
 prompt_sesion*.txt
 sesion*_estado_actual.png
 sinastrias_*.html
+
+# Volcados de cartas reales para auditorías (no versionar: repo público)
+test/_tmp-*.json

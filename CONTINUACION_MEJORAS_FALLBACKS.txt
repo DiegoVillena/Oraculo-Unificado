@@ -1,0 +1,129 @@
+================================================================================
+CONTINUACIÓN — Mejora de fallbacks locales (handoff de sesión)
+================================================================================
+Fecha: 2026-08-31
+Proyecto: C:\Users\Diego\Desktop\OraculoUnificado
+Rama: feat/mejora-fallbacks-locales (creada desde main en la sesión anterior)
+Guía anterior: PLAN_MEJORA_FALLBACKS.txt (plan original, por si necesitas detalle)
+
+--------------------------------------------------------------------------------
+QUÉ YA ESTÁ HECHO (no repetir — todo verificado)
+--------------------------------------------------------------------------------
+Las 4 fases del plan están codificadas, internacionalizadas (6 idiomas) y
+probadas con tests Node. Para ver lo hecho con exactitud, lee la sección
+"Estado actual" de AGENTS.md (entrada del 2026-08-31), que resume cada cambio
+con nombres de archivos y claves i18n.
+
+- FASE 1 (Carta Astral): reparación código↔JSON + enriquecimiento. OK.
+- FASE 2B (precisión sinastría): hora desconocida, pares clásicos, Quirón real,
+  disclaimers, compuesta, código muerto de UI eliminado. OK.
+- FASE 2 (fallback sinastría): reescrito, 100% i18n vía sinastria.fb_* y
+  factorFase_*; pautas siempre; casas de impacto; balance neto; aporta c/uno. OK.
+- FASE 3 (Tarot): cruce kw-pregunta, balance elemental, secuencias arquetípicas,
+  dignidades posicionales, posicional con arquetipo+kw, síntesis narrativa por
+  arcos, recomendación compuesta, kw de hexagrama. OK.
+- Build: cd android && ./gradlew assembleDebug  → BUILD SUCCESSFUL (APK debug
+  en android/app/build/outputs/apk/debug/app-debug.apk).
+- Bump ?v=70 uniforme (js/ + index.html raíz) y sync js/→www/→assets HECHO.
+- Verificación en emulador (modo avión): SOLO Tarot probado visualmente
+  end-to-end (badge local, arquetipos, keywords, síntesis). Carta Astral y
+  Sinastría: verificadas a nivel motor/test, NO aún en la app.
+
+Tests reusables (corren sin navegador, con stubs de DOM/fetch):
+  node test/smoke-astral.mjs     # es/en/de, sin ${...}, ≥2000 palabras
+  node test/smoke-sinastria.mjs  # 18 checks: factores, sinHora, prompt IA...
+  node test/smoke-tarot.mjs      # tiradas 1/3/cruz, es/en, determinismo
+OJO: importan módulos con '?v=70'; si se hace otro bump de ?v= hay que
+actualizarlo en los tests (si no, los módulos se cargan duplicados e i18n no
+comparte estado → falsos fallos).
+
+--------------------------------------------------------------------------------
+QUÉ FALTA (lo único pendiente antes de commit)
+--------------------------------------------------------------------------------
+1. Verificación visual del fallback de Carta Astral y Sinastría en la app
+   (APK debug ya compilado; el emulador OraculoTest puede estar cerrado —
+   reinícialo si hace falta; el AVD se cerró solo una vez en la sesión anterior,
+   si vuelve a pasar, reintenta el arranque).
+   Atajo MÁS BARATO: Diego lo prueba en su móvil con el APK. En ese caso esta
+   sesión solo tiene que: recoger su veredicto, arreglar lo que reporte, y
+   proponer el commit.
+2. Proponer commit (NUNCA sin confirmación de Diego).
+
+Cómo verificar en emulador sin subagente vision (su cuota de Ollama Cloud
+estaba agotada el 2026-08-28; reintenta, y si sigue agotada hazlo tú con
+capturas):
+  - Arranca OraculoTest, instala el APK debug.
+  - Corta la red:  adb -s emulator-5554 shell cmd connectivity airplane-mode enable
+  - Lanza la app (com.oraculounificado.app). Datos persisten de sesiones
+    anteriores (cartas "Diego", "Laura"... guardadas). Si aparece onboarding,
+    complétalo.
+  - CARTA ASTRAL: pestaña Carta Astral → "Ver cartas guardadas" → abre una →
+    botón de análisis IA → espera (falla rápido al no haber red, no espera 45s)
+    → debe verse badge "Análisis local (modo sin conexión a IA)" y 6 secciones
+    con texto real (Eje de tu Ser / Huella Energética / Escenarios / Motor de
+    Crecimiento con aspectos y etiquetas 🎁/🔥 / Brújula Kármica con Nodo por
+    casa y Quirón / Consejo). NUNCA "${...}" ni "undefined" ni títulos en
+    español si el idioma no es es.
+  - SINASTRÍA: pestaña 💞 → calcula con 2 cartas → resultado con radar/barras +
+    disclaimer del % → "🔮 Analizar sinastria" → fallback con estructura
+    === ANÁLISIS INTEGRAL === (🌟 💫 🔑), 🪐 compuesta completa, 🏠 casas de
+    impacto, ⚖️ balance, 💌 aporta, pautas. Si una carta es de hora
+    desconocida: debe verse el aviso ⚠️ y NO aparecer Compromiso ni casas.
+  - Logcat limpio: adb -s emulator-5554 logcat -d | grep -iE "Uncaught|TypeError|ReferenceError"
+  - Restaura red al final: cmd connectivity airplane-mode disable + svc wifi enable.
+
+--------------------------------------------------------------------------------
+GIT — OJO AL HACER COMMIT (concern cruzado)
+--------------------------------------------------------------------------------
+git status al inicio de la rama ya traía cambios NO de esta tarea (preparación
+Play Store del día anterior: footer v1.0 en locales, variables.gradle,
+capacitor.config.json, www/*...). Los archivos de locales comparten ambos
+trabajos, así que NO se pueden separar por archivo. Opciones:
+  a) Commit único que incluya todo (los cambios de Play Store prep ya están
+     probados según el historial/AGENTS.md).
+  b) Preguntar a Diego si prefiere dos commits (imposible separar limpio en
+     los JSON compartidos sin cirugía).
+Recomendación: (a), con mensaje que mencione ambas cosas. Pero SIEMPRE con la
+confirmación de Diego — él quiere probar antes.
+
+Archivos propios de esta tarea: js/ + www/ + assets/public/ (core, ui, i18n,
+index.html ×3, styles.css), AGENTS.md, test/, PLAN_MEJORA_FALLBACKS.txt y este
+CONTINUACION_MEJORAS_FALLBACKS.txt.
+Mensaje sugerido:
+  feat: elevar fallbacks locales al nivel de los análisis IA
+  (astrall/sinastría/tarot: reparación narrativa, Quirón real, precisión
+  profesional con hora desconocida, fallback sinastría i18n completo, tarot
+  con síntesis narrativa y numerología; incluye restos de preparación Play)
+
+--------------------------------------------------------------------------------
+PROMPT PARA LA SESIÓN LIGERA (glm-5.3-flash u otro)
+--------------------------------------------------------------------------------
+Copia y pega tal cual:
+
+---
+Estamos en C:\Users\Diego\Desktop\OraculoUnificado. Lee AGENTS.md del proyecto
+(sección "Estado actual", entrada 2026-08-31) y CONTINUACION_MEJORAS_FALLBACKS.txt
+de la raíz. La tarea anterior dejó TODO el código hecho y testeado en la rama
+feat/mejora-fallbacks-locales (no re-escribas nada sin leer antes el estado real).
+
+Tu misión es SOLO:
+1. git status para ver el estado. No crees ramas nuevas.
+2. Ejecuta los 3 tests de humo para confirmar que todo sigue en verde:
+   node test/smoke-astral.mjs / smoke-sinastria.mjs / smoke-tarot.mjs (si hay
+   otro bump de ?v=, actualiza los '?v=70' de los imports de estos tests).
+3. Verificación del fallback de Carta Astral y Sinastría en el emulador
+   OraculoTest SIN red (o confirma que Diego lo probará en su móvil). Sigue la
+   checklist del CONTINUACION. Si el subagente vision tiene cuota disponible,
+   úsalo para leer capturas; si no, el modelo principal puede leer las capturas
+   si su provider soporta imágenes (prueba con una captura; si el provider la
+   rechaza, verifica con logcat).
+4. Cuando Diego confirme que todo va bien (él prueba personalmente antes),
+   PROPÓN el commit con el mensaje del CONTINUACION (sección GIT) y espera su
+   confirmación explícita. NUNCA hagas git commit ni git push sin su permiso.
+
+NO rehagas trabajo ya hecho: si los 3 smokes pasan y la verificación emulador
+del astral y la sinastría es OK, la tarea está terminada.
+---
+================================================================================
+FIN
+================================================================================

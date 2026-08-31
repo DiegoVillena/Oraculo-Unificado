@@ -1,9 +1,9 @@
 // ui/astral.js — Formulario y renderizado de Carta Astral (reconstruido)
 import { calcularCartaAstral, getUltimaCarta, setUltimaCarta, getCiudad, setCiudad,
   generarTextoCarta, generarInterpretacion, generarRuedaSVG,
-  SIGNOS, CASAS_ROMANAS } from '../core/astrologia.js?v=69';
-import { buscarCiudadesSQL as buscarCiudades, obtenerOffsetTZ } from '../data/sqlite-db.js?v=69';
-import { t, tSigno, tAspecto } from '../i18n/i18n.js?v=69';
+  SIGNOS, CASAS_ROMANAS } from '../core/astrologia.js?v=72';
+import { buscarCiudadesSQL as buscarCiudades, obtenerOffsetTZ } from '../data/sqlite-db.js?v=72';
+import { t, tSigno, tAspecto } from '../i18n/i18n.js?v=72';
 
 let dropdownResultados = [];
 
@@ -350,7 +350,7 @@ export function render(d) {
   const btnCompartirTodoAstral = document.getElementById('btn-compartir-astral-todo');
   if (btnCompartirTodoAstral) btnCompartirTodoAstral.style.display = 'none';
   // Mostrar botón de análisis combinado si también hay tirada de Tarot
-  import('../ui/tarot.js?v=69').then(mod => {
+  import('../ui/tarot.js?v=72').then(mod => {
     const tirada = mod.getUltimaTirada();
     const btnCombinado = document.getElementById('btn-analisis-combinado');
     if (btnCombinado) btnCombinado.style.display = (tirada && d) ? 'block' : 'none';

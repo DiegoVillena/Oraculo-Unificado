@@ -1,19 +1,19 @@
 // main.js — Entry point Oráculo Unificado (reconstruido)
-import { initTabs, cambiarPestana } from './ui/tabs.js?v=69';
-import { initFormularioAstral, render as renderAstral } from './ui/astral.js?v=69';
-import { initFormularioSinastria, render as renderSinastria, getTextoCopia as getTextoCopiaSinastria, copiar as copiarSinastria, compartir as compartirSinastria, getUltimaSinastria, poblarSelects as poblarSelectsSinastria } from './ui/sinastria.js?v=69';
-import { realizarConsulta, mostrarAnalisis, copiarResultados, compartirResultados, getUltimaTirada, getTextoCopia, visualizarTiradaGuardada } from './ui/tarot.js?v=69';
-import { abrirModal, abrirModalIching, cerrarModal } from './ui/modal.js?v=69';
-import { inicializarGlosario, resetMapaTerminos } from './ui/glossary.js?v=69';
-import * as storage from './storage.js?v=69';
-import { getUltimaCarta, generarTextoCarta, gradosASigno } from './core/astrologia.js?v=69';
-import { analizarCartaAstral, extraerTextoAnalisisAstral } from './core/astrologia-analisis.js?v=69';
-import { analisisAstralIA, analisisCombinadoIA, analisisSinastriaIA, markdownAHtml, generarTextoCopiaAstral } from './core/ia-api.js?v=69';
-import { fraseAspecto, frasePlanetaEnCasa, fraseFactor } from './core/sinastria-dictionary.js?v=69';
-import { mostrarDonacionSiToca, abrirAcercaDe, actualizarFooterDonacion } from './ui/donacion.js?v=69';
-import { initDB } from './data/sqlite-db.js?v=69';
-import { initOnboarding } from './ui/onboarding.js?v=69';
-import { initI18n, t, cambiarIdioma, getIdioma, getIdiomasSoportados } from './i18n/i18n.js?v=69';
+import { initTabs, cambiarPestana } from './ui/tabs.js?v=72';
+import { initFormularioAstral, render as renderAstral } from './ui/astral.js?v=72';
+import { initFormularioSinastria, render as renderSinastria, getTextoCopia as getTextoCopiaSinastria, copiar as copiarSinastria, compartir as compartirSinastria, getUltimaSinastria, poblarSelects as poblarSelectsSinastria } from './ui/sinastria.js?v=72';
+import { realizarConsulta, mostrarAnalisis, copiarResultados, compartirResultados, getUltimaTirada, getTextoCopia, visualizarTiradaGuardada } from './ui/tarot.js?v=72';
+import { abrirModal, abrirModalIching, cerrarModal } from './ui/modal.js?v=72';
+import { inicializarGlosario, resetMapaTerminos } from './ui/glossary.js?v=72';
+import * as storage from './storage.js?v=72';
+import { getUltimaCarta, generarTextoCarta, gradosASigno, SIGNOS } from './core/astrologia.js?v=72';
+import { analizarCartaAstral, extraerTextoAnalisisAstral } from './core/astrologia-analisis.js?v=72';
+import { analisisAstralIA, analisisCombinadoIA, analisisSinastriaIA, markdownAHtml, generarTextoCopiaAstral } from './core/ia-api.js?v=72';
+import { fraseAspecto, frasePlanetaEnCasa, fraseFactor } from './core/sinastria-dictionary.js?v=72';
+import { mostrarDonacionSiToca, abrirAcercaDe, actualizarFooterDonacion } from './ui/donacion.js?v=72';
+import { initDB } from './data/sqlite-db.js?v=72';
+import { initOnboarding } from './ui/onboarding.js?v=72';
+import { initI18n, t, cambiarIdioma, getIdioma, getIdiomasSoportados, tSigno } from './i18n/i18n.js?v=72';
 
 window.__tarotUI = { abrirModal, abrirModalIching, realizarConsulta, mostrarAnalisis, copiarResultados, compartirResultados, cerrarModal };
 
@@ -329,13 +329,29 @@ function _datosPersonaIA(carta) {
 // orden del array gana (transformación/química que no aparezcan van al final).
 const PRIO_FORTALEZA = { emocional:0, quimica:1, espiritual:2, mental:3, valores:4, estabilidad:5, compromiso:6 };
 const PRIO_APRENDIZAJE = { valores:0, mental:1, emocional:2, estabilidad:3, espiritual:4, compromiso:5 };
-// Frase corta del % global, sin repetir el score ni la etiqueta.
+// Frase corta del % global, por tramo (i18n: sinastria.fbFraseGlobal*).
 function _fraseGlobalCorta(score) {
-  if (score >= 85) return 'Una resonancia excepcional: os sentís como un destino compartido, donde las energías se potencian mutuamente.';
-  if (score >= 70) return 'Cimientos sólidos y una conexión que, con consciencia, puede sostenerse y crecer en el tiempo.';
-  if (score >= 55) return 'Química y conexión reales, con áreas que pedirán trabajo. Es un vínculo que enseña tanto como une.';
-  if (score >= 40) return 'Una escuela: lo que construís aquí requiere esfuerzo y profundidad, pero deja una huella.';
-  return 'Caminos que se cruzan desde la diferencia, no desde la carencia.';
+  const bucket = score >= 85 ? '85' : score >= 70 ? '70' : score >= 55 ? '55' : score >= 40 ? '40' : '0';
+  return t('sinastria.fbFraseGlobal' + bucket) || '';
+}
+// "Qué aporta cada uno": para cada aspecto con contribución positiva, el aporte
+// se reparte entre A y B en proporción a la importancia de su planeta en el par
+// (p1 es de A, p2 es de B). Devuelve los hasta 3 sectores donde más suma cada uno.
+function _aportaCadaUno(r) {
+  const PESO = { Sun:1.0, Moon:0.95, 'I ASC':0.9, Mercury:0.9, Venus:0.9, Mars:0.85, 'X MC':0.85, Jupiter:0.7, Saturn:0.7, 'N Node':0.6, Chiron:0.55, Uranus:0.55, Neptune:0.5, Pluto:0.5, Lilith:0.5 };
+  const sumaA = {}, sumaB = {};
+  for (const [sector, arr] of Object.entries(r.factorAspectos || {})) {
+    for (const a of (arr || [])) {
+      const pos = Math.max(0, a.delta);
+      if (pos <= 0) continue;
+      const wA = PESO[a.p1] ?? 0.6, wB = PESO[a.p2] ?? 0.6;
+      sumaA[sector] = (sumaA[sector] || 0) + pos * (wA / (wA + wB));
+      sumaB[sector] = (sumaB[sector] || 0) + pos * (wB / (wA + wB));
+    }
+  }
+  const top = (s) => Object.entries(s).filter(([, v]) => v > 0)
+    .sort((x, y) => y[1] - x[1]).slice(0, 3).map(([k]) => _factorLabelLocal(k));
+  return { sectoresA: top(sumaA), sectoresB: top(sumaB) };
 }
 // Selecciona qué aspectos de un sector mostrar según su nivel cualitativo:
 // - Facilidad (≥70): hasta 3 priorizando puntuación positiva y menor orbe.
@@ -368,11 +384,19 @@ function _seleccionarAspectosLocal(key, factor, struct) {
   return [...pos.slice(0, 2), ...neg.slice(0, 1)].slice(0, 3);
 }
 // Formatea un aspecto estructurado: "· Planeta (Signo) de A ☌ Planeta (Signo) de B — Tipo (orbe X°XX', +/-Puntos)".
+// En español añade la interpretación del diccionario (fraseAspecto); en otros
+// idiomas queda la línea técnica (planetas/signos/tipo ya van traducidos) —
+// las ~45 interpretaciones largas del diccionario solo existen en español.
 function _formatAspectoLocal(a) {
   const n1 = a.s1 ? `${a.p1Label} (${a.s1}) de ${a.nA}` : `${a.p1Label} de ${a.nA}`;
   const n2 = a.s2 ? `${a.p2Label} (${a.s2}) de ${a.nB}` : `${a.p2Label} de ${a.nB}`;
   const sg = a.delta >= 0 ? '+' : '−';
-  return `- ${n1} ${a.simbolo} ${n2} — ${a.tipoLabel} (orbe ${_orbeLocal(a.orb)}, ${sg}${Math.abs(a.delta)})`;
+  let linea = `- ${n1} ${a.simbolo} ${n2} — ${a.tipoLabel} (orbe ${_orbeLocal(a.orb)}, ${sg}${Math.abs(a.delta)})`;
+  if (getIdioma() === 'es') {
+    const frase = fraseAspecto(a.p1, a.p2, a.tipo);
+    if (frase && !/activa una dinámica significativa/.test(frase)) linea += `\n  ${frase}`;
+  }
+  return linea;
 }
 // Bloque markdown de un área agrupada (varios sectores) para el fallback local.
 function _bloqueAreaLocal(r, keys, struct, titulo) {
@@ -429,55 +453,91 @@ async function mostrarAnalisisSinastria() {
     const label = r.compatibilidadLabel;
 
     // === ANÁLISIS INTEGRAL DE COMPATIBILIDAD === (fallback local alineado con el prompt IA)
-    // Se genera como texto plano markdown y se convierte con markdownAHtml, igual que
-    // la respuesta de la IA, para que estructura, maquetación y copiado coincidan.
+    // Texto plano markdown → markdownAHtml, igual que la respuesta de la IA.
+    // Toda la estructura está internacionalizada (sinastria.fb_*); las frases
+    // por sector vienen de sinastria.factorFase_* (fraseFactor) y los consejos
+    // de sinastria.consejo_*. Solo las interpretaciones largas por aspecto y por
+    // casa (diccionario) son español puras: se añaden únicamente en locale 'es'.
     const struct = r.factorAspectos || {};
     const L = [];
-    L.push('=== ANÁLISIS INTEGRAL DE COMPATIBILIDAD ===');
+    const es = getIdioma() === 'es';
+    const signoLbl = (so) => { const i = SIGNOS.indexOf(so); const sT = i >= 0 ? tSigno(i) : null; return (sT && sT.nombre) || (so && so.nombre) || ''; };
+    const casaStr = (p) => (p && p.casa != null) ? ' (' + t('sinastria.fbCasaN', { n: p.casa }) + ')' : '';
+
+    L.push(t('sinastria.fbTitulo'));
     L.push('');
     // 🌟 1. LA ALQUIMIA Y LA IDENTIDAD DE LA PAREJA
-    L.push('### 🌟 1. La Alquimia y la Identidad de la Pareja');
+    L.push(t('sinastria.fbS1'));
     L.push('');
-    L.push(`**${r.globalScore}% — ${label}.** ${_fraseGlobalCorta(r.globalScore)}`);
+    L.push(t('sinastria.fbGlobalScore', { score: r.globalScore, label, frase: _fraseGlobalCorta(r.globalScore) }));
+    // Carta compuesta completa (Sol/Luna/Venus/Marte; sin casas si falta hora)
     if (r.cartaCompuesta && r.cartaCompuesta.planetas) {
       const cc = r.cartaCompuesta;
-      const pSol = cc.planetas.find(x => x.nombre === 'Sun');
-      const pLuna = cc.planetas.find(x => x.nombre === 'Moon');
-      let fraseCC = '🪐 Como equipo, vuestra carta compuesta dibuja una energía propia:';
-      if (pSol) fraseCC += ` el Sol de la pareja en ${pSol.signo.nombre} (Casa ${pSol.casa}) marca el rumbo y el propósito conjunto`;
-      if (pLuna) fraseCC += `, y la Luna en ${pLuna.signo.nombre} (Casa ${pLuna.casa}) sostiene el clima emocional del vínculo`;
-      fraseCC += '.';
-      L.push(fraseCC);
+      const cp = (n) => cc.planetas.find(x => x.nombre === n);
+      const pS = cp('Sun'), pL = cp('Moon'), pV = cp('Venus'), pM = cp('Mars');
+      if (pS && pL && pV && pM) {
+        L.push(t('sinastria.fbCompuesta', {
+          solSigno: signoLbl(pS.signo), solCasa: casaStr(pS),
+          lunaSigno: signoLbl(pL.signo), lunaCasa: casaStr(pL),
+          venusSigno: signoLbl(pV.signo), venusCasa: casaStr(pV),
+          marteSigno: signoLbl(pM.signo), marteCasa: casaStr(pM),
+        }));
+      }
+      if (cc.asc != null) {
+        const g = gradosASigno(cc.asc);
+        L.push(t('sinastria.fbCompuestaAsc', { signo: signoLbl(g.signo) }));
+      }
     }
     L.push('');
     L.push('---');
     L.push('');
     // 💫 2. RADIOGRAFÍA COMPLETA POR ÁREAS
-    L.push('### 💫 2. Radiografía Completa por Áreas');
+    L.push(t('sinastria.fbS2'));
     L.push('');
-    L.push(..._bloqueAreaLocal(r, ['emocional', 'valores'], struct, '💗 Conexión Emocional y Afectiva'));
+    L.push(..._bloqueAreaLocal(r, ['emocional', 'valores'], struct, t('sinastria.fbAreaEmocional')));
     L.push('');
-    L.push(..._bloqueAreaLocal(r, ['mental', 'estabilidad', 'compromiso'], struct, '🗨️ Comunicación y Convivencia'));
+    L.push(..._bloqueAreaLocal(r, ['mental', 'estabilidad', 'compromiso'], struct, t('sinastria.fbAreaComunicacion')));
     L.push('');
-    L.push(..._bloqueAreaLocal(r, ['quimica', 'transformacion'], struct, '🔥 Pasión y Magnetismo'));
+    L.push(..._bloqueAreaLocal(r, ['quimica', 'transformacion'], struct, t('sinastria.fbAreaPasion')));
     L.push('');
-    L.push(..._bloqueAreaLocal(r, ['espiritual'], struct, '✨ Propósito Compartido'));
+    L.push(..._bloqueAreaLocal(r, ['espiritual'], struct, t('sinastria.fbAreaProposito')));
+    L.push('');
+    // 🏠 Casas de impacto (overlays top; solo con hora fiable)
+    if (!r.sinHora && r.casasDestacadas && r.casasDestacadas.length) {
+      L.push(`**${t('sinastria.fbCasasTitulo')}**`);
+      for (const c of r.casasDestacadas.slice(0, 4)) {
+        const quien = c.origen === 'A' ? nombreA : nombreB;
+        const deQuien = c.origen === 'A' ? nombreB : nombreA;
+        const frase = es ? (' — ' + frasePlanetaEnCasa(c.planeta, c.casaEn)) : '';
+        L.push(t('sinastria.fbCasaLinea', { planeta: _pnLocal(c.planeta), quien, casa: t('sinastria.fbCasaN', { n: c.casaEn }), deQuien, significado: c.significado, frase }));
+      }
+      L.push('');
+    }
+    // ⚖️ Balance neto de aspectos (estilo CafeAstrology)
+    if (r.netoAspectos) {
+      const n = r.netoAspectos;
+      L.push(t('sinastria.fbNeto', { arm: n.armonico, ten: n.tension, neto: n.net > 0 ? '+' + n.net : String(n.net) }));
+    }
     L.push('');
     L.push('---');
     L.push('');
     // 🔑 3. LA LLAVE DEL VÍNCULO
-    L.push('### 🔑 3. La Llave del Vínculo');
+    L.push(t('sinastria.fbS3'));
     L.push('');
     const fuerte = _factorTop(r, 'fuerte');
     const debil = _factorTop(r, 'debil');
-    if (fuerte) L.push(`El mayor regalo que os dais es vuestra fortaleza en **${_factorLabelLocal(fuerte.key)}** (${fuerte.score}/100).`);
-    if (debil) L.push(`🌱 El aprendizaje que más os hará crecer como pareja está en **${_factorLabelLocal(debil.key)}** (${debil.score}/100).`);
+    if (fuerte) L.push(t('sinastria.fbRegalo', { factor: _factorLabelLocal(fuerte.key), score: fuerte.score }));
+    if (debil) L.push(t('sinastria.fbAprendizaje', { factor: _factorLabelLocal(debil.key), score: debil.score }));
+    // Qué aporta cada uno (sectores con más contribución positiva por persona)
+    const { sectoresA, sectoresB } = _aportaCadaUno(r);
+    if (sectoresA.length) L.push(t('sinastria.fbAportaLinea', { nombre: nombreA, sectores: sectoresA.join(', ') }));
+    if (sectoresB.length) L.push(t('sinastria.fbAportaLinea', { nombre: nombreB, sectores: sectoresB.join(', ') }));
+    // Pautas siempre: los 2 sectores en rojo si los hay; si no, los 2 más bajos a cultivar.
     const rojos = r.factores.filter(f => f.nivel === 'desafio').sort((a, b) => a.score - b.score);
-    if (rojos.length) {
-      L.push('');
-      L.push('Pautas para el día a día:');
-      for (const rf of rojos.slice(0, 2)) L.push(`- **${_factorLabelLocal(rf.key)}:** ${_consejoFactorLocal(rf.key)}`);
-    }
+    const objetivos = rojos.length ? rojos : r.factores.slice().sort((a, b) => a.score - b.score);
+    L.push('');
+    L.push(rojos.length ? t('sinastria.fbPautas') : t('sinastria.fbPautasCultivo'));
+    for (const rf of objetivos.slice(0, 2)) L.push(`- **${_factorLabelLocal(rf.key)}:** ${_consejoFactorLocal(rf.key)}`);
     const local = '<div class="ia-analisis">' + markdownAHtml(L.join('\n')) + '</div>';
 
     _ultimoAnalisisSinastria = local;
@@ -491,6 +551,11 @@ async function mostrarAnalisisSinastria() {
       : (t('ia.origenLocalAstral') || 'Análisis local (sin conexión a IA — comprueba tu red)');
     cont.innerHTML = '<div class="analisis-origen local-origen">' + origenMsg + '</div>' + local;
     _appendCopiarAnalisisBtn(cont);
+  }
+  // Aviso simbólico (equivalente al de tarot/astral, que la sinastría no tenía)
+  const avisoSin = t('sinastria.avisoSimbolico');
+  if (typeof avisoSin === 'string' && !avisoSin.startsWith('sinastria.')) {
+    cont.innerHTML += '<p class="aviso-final">' + avisoSin + '</p>';
   }
   setTimeout(() => cont.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
 }
@@ -732,7 +797,7 @@ async function init() {
   const mc = document.querySelector('.modal-close');
   if (mc) mc.addEventListener('click', () => cerrarModal());
   document.addEventListener('gesturestart', (e) => e.preventDefault());
-  console.log('✦ Oráculo Unificado v4.0 iniciado ✦');
+  console.log('✦ Oráculo Unificado v1.0 iniciado ✦');
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => init().catch(e => console.error(e)));

@@ -8,7 +8,7 @@
 //   obtenerOffsetTZ(...)  — calcula offset UTC con DST histórico (Intl)
 //   normalizarTexto(s)    — normaliza acentos para búsqueda
 
-import { tPais } from '../i18n/i18n.js?v=69';
+import { tPais } from '../i18n/i18n.js?v=72';
 
 // === ESTADO ===
 let _db = null;

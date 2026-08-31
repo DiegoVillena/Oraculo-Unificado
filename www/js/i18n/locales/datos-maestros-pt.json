@@ -2594,7 +2594,8 @@
       "Sextile": "Sextil",
       "Square": "Quadratura",
       "Trine": "Trígono",
-      "Opposition": "Oposição"
+      "Opposition": "Oposição",
+      "Quincunx": "Quincúncio"
     }
   },
   "analisisAstral": {
@@ -2793,6 +2794,17 @@
       "s6_equil": "Seu mapa equilibra impulso e contenção: escolha conscientemente desde essa base sólida. ",
       "s6_stellium": "A concentração na área de ${areaStellium} é sua bússola e sua carga: aí está seu maior potencial. ",
       "s6_cierre": "O mapa é um mapa, não uma condenação —o que parece tensão é matéria-prima para seu crescimento, e a única magia verdadeira é escolher, com plena consciência, quem você quer ser.",
+      "s2b_stelliumSigno": "Quase todos os caminhos do seu mapa convergem para <strong>${signo}</strong>: ${planetasLista}. Toda essa energia se tinge de ${sqSigno}, tornando este signo o sotaque dominante da sua personalidade.",
+      "s2b_tsquare": "O seu mapa desenha um <strong>T-quadrado</strong> entre ${p1} e ${p2}, com ${p3} no vértice: um triângulo de tensão que o sacode para não adormecer e que, bem vivido, se torna o seu maior motor de realização.",
+      "s2b_granTrigono": "Há também um <strong>grande trígono de ${elemento}</strong> formado por ${planetasLista}: um círculo de graça onde a sua energia flui sem obstáculos; o seu desafio é não adormecer no conforto e colocar esse dom ao serviço de algo concreto.",
+      "s4_don": "🎁 <strong>Dom natural:</strong>",
+      "s4_motor": "🔥 <strong>Motor de crescimento:</strong>",
+      "s4_desc_asc": "a forma como você se mostra ao mundo",
+      "s4_desc_mc": "as suas metas e a sua imagem pública",
+      "s5_nodoNCasa": "E esse caminho evolutivo joga-se sobretudo no terreno de ${area}, a zona da sua vida onde lhe é pedido crescer, mesmo que no início incomode.",
+      "s5_quiron": "A sua ferida e o seu dom de cura vivem em <strong>Quíron em ${signo}</strong>: ${sqSigno}. O que um dia doeu em ${area} é exatamente onde você pode ajudar a curar os outros.",
+      "s6_weak": "Cultive conscientemente o elemento ${weakEl} (${etWeak}): é a sua tarefa energética pendente.",
+      "s6_tenso": "E lembre-se de que a fricção entre ${p1} e ${p2} não é sua inimiga: é o fio que o faz crescer.",
       "avisoFinal": "Esta análise é uma interpretação simbólica do seu mapa natal. Tome-a como espelho para a reflexão e o autoconhecimento, não como previsão determinista."
     }
   },
@@ -3178,6 +3190,10 @@
       "O Resultado Final, para onde se dirige a energia."
     ],
     "visionGeneral": {
+      "cruceKw": "Estas cartas falam diretamente da sua pergunta: ${cartas}.",
+      "elDominante": "O elemento ${el} domina a tiragem (${c} de ${total} cartas): ${texto}.",
+      "elCarencia": "A ausência de ${el} (${texto}) mostra o que a situação pede para cultivar conscientemente.",
+      "elTexto": {"fuego":{"label":"Fogo","texto":"ação, impulso e iniciativa"},"aire":{"label":"Ar","texto":"mente, palavra e ideias"},"agua":{"label":"Água","texto":"emoção, intuição e vínculos"},"tierra":{"label":"Terra","texto":"o concreto, o corpo e o material"}},
       "preguntaLabel": "Pergunta/intenção:",
       "sinPregunta": "(Nenhuma pergunta foi especificada — leitura geral do momento)",
       "contextoDestacado": "Sua pergunta/intenção versa sobre",
@@ -3210,12 +3226,18 @@
       "noResuena": "O naipe dominante (${paloDom}) não é o esperado para ${catDom}. A resposta vem por outro ângulo."
     },
     "iching": {
+      "temas": " Temas do hexagrama: ${kw}.",
       "principal": "O hexagrama principal é ${hexName} (nº ${numP}), formado por ${trigInf} e ${trigSup}. ${sig} O conselho é: <span class=\"destacado\">${consejo}</span>",
       "mutantes": "As linhas mutantes (${mutantes}) indicam evolução rumo a ${hexFName} (nº ${numF}). ${hexFSig}",
       "sinMutantes": "Sem linhas mutantes, a situação se apresenta estável.",
       "errorHex": "Não foi possível carregar o hexagrama."
     },
     "dinamicas": {
+      "sotas": "Várias Pajens: mensagens e aprendizagens em marcha; a curiosidade está ativa.",
+      "caballeros": "Vários Cavaleiros: movimento e ação; as coisas avançam rápido.",
+      "secuencia": "Sequência arquetípica: ${a} → ${b} — ${frase}",
+      "numeroSig": {"2":"dualidade, cooperação e equilíbrio","3":"expansão, criatividade e expressão","4":"estrutura, ordem e fundações","5":"mudança, crise e aprendizado pela tensão","6":"harmonia, responsabilidade e cuidado","7":"introspecção, busca e saber interior","8":"poder, manifestação e gestão","9":"fecho, culminação e entrega","10":"completude que reinicia o ciclo"},
+      "secuencias": {"La Torre>La Estrella":"depois da ruína, a esperança se reconstrói","La Torre>El Sol":"a queda do velho abre caminho à clareza","La Muerte>La Estrella":"o final precede uma renovação serena","El Diablo>La Templanza":"da prisão ao equilíbrio que sara","El Diablo>La Estrella":"reconhecer a prisão é o primeiro passo para a libertação","El Colgado>La Muerte":"o que você soltou culmina em transformação real","La Luna>El Sol":"da confusão desemboca-se em plena clareza","La Luna>El Juicio":"o difuso amadurece até um chamado claro","El Ermitaño>La Rueda de la Fortuna":"o recolhimento prepara um giro do destino","10 de Espadas>As de Copas":"após tocar o fundo, nasce um sentimento novo"},
       "ases": "Presença de ${ases} Ases: várias sementes de novos começos.",
       "corte": "Há ${figTotal} cartas de corte: outras pessoas desempenham um papel relevante.",
       "reyes": "Vários Reis: autoridades masculinas influenciam.",
@@ -3224,11 +3246,15 @@
       "invertidas": "Alto percentual de invertidas (${pctInvertidas}%): bloqueios internos."
     },
     "dignidades": {
+      "parPosAmigable": "No eixo ${pos1} ↔ ${pos2} há apoio elemental (${a} + ${b}): ${c1} e ${c2} se reforçam mutuamente.",
+      "parPosTenso": "No eixo ${pos1} ↔ ${pos2} há atrito elemental (${a} vs ${b}): ${c1} e ${c2} pedem integração.",
+      "nuanceInv": " Com a inversão presente, essa nuance vive-se primeiro por dentro.",
       "amigable": "${c1} e ${c2} estão em dignidade amigável (${a} + ${b}).",
       "tension": "${c1} e ${c2} estão em tensão (${a} vs ${b}).",
       "neutro": "Não se observam dinâmicas elementais significativas entre cartas adjacentes."
     },
     "posicional": {
+      "kwLabel": "Palavras-chave:",
       "una": "${nombre} ${orientacion}: ${sig} Palavras-chave: ${kw}.",
       "tresPasado": "O passado deixou esta energia como herança.",
       "tresPresente": "No presente, esta carta descreve a energia atual.",
@@ -3237,6 +3263,12 @@
       "cruzCard": "${nombre} ${orientacion}. ${plantilla} ${sig}"
     },
     "narrativa": {
+      "arcoTres": "O fio conecta três tempos: ${c0} deixa como herança que \"${s0}\"; no agora, ${c1} declara que \"${s1}\"; e a tendência que se abre é ${c2}: \"${s2}\".",
+      "cruzNucleo": "Seu coração agora é ${c1} —\"${s1}\"— e a força que se cruza é ${c2} —\"${s2}\"—: aí se disputa a questão central.",
+      "cruzRaiz": "Você vem de ${c4} —\"${s4}\"—, e o que já se aproxima é ${c6} —\"${s6}\"—.",
+      "cruzMeta": "Sua meta consciente aponta para ${c5} —\"${s5}\"—, enquanto a direção de fundo desemboca em ${c10} —\"${s10}\"—.",
+      "cruzMetaInv": " A inversão de ${c10} sugere que esse desfecho pede primeiro um ajuste interior.",
+      "unaArquetipo": "Seu arquétipo, ${arq}, condensa a energia do momento.",
       "cruz": "Do passado (${c4}), o presente é marcado por ${c1}, com desafio ${c2}. O futuro aponta para ${c6}, e o resultado para ${c10}.",
       "tres": "O arco temporal vai de ${c0} (passado) a ${c1} (presente), rumo a ${c2} (futuro).",
       "una": "A carta única condensa passado, presente e futuro numa só energia."
@@ -3263,6 +3295,10 @@
       "convergencia": "A carta resultado (${carta}) e o hexagrama (${hex}) se complementam. "
     },
     "recomendacion": {
+      "matizAlta": " Com tantas invertidas (${pct}%), primeiro você integra por dentro, depois age fora.",
+      "matizMedia": " As invertidas presentes avisam que alguma energia ainda está se acomodando.",
+      "accion": " A energia que o dia lhe pede: ${kw1} e ${kw2}.",
+      "consejoHex": " O hexagrama futuro acrescenta: ${consejo}.",
       "r1": "Diante de tantas invertidas e hexagrama de dificuldade, não force. Escute e nomeie o que sente. A ação se tornará evidente quando as energias cederem.",
       "r2": "A água domina. Aja desde o sentir, não desde o cálculo. As emoções são informação valiosa agora.",
       "r3": "A terra pede concreção. Traduza intuições em passos práticos. A abundância se materializa quando se estrutura.",
@@ -3324,7 +3360,8 @@
       "Sextile": "Fluxo harmônico mas sutil: oportunidades que pedem sua ação.",
       "Square": "Tensão criativa: conflito que te empurra a crescer e resolver.",
       "Trine": "Harmonia natural: fluidez e talentos que vêm sem esforço.",
-      "Opposition": "Polaridade: tensão entre opostos que pede integração e equilíbrio."
+      "Opposition": "Polaridade: tensão entre opostos que pede integração e equilíbrio.",
+        "Quincunx": "Ajuste incômodo (150°): energias que se roçam e pedem adaptação constante."
     },
     "conceptos": {
       "stellium": "Concentração de 3 ou mais planetas na mesma casa ou signo: um foco intenso de energia nessa área da sua vida.",

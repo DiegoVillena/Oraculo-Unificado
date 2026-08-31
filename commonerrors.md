@@ -8,6 +8,17 @@ Formato: bullet conciso. Categorizar. Sin prosa larga.
 
 ---
 
+## adb no está en el PATH de Git Bash
+
+- **Síntoma**: `adb devices` → `command not found` en Git Bash (aunque Android Studio/adb existan).
+- **Solución**: usar la ruta absoluta `"/c/Users/Diego/AppData/Local/Android/Sdk/platform-tools/adb.exe"` (o exportar PATH al inicio del script).
+
+## `cdp-eval.mjs` imprime strings sin entrecomillar
+
+- **Síntoma**: al volcar datos del WebView con un probe que retorna `JSON.stringify(...)`, un segundo `JSON.parse` en Node falla con `"[object Object]" is not valid JSON`.
+- **Causa**: `cdp-eval.mjs` imprime el string tal cual (`typeof out === 'string' ? out : ...`), así que el archivo ya es el JSON final, no doblemente codificado.
+- **Solución**: parsear UNA sola vez. Patrón: `node test/cdp-eval.mjs test/probe-dump-cartas.js > test/_tmp-all-cartas.json` y luego `JSON.parse(readFileSync(...))` directamente.
+
 ## Cacheo de módulos ES (version tags `?v=N`)
 
 - **Síntoma**: Cambios en JS no se reflejan en la app. La UI muestra claves i18n literales ("tarot.seccionTarot"), o funciones nuevas no existen.
@@ -132,3 +143,15 @@ Formato: bullet conciso. Categorizar. Sin prosa larga.
 - **Síntoma**: Tras editar un `.js` (p. ej. reemplazar una función grande), `node --check js/foo.js` pasa OK pero el WebView lanza `SyntaxError: Unexpected token '}'` en logcat al cargar la app.
 - **Causa**: `node --check` puede no validar del todo la sintaxis de ES modules (`.js` con `import/export`); una `}` sobrante a nivel de módulo puede pasar desapercibida (se parsea de forma distinta que en el motor del WebView).
 - **Solución**: Al reemplazar bloques grandes de código, revisar el balance de llaves (p. ej. `grep -n '^}'` o contar `{}`). Y SIEMPRE comprobar logcat del WebView tras instalar: un `Uncaught SyntaxError: Unexpected token` en `sinastria.js?v=N` es síntoma de esto. Bumpear version tag y reinstalar para verificar la corrección.
+
+## `adb install -r` puede fallar de forma silenciosa
+
+- **Síntoma**: Una segunda `adb install -r app-debug.apk` en la misma sesión no se aplica (la app sigue siendo la vieja) — sobre todo si el output se filtra con `tail`, que oculta el `Success`. Se nota porque el WebView sigue sirviendo el contenido antiguo.
+- **Causa**: La instalación falló (app en ejecución, o estado del emulador tras un reinicio) y el mensaje no se vio.
+- **Solución**: Tras cada `install -r`, verificar SIEMPRE el tamaño del instalado: `adb shell pm path com.oraculounificado.app` + `adb shell stat -c %s <ruta>` contra el tamaño del APK local. Y si falla: `am force-stop` antes de reinstalar. Si el emulador muere a mitad de sesión (ya pasó 2 veces con OraculoTest), relanzarlo: el modo avión persiste, el APK instalado no.
+
+## Verificar contenido del WebView sin visión: CDP
+
+- **Síntoma**: hay que verificar texto/render de la app en emulador y la visión no está disponible (cuota agotada) o el modelo principal no acepta imágenes.
+- **Causa**: las pruebas UI con UI Automator no sirven en apps WebView (`bounds 0,0`).
+- **Solución**: el WebView tiene debugging activado (`MainActivity.java`: `setWebContentsDebuggingEnabled(true)`). Toolkit en `test/cdp-eval.mjs` (Node ≥22, WebSocket nativo) + `test/probe-*.js`: `adb forward tcp:9222 localabstract:webview_devtools_remote_<PID>` y evaluar JS en la página (leer DOM como texto, llamar `window.__app`). Verificación determinista, sin capturas.

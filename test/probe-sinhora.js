@@ -2,8 +2,8 @@
 // Usa el motor y render() reales in-page (no toca localStorage de las cartas de Diego)
 (async () => {
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-  const astro = await import('/js/core/astrologia.js?v=72');
-  const S = await import('/js/ui/sinastria.js?v=72');
+  const astro = await import('/js/core/astrologia.js?v=74');
+  const S = await import('/js/ui/sinastria.js?v=74');
 
   const cartas = JSON.parse(localStorage.getItem('cartas_astrales_guardadas') || '[]');
   const diego = cartas[12].datos; // carta real con hora conocida (21:35)

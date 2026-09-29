@@ -1,8 +1,8 @@
 // ui/sinastria.js — Sinastria: compatibilidad entre 2 cartas astrales
-import { calcularSinastria, generarRuedaSinastriaSVG, SIGNOS, PLANETAS_UI, gradosASigno } from '../core/astrologia.js?v=72';
-import { mostrarAnimacionConstelaciones, ocultarAnimacionConstelaciones } from './astral.js?v=72';
-import { t, tAspecto } from '../i18n/i18n.js?v=72';
-import * as storage from '../storage.js?v=72';
+import { calcularSinastria, generarRuedaSinastriaSVG, SIGNOS, PLANETAS_UI, gradosASigno } from '../core/astrologia.js?v=74';
+import { mostrarAnimacionConstelaciones, ocultarAnimacionConstelaciones } from './astral.js?v=74';
+import { t, tAspecto } from '../i18n/i18n.js?v=74';
+import * as storage from '../storage.js?v=74';
 
 // Última sinastria calculada (en memoria para análisis/copiar/compartir)
 let ultimaSinastria = null;

@@ -31,10 +31,10 @@ globalThis.fetch = async (url) => {
   return { ok: true, json: async () => JSON.parse(readFileSync(fp, 'utf8')) };
 };
 
-const { initI18n, cambiarIdioma } = await import('../js/i18n/i18n.js?v=72');
+const { initI18n, cambiarIdioma } = await import('../js/i18n/i18n.js?v=74');
 await initI18n();
 
-const { calcularSinastria, calcularCartaCompuesta, SIGNOS } = await import('../js/core/astrologia.js?v=72');
+const { calcularSinastria, calcularCartaCompuesta, SIGNOS } = await import('../js/core/astrologia.js?v=74');
 
 // Cartas sintéticas: posiciones por longitud absoluta
 function P(nombre, lon, retro = false) {
@@ -90,7 +90,7 @@ check(r1.aspectosCruzados.some(a => (a.p1 === 'Mars' && a.p2 === 'Saturn') || (a
 check(r1.factorAspectos.emocional.some(a => a.p1 === 'Chiron' || a.p2 === 'Chiron'), 'Quirón alimenta sectores (emocional)');
 
 // Quincuncio glosario: tAspecto('Quincunx') traducido (lee datos-maestros)
-const { tAspecto } = await import('../js/i18n/i18n.js?v=72');
+const { tAspecto } = await import('../js/i18n/i18n.js?v=74');
 check(tAspecto('Quincunx') === 'Quincuncio', 'tAspecto Quincunx traducido (es)');
 
 // Hora desconocida
@@ -108,7 +108,7 @@ check(r1.promptDataText.match(/ASC compuesto: \d+°\d+' [A-ZÁÉÍ]/), 'compuest
 console.log(`  sinHora global r3=${r3.globalScore}`);
 
 // i18n del fallback: fraseFactor traducido
-const { fraseFactor } = await import('../js/core/sinastria-dictionary.js?v=72');
+const { fraseFactor } = await import('../js/core/sinastria-dictionary.js?v=74');
 await cambiarIdioma('en');
 const fEn = fraseFactor('quimica', 80, 'facilidad');
 check(/Attraction and passion/.test(fEn), 'fraseFactor traducido a inglés');

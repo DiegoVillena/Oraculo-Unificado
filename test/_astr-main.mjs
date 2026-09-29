@@ -213,7 +213,7 @@ function calcularStats(planetas) {
 // ============================================================
 // TEXTO — Formato CafeAstrology
 // ============================================================
-import { t, tSigno, tAspecto, tPais } from '../js/i18n/i18n.js?v=72';
+import { t, tSigno, tAspecto, tPais } from '../js/i18n/i18n.js?v=74';
 
 // Helper: nombre del signo traducido
 function _sn(signoObj) {

@@ -1,9 +1,9 @@
 // ui/astral.js — Formulario y renderizado de Carta Astral (reconstruido)
 import { calcularCartaAstral, getUltimaCarta, setUltimaCarta, getCiudad, setCiudad,
   generarTextoCarta, generarInterpretacion, generarRuedaSVG,
-  SIGNOS, CASAS_ROMANAS } from '../core/astrologia.js?v=72';
-import { buscarCiudadesSQL as buscarCiudades, obtenerOffsetTZ } from '../data/sqlite-db.js?v=72';
-import { t, tSigno, tAspecto } from '../i18n/i18n.js?v=72';
+  SIGNOS, CASAS_ROMANAS } from '../core/astrologia.js?v=74';
+import { buscarCiudadesSQL as buscarCiudades, obtenerOffsetTZ } from '../data/sqlite-db.js?v=74';
+import { t, tSigno, tAspecto } from '../i18n/i18n.js?v=74';
 
 let dropdownResultados = [];
 
@@ -350,7 +350,7 @@ export function render(d) {
   const btnCompartirTodoAstral = document.getElementById('btn-compartir-astral-todo');
   if (btnCompartirTodoAstral) btnCompartirTodoAstral.style.display = 'none';
   // Mostrar botón de análisis combinado si también hay tirada de Tarot
-  import('../ui/tarot.js?v=72').then(mod => {
+  import('../ui/tarot.js?v=74').then(mod => {
     const tirada = mod.getUltimaTirada();
     const btnCombinado = document.getElementById('btn-analisis-combinado');
     if (btnCombinado) btnCombinado.style.display = (tirada && d) ? 'block' : 'none';
@@ -373,10 +373,16 @@ function _nombreSigno(signoObj) {
   }
   return signoObj.nombre;
 }
-// Índice del signo en SIGNOS (0-11), para data-term="signo:N"
+// Índice del signo en SIGNOS (0-11), para data-term="signo:N".
+// Por NOMBRE canónico y no por identidad de objeto: tras un cálculo o un
+// guardar/cargar (JSON) los objetos signo son copias nuevas, y
+// SIGNOS.indexOf() devolvía -1 → caía al 0 (Aries) para todos.
 function _idxSigno(signoObj) {
+  if (!signoObj) return 0;
   const idx = SIGNOS.indexOf(signoObj);
-  return idx >= 0 ? idx : 0;
+  if (idx >= 0) return idx;
+  const porNombre = SIGNOS.findIndex((s) => s.nombre === (signoObj.nombre || ''));
+  return porNombre >= 0 ? porNombre : 0;
 }
 // Span seleccionable para un término del glosario
 function _termSpan(tipo, clave, texto) {

@@ -8,7 +8,7 @@
 //
 // Uso (desde la raíz del repo):  node test/audit-sinastria.mjs
 // Datos: test/_tmp-fran-data.json (dump real del localStorage: fran=c[10], diego=c[12]).
-// Motores: rama = ../js/core/astrologia.js?v=72 ; main = ./_astr-main.mjs
+// Motores: rama = ../js/core/astrologia.js?v=74 ; main = ./_astr-main.mjs
 //   (snapshot `git show main:js/core/astrologia.js` con el import de i18n repuntado).
 
 import { readFileSync } from 'fs';
@@ -43,10 +43,10 @@ globalThis.fetch = async (url) => {
   return { ok: true, json: async () => JSON.parse(readFileSync(fp, 'utf8')) };
 };
 
-const { initI18n } = await import('../js/i18n/i18n.js?v=72');
+const { initI18n } = await import('../js/i18n/i18n.js?v=74');
 await initI18n();
 
-const rama = await import('../js/core/astrologia.js?v=72');
+const rama = await import('../js/core/astrologia.js?v=74');
 const main = await import('./_astr-main.mjs');
 
 const data = JSON.parse(readFileSync('test/_tmp-fran-data.json', 'utf8'));
@@ -115,7 +115,7 @@ function fmtOverlays(r, titulo) {
 // ════════════════════════════════════════════════════════════════
 const rRama = rama.calcularSinastria(DIEGO, FRAN);
 const rMain = main.calcularSinastria(DIEGO, FRAN);
-fmtFactorTable(rRama, 'RAMA (feat/mejora-fallbacks-locales, ?v=72) — DiegoVO × Fran');
+fmtFactorTable(rRama, 'RAMA (feat/mejora-fallbacks-locales, ?v=74) — DiegoVO × Fran');
 fmtFactorTable(rMain, 'MAIN (motor anterior, ?v=69) — DiegoVO × Fran');
 
 console.log('\n════════════════ COMPARATIVA RAMA vs MAIN ════════════════');

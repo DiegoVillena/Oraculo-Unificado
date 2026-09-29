@@ -2,7 +2,7 @@
 // Mapeos de textos descriptivos para aspectos clave, planetas en casas, y dimensiones del radar.
 // Las claves son nombres canónicos en inglés (Sun, Moon, Conjunction, etc.) y se traducen al idioma activo.
 
-import { t, tAspecto } from '../i18n/i18n.js?v=72';
+import { t, tAspecto } from '../i18n/i18n.js?v=74';
 
 // Helper: nombre de planeta traducido
 function _pn(nombreEN) {

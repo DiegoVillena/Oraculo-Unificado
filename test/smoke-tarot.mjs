@@ -25,9 +25,9 @@ globalThis.fetch = async (url) => {
   return { ok: true, json: async () => JSON.parse(readFileSync(fp, 'utf8')) };
 };
 
-const { initI18n, cambiarIdioma } = await import('../js/i18n/i18n.js?v=72');
+const { initI18n, cambiarIdioma } = await import('../js/i18n/i18n.js?v=74');
 await initI18n();
-const { generarAnalisis, analizarTirada } = await import('../js/core/analysis.js?v=72');
+const { generarAnalisis, analizarTirada } = await import('../js/core/analysis.js?v=74');
 
 const C = (nombre, num, posicion, alReves = false) => ({
   nombre, num, posicion, alReves, orientacion: alReves ? 'Invertida' : 'Al Derecho',

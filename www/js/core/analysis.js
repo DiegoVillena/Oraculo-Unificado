@@ -1,8 +1,8 @@
 // core/analysis.js — Motor de análisis holístico Tarot + I Ching
 // i18n: todos los textos se cargan desde datos-maestros (analisisTarot)
-import { KB } from '../data/tarot-kb.js?v=72';
-import { KB_ICHING } from '../data/iching-kb.js?v=72';
-import { tCarta, tKB, tHexagrama, getAnalisisTarot } from '../i18n/i18n.js?v=72';
+import { KB } from '../data/tarot-kb.js?v=74';
+import { KB_ICHING } from '../data/iching-kb.js?v=74';
+import { tCarta, tKB, tHexagrama, getAnalisisTarot } from '../i18n/i18n.js?v=74';
 
 export const ELEMENTOS = {
   fuego:  { dual: "aire",   opuesto: "agua"   },

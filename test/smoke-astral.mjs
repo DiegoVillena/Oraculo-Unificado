@@ -41,12 +41,12 @@ globalThis.fetch = async (url) => {
 };
 
 // --- Cargar i18n ---
-const i18n = await import('../js/i18n/i18n.js?v=72');
+const i18n = await import('../js/i18n/i18n.js?v=74');
 const { initI18n, cambiarIdioma } = i18n;
 await initI18n();
 
-const { analizarCartaAstral } = await import('../js/core/astrologia-analisis.js?v=72');
-const { SIGNOS } = await import('../js/core/astrologia.js?v=72');
+const { analizarCartaAstral } = await import('../js/core/astrologia-analisis.js?v=74');
+const { SIGNOS } = await import('../js/core/astrologia.js?v=74');
 
 // --- Carta sintética tipo "Diego" (15/06/1990 Madrid, valores representativos) ---
 const S = (i, casa) => ({ signo: SIGNOS[i], casa });

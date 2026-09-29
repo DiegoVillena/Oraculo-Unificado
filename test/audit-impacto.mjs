@@ -1,7 +1,7 @@
 // test/audit-impacto.mjs — Impacto del bug de _fuerzaEnCasa/_casaOverlay en TODAS
 // las cartas guardadas reales (13 cartas → 156 pares ordenados).
 // Compara tres motores sobre los mismos datos:
-//   rama = js/core/astrologia.js?v=72        (bug presente)
+//   rama = js/core/astrologia.js?v=74        (bug presente)
 //   fix  = test/_astr-fix.mjs                (rama + clamp frac 0..1 — SOLO medición)
 //   main = test/_astr-main.mjs               (motor previo, sin la regla de cúspide 5°)
 // Uso: node test/audit-impacto.mjs   (desde la raíz del repo)
@@ -40,9 +40,9 @@ globalThis.fetch = async (url) => {
   return { ok: true, json: async () => JSON.parse(readFileSync(fp, 'utf8')) };
 };
 
-const { initI18n } = await import('../js/i18n/i18n.js?v=72');
+const { initI18n } = await import('../js/i18n/i18n.js?v=74');
 await initI18n();
-const rama = await import('../js/core/astrologia.js?v=72');
+const rama = await import('../js/core/astrologia.js?v=74');
 const fix  = await import('./_astr-fix.mjs');
 const main = await import('./_astr-main.mjs');
 

@@ -1,19 +1,19 @@
 // main.js — Entry point Oráculo Unificado (reconstruido)
-import { initTabs, cambiarPestana } from './ui/tabs.js?v=72';
-import { initFormularioAstral, render as renderAstral } from './ui/astral.js?v=72';
-import { initFormularioSinastria, render as renderSinastria, getTextoCopia as getTextoCopiaSinastria, copiar as copiarSinastria, compartir as compartirSinastria, getUltimaSinastria, poblarSelects as poblarSelectsSinastria } from './ui/sinastria.js?v=72';
-import { realizarConsulta, mostrarAnalisis, copiarResultados, compartirResultados, getUltimaTirada, getTextoCopia, visualizarTiradaGuardada } from './ui/tarot.js?v=72';
-import { abrirModal, abrirModalIching, cerrarModal } from './ui/modal.js?v=72';
-import { inicializarGlosario, resetMapaTerminos } from './ui/glossary.js?v=72';
-import * as storage from './storage.js?v=72';
-import { getUltimaCarta, generarTextoCarta, gradosASigno, SIGNOS } from './core/astrologia.js?v=72';
-import { analizarCartaAstral, extraerTextoAnalisisAstral } from './core/astrologia-analisis.js?v=72';
-import { analisisAstralIA, analisisCombinadoIA, analisisSinastriaIA, markdownAHtml, generarTextoCopiaAstral } from './core/ia-api.js?v=72';
-import { fraseAspecto, frasePlanetaEnCasa, fraseFactor } from './core/sinastria-dictionary.js?v=72';
-import { mostrarDonacionSiToca, abrirAcercaDe, actualizarFooterDonacion } from './ui/donacion.js?v=72';
-import { initDB } from './data/sqlite-db.js?v=72';
-import { initOnboarding } from './ui/onboarding.js?v=72';
-import { initI18n, t, cambiarIdioma, getIdioma, getIdiomasSoportados, tSigno } from './i18n/i18n.js?v=72';
+import { initTabs, cambiarPestana } from './ui/tabs.js?v=74';
+import { initFormularioAstral, render as renderAstral } from './ui/astral.js?v=74';
+import { initFormularioSinastria, render as renderSinastria, getTextoCopia as getTextoCopiaSinastria, copiar as copiarSinastria, compartir as compartirSinastria, getUltimaSinastria, poblarSelects as poblarSelectsSinastria } from './ui/sinastria.js?v=74';
+import { realizarConsulta, mostrarAnalisis, copiarResultados, compartirResultados, getUltimaTirada, getTextoCopia, visualizarTiradaGuardada } from './ui/tarot.js?v=74';
+import { abrirModal, abrirModalIching, cerrarModal } from './ui/modal.js?v=74';
+import { inicializarGlosario, resetMapaTerminos } from './ui/glossary.js?v=74';
+import * as storage from './storage.js?v=74';
+import { getUltimaCarta, generarTextoCarta, gradosASigno, SIGNOS } from './core/astrologia.js?v=74';
+import { analizarCartaAstral, extraerTextoAnalisisAstral } from './core/astrologia-analisis.js?v=74';
+import { analisisAstralIA, analisisCombinadoIA, analisisSinastriaIA, markdownAHtml, generarTextoCopiaAstral } from './core/ia-api.js?v=74';
+import { fraseAspecto, frasePlanetaEnCasa, fraseFactor } from './core/sinastria-dictionary.js?v=74';
+import { mostrarDonacionSiToca, abrirAcercaDe, actualizarFooterDonacion } from './ui/donacion.js?v=74';
+import { initDB } from './data/sqlite-db.js?v=74';
+import { initOnboarding } from './ui/onboarding.js?v=74';
+import { initI18n, t, tAspecto, cambiarIdioma, getIdioma, getIdiomasSoportados, tSigno } from './i18n/i18n.js?v=74';
 
 window.__tarotUI = { abrirModal, abrirModalIching, realizarConsulta, mostrarAnalisis, copiarResultados, compartirResultados, cerrarModal };
 
@@ -188,11 +188,16 @@ function copiarAstralConAnalisis() {
     txt += '\n\n=== ANÁLISIS ASTRAL ===\n' + (tmp.innerText || tmp.textContent || '').trim();
   }
 
-  // Copiar al portapapeles (con fallback)
-  try {
-    navigator.clipboard.writeText(txt);
-  } catch(e) {
-    const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+  // Copiar al portapapeles con el puente nativo (navigator.clipboard falla en
+  // el WebView incluso en https://localhost) y fallback execCommand.
+  if (window.AndroidClipboard?.copy) {
+    window.AndroidClipboard.copy(txt);
+  } else {
+    try {
+      navigator.clipboard.writeText(txt);
+    } catch (e) {
+      const ta = document.createElement('textarea'); ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    }
   }
   // Feedback visual en TODOS los botones de copiar astral visibles
   document.querySelectorAll('#astral-interpretacion .btn-sec.copiar, #btn-copiar-astral, #btn-copiar-astral-todo').forEach(b => {

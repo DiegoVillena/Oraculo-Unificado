@@ -7,9 +7,9 @@
 //
 // i18n: todos los diccionarios y textos narrativos se cargan desde datos-maestros.
 
-import { SIGNOS } from './astrologia.js?v=72';
-import { getAnalisisAstral, t, tSigno, tAspecto } from '../i18n/i18n.js?v=72';
-import { envolverTerminos } from '../ui/glossary.js?v=72';
+import { SIGNOS } from './astrologia.js?v=74';
+import { getAnalisisAstral, t, tSigno, tAspecto } from '../i18n/i18n.js?v=74';
+import { envolverTerminos } from '../ui/glossary.js?v=74';
 
 // === DICCIONARIOS FALLBACK (español, usados si i18n no está cargado) ===
 

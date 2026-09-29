@@ -10,9 +10,9 @@
 // aspectos, índice para signos, número para casas). El texto visible es la
 // traducción al idioma actual; data-term desacopla identidad de presentación.
 
-import { t, tGlosario, tCarta, tSigno, tAspecto, getIdioma } from '../i18n/i18n.js?v=72';
-import { SIGNOS, PLANETAS_UI } from '../core/astrologia.js?v=72';
-import { barajaTarot } from '../data/tarot-data.js?v=72';
+import { t, tGlosario, tCarta, tSigno, tAspecto, getIdioma } from '../i18n/i18n.js?v=74';
+import { SIGNOS, PLANETAS_UI } from '../core/astrologia.js?v=74';
+import { barajaTarot } from '../data/tarot-data.js?v=74';
 
 let popoverEl = null;
 let terminoActivoEl = null;   // elemento del término actualmente abierto

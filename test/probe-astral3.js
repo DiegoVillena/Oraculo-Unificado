@@ -5,7 +5,7 @@
   await window.__app.cambiarIdioma('es');
   await sleep(600);
 
-  const astro = await import('/js/core/astrologia.js?v=72');
+  const astro = await import('/js/core/astrologia.js?v=74');
   // Carta fresca calculada IN-PAGE con el motor nuevo (incluye Asteroid.Chiron id 15)
   const datos = await astro.calcularCartaAstral({
     nombre: 'PruebaCDP Quiron',

@@ -1,0 +1,63 @@
+================================================================================
+RESPUESTA — Stack de la app + capturas solicitadas
+(Para el agente de Play Store / descripción del repo y borrador)
+================================================================================
+Fecha: 2026-09-29. Carpeta de capturas: play-store-assets/capturas-0901/
+Resueltas con el código en la mano (no con documentación).
+
+--------------------------------------------------------------------------------
+1) LA VERDAD DEL STACK: es CAPACITOR. No hay Kotlin ni Jetpack Compose.
+--------------------------------------------------------------------------------
+La descripción del repo ("Kotlin + Jetpack Compose") es INCORRECTA y hay que
+corregirla. El README y la detección de lenguaje de GitHub están en lo cierto.
+
+Evidencia (revisada sobre el árbol actual):
+- TODO el código nativo de la app es UN archivo:
+  android/app/src/main/java/com/oraculounificado/app/MainActivity.java
+  → `public class MainActivity extends BridgeActivity` (BridgeActivity de
+  Capacitor). El WebView lo crea Capacitor; MainActivity solo registra 4
+  puentes @JavascriptInterface (AndroidClipboard, AndroidShare, AndroidLocale,
+  AndroidOpenUrl) y en build debug activa setWebContentsDebuggingEnabled.
+- grep -ri "compose|kotlin" android/app/build.gradle android/variables.gradle
+  → 0 resultados. Sin dependencias Compose. (kotlinx.coroutines aparece en el
+  APK solo como dependencia TRANSPONENTE del runtime de Capacitor.)
+- capacitor.config.json → "webDir": "www". La UI completa es HTML5 + CSS3 +
+  ES modules vanilla servida en el WebView (sin frameworks).
+- Stack real: Capacitor 8 · WebView (Chromium) · Swiss Ephemeris WASM ·
+  SQLite (sql.js) en el lado web · Gradle 8 / Java 17 · R8/ProGuard ·
+  worker IA en Cloudflare (proxy a Gemini).
+
+Descripción CORREGIDA propuesta para el repo (y borrador que debe contar lo mismo):
+
+  "App Android híbrida con Capacitor: web HTML5/CSS3/ES-modules vanilla en
+  WebView, con puentes nativos Java para portapapeles, compartir, idioma y
+  links externos. Tarot Rider-Waite, I Ching y Carta Astral con análisis IA.
+  Sin frameworks ni Jetpack Compose."
+
+--------------------------------------------------------------------------------
+2) CAPTURAS — inventario de play-store-assets/capturas-0901/
+--------------------------------------------------------------------------------
+1080x2088 px (emulador OraculoTest, build ?v=74 con todos los fixes). Cada
+archivo responde a un item de la petición:
+
+- 01-pantalla-principal.png   → pantalla principal (tab Tarot, estado limpio).
+- 02-tirada-tarot.png         → una tirada de Tarot (3 cartas en curso).
+- 03-hexagrama-iching.png     → un hexagrama I Ching (modal n.º 7 abierto).
+- 04-carta-astral.png         → la carta astral (rueda + formulario de Laura M).
+- 05-analisis-ia.png          → un análisis IA (badge "✦ Análisis generado con
+                                IA oracular ✦" + texto). RE-capturada hoy: la
+                                primera versión salió con badge local porque
+                                el worker dio 503 en ese momento (transitorio;
+                                desde el PC el worker responde OK).
+- 06-idioma-en.png            → la app funcionando en ENGLISH (tirada en EN).
+- 07-sinastria.png            → (extra, no pedida) el tab de Sinastria:
+                                DiegoVO × Ainoa, panel de 8 factores + radar
+                                octogonal. Útil para la ficha: es la feature
+                                diferencial más visual de la app.
+
+Nota para la ficha: estas capturas sustituyen/actualizan las de
+play-store-assets/screens/ (del 27-08, con el código anterior). Si Google Play
+exige mínimo 2-8 capturas, se pueden usar 6 de estas (o las 7).
+================================================================================
+FIN
+================================================================================

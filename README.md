@@ -1,15 +1,49 @@
-# Oráculo Unificado
+# 🔮 Oráculo Unificado
 
-App Android híbrida (Capacitor + WebView) que unifica tres disciplinas adivinatorias en una sola interfaz: **Tarot**, **I Ching** y **Carta Astral**, con análisis opcional por IA (Gemini).
+> App Android híbrida que unifica tres disciplinas adivinatorias en una sola interfaz — **Tarot**, **I Ching** y **Carta Astral** (y **Sinastria**) — con análisis opcional por IA y 6 idiomas.
+
+![Plataforma](https://img.shields.io/badge/plataforma-Android-3DDC84) ![Idiomas](https://img.shields.io/badge/idiomas-6-2980B9) ![Estado](https://img.shields.io/badge/estado-beta-orange) ![Licencia](https://img.shields.io/badge/licencia-propietaria-lightgrey)
+
+**Español** · [English](README.en.md)
+
+Sin registro ni cuentas: el cálculo astronómico y la lógica de las tiradas ocurren en tu propio dispositivo (Swiss Ephemeris y SQLite compilados a WASM) y tus tiradas se guardan localmente. El único componente en la nube es un proxy ligero de IA (Cloudflare Worker → Gemini), cuya clave API nunca sale del servidor.
+
+## ✨ Capturas de pantalla
+
+<table>
+  <tr>
+    <td><img src="img/screens/01-main.png" width="220"></td>
+    <td><img src="img/screens/02-tarot.png" width="220"></td>
+    <td><img src="img/screens/03-iching.png" width="220"></td>
+  </tr>
+  <tr>
+    <td><img src="img/screens/04-natal.png" width="220"></td>
+    <td><img src="img/screens/05-ai.png" width="220"></td>
+    <td><img src="img/screens/07-synastry.png" width="220"></td>
+  </tr>
+  <tr>
+    <td><img src="img/screens/06-english.png" width="220"></td>
+    <td><i>Idioma inglés (i18n propio)</i></td>
+    <td><i>7 pantallas cubren los 3 oráculos + IA</i></td>
+  </tr>
+</table>
+
+## 📥 Descargar
+
+- **Google Play (prueba abierta):** enlace opt-in público — se añadirá en cuanto la app pase la revisión de la tienda.
+- También puedes **compilar tu propio APK**: ver [Setup y desarrollo](#setup-y-desarrollo).
+
+> **Estado:** beta activa, en revisión en Google Play. App construida de principio a fin por una sola persona con desarrollo asistido por IA.
 
 ## Características
 
 - **Tarot**: Tiradas de 1 carta, 3 cartas (pasado/presente/futuro) y Cruz Celta (10 cartas), con renderizado en CSS Grid responsivo. Incluye baraja completa con imágenes y descripciones.
 - **I Ching**: Generación de hexagramas con líneas mutantes, SVG y texto interpretativo.
 - **Carta Astral**: Cálculo astral real con **Swiss Ephemeris (WASM)**, posiciones planetarias, casas, aspectos, Parte de Fortuna y Nodo Sur. Rueda zodiacal en SVG interactivo. Base de datos de ciudades en SQLite (sql.js).
+- **Sinastria**: Compatibilidad entre dos personas: dos cartas astrales combinadas con panel de 8 factores de compatibilidad y radar octogonal.
 - **Análisis IA**: Integración con Gemini vía Cloudflare Worker (proxy) con fallback a algoritmo local holístico.
-- **Compartir/Copiar**: Botones nativos para copiar y compartir resultados (texto plano) vía el menú nativo de Android (WhatsApp, email, Messages, etc.) usando un puente `@JavascriptInterface`.
-- **Multiidioma**: 6 idiomas soportados (es, en, pt, fr, it, de) con sistema i18n propio.
+- **Compartir/Copiar**: Botones nativos para copiar y compartir resultados vía el menú nativo de Android (WhatsApp, email, Messages, etc.). Los resultados largos se adjuntan como **PDF temporal** para que WhatsApp no los trunque.
+- **Multiidioma**: 6 idiomas soportados (es, en, pt, fr, it, de) con sistema i18n propio y detección del idioma real del dispositivo.
 - **Persistencia**: Guardar/cargar tiradas y cartas astrales con almacenamiento local.
 
 ## Arquitectura
@@ -22,7 +56,7 @@ OraculoUnificado/
 │   │   ├── src/main/
 │   │   │   ├── AndroidManifest.xml
 │   │   │   ├── java/com/oraculounificado/app/
-│   │   │   │   └── MainActivity.java   # Puentes JS↔Nativo (clipboard, share)
+│   │   │   │   └── MainActivity.java   # Puentes JS↔Nativo
 │   │   │   └── res/                    # Recursos, iconos, splash
 │   │   └── oraculo-release.keystore    # Keystore firma (NO se commitea)
 │   └── keystore.properties             # Credenciales keystore (NO se commitea)
@@ -45,7 +79,7 @@ OraculoUnificado/
 │   └── wrangler.toml
 │
 ├── scripts/             # Scripts de utilidad y generación de datos
-├── img/                  # Imágenes de cartas de Tarot
+├── img/                  # Imágenes (cartas de Tarot + capturas de pantalla)
 ├── capacitor.config.json
 ├── package.json
 └── .env.example          # Template de variables de entorno
@@ -53,10 +87,12 @@ OraculoUnificado/
 
 ## Puentes JS ↔ Nativo (MainActivity.java)
 
-La app expone dos `@JavascriptInterface` desde Java al WebView:
+El WebView expone cuatro `@JavascriptInterface` desde Java:
 
-- **`AndroidClipboard.copy(text)`** / **`.read()`**: Copia/lee el portapapeles nativo (necesario porque `navigator.clipboard` no funciona en WebView sin HTTPS).
-- **`AndroidShare.share(text)`**: Abre el menú nativo de compartir de Android (`Intent.ACTION_SEND`). Usa `ClipData` + `EXTRA_TEXT` + archivo `.txt` temporal vía `FileProvider` para textos largos, evitando truncamiento.
+- **`AndroidClipboard.copy(text)` / `.read()`**: copia/lee el portapapeles nativo (necesario porque `navigator.clipboard` no funciona en WebView sin HTTPS).
+- **`AndroidShare.share(text)`**: abre el menú nativo de compartir de Android (`Intent.ACTION_SEND`). Estrategia de compatibilidad universal: textos cortos viajan como `EXTRA_TEXT` (text/plain); textos largos (>500 caracteres) se convierten en un **PDF temporal** (API nativa `PdfDocument`, A4 con cabecera de página) adjuntado vía `FileProvider` con MIME `application/pdf` — así WhatsApp no trunca el resultado, como sí hace con `EXTRA_TEXT`.
+- **`AndroidOpenUrl.open(url)`**: abre URLs externas en el navegador del sistema (los enlaces `target="_blank"` no funcionan en WebView sin HTTPS).
+- **`AndroidLocale.get()`**: devuelve el locale real del dispositivo para inicializar el idioma (en WebView `navigator.language` puede devolver 'en-US' aunque el dispositivo esté en español).
 
 ## Setup y desarrollo
 
@@ -123,7 +159,7 @@ npx wrangler deploy
 
 | Capa        | Tecnología                          |
 |------------|-------------------------------------|
-| Shell       | Capacitor 8 (Android)               |
+| Shell       | Capacitor 8 (Android WebView)       |
 | UI          | HTML5 + CSS3 + ES modules (sin framework) |
 | Astral      | Swiss Ephemeris (WASM)              |
 | Datos       | SQLite (sql.js / WASM)              |

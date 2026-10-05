@@ -2,7 +2,7 @@
 
 > App Android híbrida que unifica tres disciplinas adivinatorias en una sola interfaz — **Tarot**, **I Ching** y **Carta Astral** (y **Sinastria**) — con análisis opcional por IA y 6 idiomas.
 
-![Plataforma](https://img.shields.io/badge/plataforma-Android-3DDC84) ![Idiomas](https://img.shields.io/badge/idiomas-6-2980B9) ![Estado](https://img.shields.io/badge/estado-beta-orange) ![Licencia](https://img.shields.io/badge/licencia-propietaria-lightgrey)
+![Plataforma](https://img.shields.io/badge/plataforma-Android-3DDC84) ![Idiomas](https://img.shields.io/badge/idiomas-6-2980B9) ![Google Play](https://img.shields.io/badge/Google%20Play-Disponible-34A853) ![Licencia](https://img.shields.io/badge/licencia-propietaria-lightgrey)
 
 **Español** · [English](README.en.md)
 
@@ -30,10 +30,10 @@ Sin registro ni cuentas: el cálculo astronómico y la lógica de las tiradas oc
 
 ## 📥 Descargar
 
-- **Google Play (prueba abierta):** enlace opt-in público — se añadirá en cuanto la app pase la revisión de la tienda.
+- **Google Play:** [https://play.google.com/store/apps/details?id=com.oraculounificado.app](https://play.google.com/store/apps/details?id=com.oraculounificado.app)
 - También puedes **compilar tu propio APK**: ver [Setup y desarrollo](#setup-y-desarrollo).
 
-> **Estado:** beta activa, en revisión en Google Play. App construida de principio a fin por una sola persona con desarrollo asistido por IA.
+> **Estado:** publicada en Google Play (producción, rollout 100%). App construida de principio a fin por una sola persona con desarrollo asistido por IA.
 
 ## Características
 

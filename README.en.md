@@ -2,7 +2,7 @@
 
 > Hybrid Android app that unites three divination disciplines in a single interface — **Tarot**, **I Ching** and **Natal Chart** (plus **Synastry**) — with optional AI-powered readings in 6 languages.
 
-![Platform](https://img.shields.io/badge/platform-Android-3DDC84) ![Languages](https://img.shields.io/badge/languages-6-2980B9) ![Status](https://img.shields.io/badge/status-beta-orange) ![License](https://img.shields.io/badge/license-proprietary-lightgrey)
+![Platform](https://img.shields.io/badge/platform-Android-3DDC84) ![Languages](https://img.shields.io/badge/languages-6-2980B9) ![Google Play](https://img.shields.io/badge/Google%20Play-Live-34A853) ![License](https://img.shields.io/badge/license-proprietary-lightgrey)
 
 [Spanish](README.md) · **English**
 
@@ -30,10 +30,10 @@ No sign-up or accounts: the astronomical calculations and reading logic run enti
 
 ## 📥 Download
 
-- **Google Play (open testing):** public opt-in link — will be added as soon as the app passes store review.
+- **Google Play:** [https://play.google.com/store/apps/details?id=com.oraculounificado.app](https://play.google.com/store/apps/details?id=com.oraculounificado.app)
 - Or **build your own APK**: see [Setup and development](#setup-and-development).
 
-> **Status:** active beta, currently in Google Play review. The app was built end to end by one person with AI-assisted development.
+> **Status:** published on Google Play (production, 100% rollout). The app was built end to end by one person with AI-assisted development.
 
 ## Features
 
